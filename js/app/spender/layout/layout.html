@@ -1,12 +1,11 @@
-<div ng-if="$ctrl.getProfile()">
-  <div class="media">
-    <div class="media-left">
-      <img class="media-object user-avatar" ng-src="{{$ctrl.getProfile().getImageUrl()}}">
-    </div>
-    <div class="media-body">
-      <h4 class="media-heading">Hey {{$ctrl.getProfile().getGivenName()}}!</h4>
-    </div>
+<div class="media">
+  <div class="media-left">
+    <img class="media-object user-avatar" ng-src="{{$ctrl.profile.getImageUrl()}}">
+  </div>
+  <div class="media-body">
+    <h4 class="media-heading">Hey {{$ctrl.profile.getGivenName()}}!</h4>
+    <a ng-click="$ctrl.signOut();" href=""><i class="glyphicon glyphicon-log-out"></i> Log out</a>
   </div>
 </div>
 
-<signin></signin>
+<div ui-view></div>

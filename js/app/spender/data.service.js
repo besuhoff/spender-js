@@ -14,4 +14,7 @@ angular.module('spender')
       $http.defaults.headers.common['X-Auth-Token'] = token;
     };
 
+    this.getPaymentMethods = function() {
+      return Restangular.all('payment-methods').getList();
+    }
   });
