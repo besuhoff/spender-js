@@ -1,0 +1,12 @@
+<div ng-if="$ctrl.getProfile()">
+  <div class="media">
+    <div class="media-left">
+      <img class="media-object user-avatar" ng-src="{{$ctrl.getProfile().getImageUrl()}}">
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">Hey {{$ctrl.getProfile().getGivenName()}}!</h4>
+    </div>
+  </div>
+</div>
+
+<signin></signin>
