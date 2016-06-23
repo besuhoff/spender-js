@@ -20,11 +20,15 @@ angular.module('spender', ['restangular', 'ui.router', 'ui.bootstrap'])
           $scope.profile = profile;
         },
         resolve: {
-          profile: function(GapiService, $state, $q) {
+          profile: function(DataService, GapiService, $state, $q) {
             return GapiService.load().then(function(gapi) {
               var currentUser = gapi.auth2.getAuthInstance().currentUser.get();
 
               if (currentUser && currentUser.isSignedIn()) {
+                var id_token = currentUser.getAuthResponse().id_token;
+                DataService.setToken(id_token);
+                DataService.setProfile(currentUser.getBasicProfile());
+
                 return currentUser.getBasicProfile();
               } else {
                 return $q.reject('User is not authenticated');
