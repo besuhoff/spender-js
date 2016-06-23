@@ -1,0 +1,40 @@
+angular.module('spender')
+  .component('incomePage', {
+    templateUrl: 'js/app/spender/income-page/income-page.html',
+    controller: function(DataService) {
+      var ctrl = this;
+
+      function initIncome() {
+        ctrl.income = {
+          Amount: 0
+        };
+      }
+
+      function initPaymentMethods() {
+        DataService.loadPaymentMethods().then(function(paymentMethods) {
+          ctrl.paymentMethods = paymentMethods;
+        });
+      }
+
+      ctrl.paymentMethods = [];
+      ctrl.categories = [];
+
+      initPaymentMethods();
+
+      DataService.getIncomeCategories().then(function(categories) {
+        ctrl.categories = categories;
+      });
+
+      ctrl.save = function() {
+        ctrl.income.CategoryId = ctrl.income.Category.Id;
+        ctrl.income.PaymentMethodId = ctrl.income.PaymentMethod.Id;
+        delete ctrl.income.Category;
+        delete ctrl.income.PaymentMethod;
+
+        DataService.saveIncome(ctrl.income).then(function() {
+          initIncome();
+          initPaymentMethods();
+        });
+      }
+    }
+  });

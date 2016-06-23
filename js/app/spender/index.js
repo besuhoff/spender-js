@@ -12,9 +12,8 @@ angular.module('spender', ['restangular', 'ui.router', 'ui.bootstrap'])
         url: '/login',
         template: '<login-page></login-page>'
       })
-      .state('authorized', {
+      .state('home', {
         url: '',
-        abstract: true,
         template: '<layout profile="profile"></layout>',
         controller: function($scope, profile) {
           $scope.profile = profile;
@@ -40,10 +39,13 @@ angular.module('spender', ['restangular', 'ui.router', 'ui.bootstrap'])
           }
         }
       })
-      .state('home', {
-        url: '',
-        parent: 'authorized',
-        template: '<spent-page></spent-page>'
+      .state('home.expenses', {
+        url: '/expenses',
+        template: '<expenses-page></expenses-page>'
+      })
+      .state('home.income', {
+        url: '/income',
+        template: '<income-page></income-page>'
       });
   })
   .config(function(RestangularProvider, BACKEND_URL) {

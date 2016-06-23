@@ -2,6 +2,8 @@ angular.module('spender')
   .service('DataService', function(Restangular, $http) {
     var _profile;
 
+    var _paymentMethods = [];
+
     this.getProfile = function() {
       return _profile;
     };
@@ -14,11 +16,30 @@ angular.module('spender')
       $http.defaults.headers.common['X-Auth-Token'] = token;
     };
 
+    this.loadPaymentMethods = function() {
+      return Restangular.all('payment-methods').getList().then(function(paymentMethods) {
+        _paymentMethods = paymentMethods;
+        return _paymentMethods;
+      });
+    };
+
     this.getPaymentMethods = function() {
-      return Restangular.all('payment-methods').getList();
+      return _paymentMethods;
     };
 
     this.getCategories = function() {
       return Restangular.all('categories').getList();
+    };
+
+    this.getIncomeCategories = function() {
+      return Restangular.all('income-categories').getList();
+    };
+
+    this.saveExpense = function(data) {
+      return Restangular.all('expenses').post(data);
+    };
+
+    this.saveIncome = function(data) {
+      return Restangular.all('incomes').post(data);
     };
   });

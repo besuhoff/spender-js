@@ -1,0 +1,14 @@
+<div class="form">Получил <input class="form-control" type="number" ng-model="$ctrl.income.Amount" step="0.01">
+  {{$ctrl.income.PaymentMethod.Currency}}
+  <select class="form-control"
+          ng-model="$ctrl.income.PaymentMethod"
+          ng-options="paymentMethod as paymentMethod.Name for paymentMethod in $ctrl.paymentMethods">
+    <option value="">-- из источника --</option>
+  </select>
+  за <select class="form-control"
+             ng-model="$ctrl.income.Category"
+             ng-options="category as category.Name for category in $ctrl.categories">
+    <option value="">-- вид деятельности --</option>
+  </select>
+  <button class="btn-primary btn" ng-click="$ctrl.save()">Записать</button>
+</div>

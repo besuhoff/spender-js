@@ -4,6 +4,15 @@
 
 .user-avatar {
     border-radius: 50%;
+    width: 64px;
+    height: 64px;
+    margin-right: 10px;
+}
+
+.tab-content .tab-pane {
+    border: 1px solid #dddddd;
+    border-top: 0;
+    padding: 20px 16px;
 }
 
 .form .form-control {

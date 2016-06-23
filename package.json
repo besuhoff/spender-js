@@ -16,7 +16,12 @@
   "local-web-server": {
     "port": 8081,
     "rewrite": [
-      { "from": "/login", "to": "/index.html" }
+      { "from": "/login", "to": "/index.html" },
+      { "from": "/expenses", "to": "/index.html" },
+      { "from": "/income", "to": "/index.html" },
+      { "from": "/categories", "to": "/index.html" },
+      { "from": "/income-categories", "to": "/index.html" },
+      { "from": "/payment-methods", "to": "/index.html" }
     ]
   }
 }

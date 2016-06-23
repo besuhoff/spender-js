@@ -4,13 +4,24 @@ angular.module('spender')
     bindings: {
       profile: '='
     },
-    controller: function(GapiService, $state) {
-      this.signOut = function() {
+    controller: function(GapiService, DataService, $state, $scope) {
+      var ctrl = this;
+
+      ctrl.signOut = function() {
         GapiService.load().then(function(gapi) {
           gapi.auth2.getAuthInstance().signOut().then(function() {
             $state.go('login');
           });
         });
-      }
+      };
+
+      $scope.$watch(
+        function() {
+          return DataService.getPaymentMethods()
+        },
+        function(paymentMethods) {
+          ctrl.paymentMethods = paymentMethods;
+        }
+      );
     }
   });
