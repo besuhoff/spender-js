@@ -1,3 +1,22 @@
+.header {
+    padding: 20px 0;
+}
+
 .user-avatar {
     border-radius: 50%;
+}
+
+.form .form-control {
+    width: 200px;
+    display: inline-block;
+    margin: 0 3px;
+}
+
+.form .form-control[type="number"] {
+    width: 100px;
+    text-align: right;
+}
+
+.management {
+    padding-top: 20px;
 }

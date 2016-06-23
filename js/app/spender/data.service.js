@@ -16,5 +16,9 @@ angular.module('spender')
 
     this.getPaymentMethods = function() {
       return Restangular.all('payment-methods').getList();
-    }
+    };
+
+    this.getCategories = function() {
+      return Restangular.all('categories').getList();
+    };
   });

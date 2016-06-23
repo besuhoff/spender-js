@@ -1,11 +1,14 @@
-<div class="media">
-  <div class="media-left">
-    <img class="media-object user-avatar" ng-src="{{$ctrl.profile.getImageUrl()}}">
+<div class="container">
+  <div class="media header">
+    <div class="media-left">
+      <img class="media-object user-avatar" ng-src="{{$ctrl.profile.getImageUrl()}}">
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">Hey {{$ctrl.profile.getGivenName()}}!</h4>
+      <a ng-click="$ctrl.signOut();" href=""><i class="glyphicon glyphicon-log-out"></i> Log out</a>
+    </div>
   </div>
-  <div class="media-body">
-    <h4 class="media-heading">Hey {{$ctrl.profile.getGivenName()}}!</h4>
-    <a ng-click="$ctrl.signOut();" href=""><i class="glyphicon glyphicon-log-out"></i> Log out</a>
-  </div>
+
+  <div ui-view></div>
 </div>
 
-<div ui-view></div>
