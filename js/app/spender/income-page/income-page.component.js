@@ -1,7 +1,7 @@
 angular.module('spender')
   .component('incomePage', {
     templateUrl: 'js/app/spender/income-page/income-page.html',
-    controller: function(DataService) {
+    controller: function(DataService, PaymentMethodService) {
       var ctrl = this;
 
       function initIncome() {
@@ -11,7 +11,7 @@ angular.module('spender')
       }
 
       function initPaymentMethods() {
-        DataService.loadPaymentMethods().then(function(paymentMethods) {
+        PaymentMethodService.loadAll().then(function(paymentMethods) {
           ctrl.paymentMethods = paymentMethods;
         });
       }

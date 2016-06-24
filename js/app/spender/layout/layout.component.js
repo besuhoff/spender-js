@@ -4,7 +4,7 @@ angular.module('spender')
     bindings: {
       profile: '='
     },
-    controller: function(GapiService, DataService, $state, $scope) {
+    controller: function(GapiService, PaymentMethodService, $state, $scope) {
       var ctrl = this;
 
       ctrl.signOut = function() {
@@ -17,7 +17,7 @@ angular.module('spender')
 
       $scope.$watch(
         function() {
-          return DataService.getPaymentMethods()
+          return PaymentMethodService.getAll()
         },
         function(paymentMethods) {
           ctrl.paymentMethods = paymentMethods;

@@ -1,7 +1,7 @@
 angular.module('spender')
   .component('paymentMethodsPage', {
     templateUrl: 'js/app/spender/payment-methods-page/payment-methods-page.html',
-    controller: function(DataService) {
+    controller: function(DataService, PaymentMethodService) {
       var ctrl = this;
 
       function initMethod() {
@@ -9,7 +9,7 @@ angular.module('spender')
       }
 
       function initMethods() {
-        return DataService.loadPaymentMethods().then(function(paymentMethods) {
+        return PaymentMethodService.loadAll().then(function(paymentMethods) {
           ctrl.paymentMethods = paymentMethods;
         });
       }
@@ -19,7 +19,7 @@ angular.module('spender')
 
       ctrl.saveMethod = function(paymentMethod) {
         if (paymentMethod.Name && paymentMethod.Currency) {
-          return DataService.updatePaymentMethod(paymentMethod).then(function() {
+          return PaymentMethodService.update(paymentMethod).then(function() {
             return initMethods();
           });
         }
@@ -27,7 +27,7 @@ angular.module('spender')
 
       ctrl.addMethod = function() {
         if (ctrl.paymentMethod.Name && ctrl.paymentMethod.Currency) {
-          return DataService.addPaymentMethod(ctrl.paymentMethod).then(function () {
+          return PaymentMethodService.add(ctrl.paymentMethod).then(function () {
             return initMethods().then(function () {
               initMethod();
             });
@@ -36,7 +36,7 @@ angular.module('spender')
       };
 
       ctrl.deleteMethod = function(paymentMethod) {
-        return DataService.deletePaymentMethod(paymentMethod).then(function() {
+        return PaymentMethodService.delete(paymentMethod).then(function() {
           return initMethods();
         })
       };
