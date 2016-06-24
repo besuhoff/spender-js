@@ -2,10 +2,18 @@ angular.module('spender', ['restangular', 'ui.router', 'ui.bootstrap'])
   .constant('BACKEND_URL', 'http://spender.pereborstudio.dev:8090/')
   .constant('GAPI_CLIENT_ID', '843225840486-ilkj47kggue9tvh6ajfvvog45mertgfg.apps.googleusercontent.com')
 
-  .config(function($locationProvider, $urlMatcherFactoryProvider, $stateProvider) {
+  .config(function($locationProvider, $urlRouterProvider, $transitionsProvider, $urlMatcherFactoryProvider, $stateProvider) {
     $locationProvider.html5Mode(true);
-
     $urlMatcherFactoryProvider.strictMode(false);
+    $urlRouterProvider.otherwise('/');
+
+    // BEGIN ABSTRACT REDIRECT
+    $transitionsProvider.onStart({ to: function(state) { return !!state.redirectTo; } }, function($transition$, $state) {
+      var val = $transition$.to().redirectTo;
+      return $state.go(val, $transition$.params());
+    });
+    // END ABSTRACT REDIRECT
+
 
     $stateProvider
       .state('login', {
@@ -14,6 +22,7 @@ angular.module('spender', ['restangular', 'ui.router', 'ui.bootstrap'])
       })
       .state('home', {
         url: '',
+        redirectTo: 'home.expenses',
         template: '<layout profile="profile"></layout>',
         controller: function($scope, profile) {
           $scope.profile = profile;

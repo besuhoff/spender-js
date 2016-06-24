@@ -26,15 +26,17 @@ angular.module('spender')
       });
 
       ctrl.save = function() {
-        ctrl.income.CategoryId = ctrl.income.Category.Id;
-        ctrl.income.PaymentMethodId = ctrl.income.PaymentMethod.Id;
-        delete ctrl.income.Category;
-        delete ctrl.income.PaymentMethod;
+        if (ctrl.income.IncomeCategory && ctrl.spent.PaymentMethod) {
+          ctrl.income.IncomeCategoryId = ctrl.income.IncomeCategory.Id;
+          ctrl.income.PaymentMethodId = ctrl.income.PaymentMethod.Id;
+          delete ctrl.income.IncomeCategory;
+          delete ctrl.income.PaymentMethod;
 
-        DataService.saveIncome(ctrl.income).then(function() {
-          initIncome();
-          initPaymentMethods();
-        });
+          DataService.saveIncome(ctrl.income).then(function () {
+            initIncome();
+            initPaymentMethods();
+          });
+        }
       }
     }
   });

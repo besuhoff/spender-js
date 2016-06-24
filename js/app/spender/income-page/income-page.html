@@ -3,12 +3,14 @@
   <select class="form-control"
           ng-model="$ctrl.income.PaymentMethod"
           ng-options="paymentMethod as paymentMethod.Name for paymentMethod in $ctrl.paymentMethods">
-    <option value="">-- из источника --</option>
+    <option value="">- на платёжное средство -</option>
   </select>
-  за <select class="form-control"
-             ng-model="$ctrl.income.Category"
+  от <select class="form-control"
+             ng-model="$ctrl.income.IncomeCategory"
              ng-options="category as category.Name for category in $ctrl.categories">
-    <option value="">-- вид деятельности --</option>
+    <option value="">- источника дохода -</option>
   </select>
-  <button class="btn-primary btn" ng-click="$ctrl.save()">Записать</button>
+  <button class="btn-primary btn"
+          ng-disabled="!$ctrl.spent.PaymentMethod || !$ctrl.IncomeCategory"
+          ng-click="$ctrl.save()">Записать</button>
 </div>
