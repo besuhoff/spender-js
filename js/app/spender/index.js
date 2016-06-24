@@ -55,8 +55,21 @@ angular.module('spender', ['restangular', 'ui.router', 'ui.bootstrap'])
       .state('home.income', {
         url: '/income',
         template: '<income-page></income-page>'
+      })
+      .state('home.categories', {
+        url: '/categories',
+        template: '<categories-page></categories-page>'
+      })
+      .state('home.income-categories', {
+        url: '/income-categories',
+        template: '<income-categories-page></income-categories-page>'
+      })
+      .state('home.payment-methods', {
+        url: '/payment-methods',
+        template: '<payment-methods-page></payment-methods-page>'
       });
   })
   .config(function(RestangularProvider, BACKEND_URL) {
-    RestangularProvider.setBaseUrl(BACKEND_URL);
+    RestangularProvider
+      .setBaseUrl(BACKEND_URL);
   });

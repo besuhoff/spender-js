@@ -21,11 +21,18 @@
     margin: 0 3px;
 }
 
-.form .form-control[type="number"] {
+.form .form-control.form-control--sm {
     width: 100px;
+}
+
+.form .form-control[type="number"] {
     text-align: right;
 }
 
 .management {
     padding-top: 20px;
+}
+
+.list-methods li {
+    padding: 0 0 10px;
 }
