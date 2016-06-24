@@ -30,9 +30,9 @@
 
   <div class="management">
     <h3>Остатки</h3>
-    <ul class="list-unstyled">
-      <li ng-repeat="paymentMethod in $ctrl.paymentMethods"><strong>{{paymentMethod.Name}}: {{paymentMethod.Incomes - paymentMethod.Expenses}}</strong></li>
-    </ul>
+    <table class="table-remains">
+      <tr ng-repeat="paymentMethod in $ctrl.paymentMethods"><td class="td-label">{{paymentMethod.Name}}</td><td class="td-number">{{(paymentMethod.Incomes - paymentMethod.Expenses) | currency:'':2 }}</td></tr>
+    </table>
   </div>
 </div>
 

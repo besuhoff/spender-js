@@ -26,7 +26,7 @@ angular.module('spender')
       });
 
       ctrl.save = function() {
-        if (ctrl.income.IncomeCategory && ctrl.spent.PaymentMethod) {
+        if (ctrl.income.IncomeCategory && ctrl.income.PaymentMethod) {
           ctrl.income.IncomeCategoryId = ctrl.income.IncomeCategory.Id;
           ctrl.income.PaymentMethodId = ctrl.income.PaymentMethod.Id;
           delete ctrl.income.IncomeCategory;

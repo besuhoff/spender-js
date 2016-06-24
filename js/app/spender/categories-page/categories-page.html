@@ -1,0 +1,18 @@
+<div class="form">
+  <ul class="list-unstyled list-form">
+    <li ng-repeat="category in $ctrl.categories">
+      Название: <input class="form-control" type="text" ng-model="category.Name">
+      <button class="btn-default btn"
+              ng-click="$ctrl.saveCategory(category)"
+              ng-disabled="!category.Name">Сохранить</button>
+      <button class="btn-default btn" ng-click="$ctrl.deleteCategory(category)">Удалить</button>
+    </li>
+
+    <li>
+      Название: <input class="form-control" type="text" ng-model="$ctrl.category.Name">
+      <button class="btn-primary btn"
+              ng-click="$ctrl.addCategory()"
+              ng-disabled="!$ctrl.category.Name">Добавить</button>
+    </li>
+  </ul>
+</div>

@@ -10,7 +10,10 @@
              ng-options="category as category.Name for category in $ctrl.categories">
     <option value="">- категорию -</option>
   </select>
+  <br/>
+  Комментарий: <input class="form-control"
+         ng-model="$ctrl.spent.Comment">
   <button class="btn-primary btn"
-          ng-disabled="!$ctrl.spent.PaymentMethod || !$ctrl.Category"
+          ng-disabled="!$ctrl.spent.PaymentMethod || !$ctrl.spent.Category"
           ng-click="$ctrl.save()">Записать</button>
 </div>

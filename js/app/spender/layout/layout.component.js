@@ -7,6 +7,8 @@ angular.module('spender')
     controller: function(GapiService, PaymentMethodService, $state, $scope) {
       var ctrl = this;
 
+      PaymentMethodService.loadAll();
+
       ctrl.signOut = function() {
         GapiService.load().then(function(gapi) {
           gapi.auth2.getAuthInstance().signOut().then(function() {
