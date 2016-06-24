@@ -1,5 +1,5 @@
 angular.module('spender', ['restangular', 'ui.router', 'ui.bootstrap'])
-  .constant('BACKEND_URL', 'http://spender.pereborstudio.dev:8090/')
+  .constant('BACKEND_URL', 'http://spender-api.pereborstudio.com/')
   .constant('GAPI_CLIENT_ID', '843225840486-ilkj47kggue9tvh6ajfvvog45mertgfg.apps.googleusercontent.com')
 
   .config(function($locationProvider, $urlRouterProvider, $transitionsProvider, $urlMatcherFactoryProvider, $stateProvider) {
