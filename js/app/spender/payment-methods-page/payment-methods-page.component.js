@@ -18,7 +18,7 @@ angular.module('spender')
       initMethod();
 
       ctrl.saveMethod = function(paymentMethod) {
-        if (paymentMethod.Name && paymentMethod.Currency) {
+        if (paymentMethod.name && paymentMethod.currency) {
           return PaymentMethodService.update(paymentMethod).then(function() {
             return initMethods();
           });
@@ -26,7 +26,7 @@ angular.module('spender')
       };
 
       ctrl.addMethod = function() {
-        if (ctrl.paymentMethod.Name && ctrl.paymentMethod.Currency) {
+        if (ctrl.paymentMethod.name && ctrl.paymentMethod.currency) {
           return PaymentMethodService.add(ctrl.paymentMethod).then(function () {
             return initMethods().then(function () {
               initMethod();

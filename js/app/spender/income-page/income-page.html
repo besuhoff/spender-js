@@ -1,19 +1,19 @@
-<div class="form">Получил <input class="form-control form-control--sm" type="number" ng-model="$ctrl.income.Amount" step="0.01">
-  {{$ctrl.income.PaymentMethod.Currency}}
+<div class="form">Получил <input class="form-control form-control--sm" type="number" ng-model="$ctrl.income.amount" step="0.01">
+  {{$ctrl.income.paymentMethod.currency}}
   <select class="form-control"
-          ng-model="$ctrl.income.PaymentMethod"
-          ng-options="paymentMethod as paymentMethod.Name for paymentMethod in $ctrl.paymentMethods">
+          ng-model="$ctrl.income.paymentMethod"
+          ng-options="paymentMethod as paymentMethod.name for paymentMethod in $ctrl.paymentMethods">
     <option value="">- на платёжное средство -</option>
   </select>
   от <select class="form-control"
-             ng-model="$ctrl.income.IncomeCategory"
-             ng-options="category as category.Name for category in $ctrl.categories">
+             ng-model="$ctrl.income.incomeCategory"
+             ng-options="category as category.name for category in $ctrl.categories">
     <option value="">- источника дохода -</option>
   </select>
   <br/>
   Комментарий: <input class="form-control"
-                      ng-model="$ctrl.income.Comment">
+                      ng-model="$ctrl.income.comment">
   <button class="btn-primary btn"
-          ng-disabled="!$ctrl.income.PaymentMethod || !$ctrl.income.IncomeCategory"
+          ng-disabled="!$ctrl.income.paymentMethod || !$ctrl.income.incomeCategory"
           ng-click="$ctrl.save()">Записать</button>
 </div>

@@ -1,7 +1,7 @@
 angular.module('spender')
   .component('incomeCategoriesPage', {
     templateUrl: 'js/app/spender/income-categories-page/income-categories-page.html',
-    controller: function(DataService, IncomeCategoryService) {
+    controller: function(IncomeCategoryService) {
       var ctrl = this;
 
       function initCategory() {
@@ -18,7 +18,7 @@ angular.module('spender')
       initCategory();
 
       ctrl.saveCategory = function(category) {
-        if (category.Name) {
+        if (category.name) {
           return IncomeCategoryService.update(category).then(function() {
             return initCategories();
           });
@@ -26,7 +26,7 @@ angular.module('spender')
       };
 
       ctrl.addCategory = function() {
-        if (ctrl.category.Name) {
+        if (ctrl.category.name) {
           return IncomeCategoryService.add(ctrl.category).then(function () {
             return initCategories().then(function () {
               initCategory();

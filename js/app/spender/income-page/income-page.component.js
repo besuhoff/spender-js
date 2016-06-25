@@ -1,12 +1,12 @@
 angular.module('spender')
   .component('incomePage', {
     templateUrl: 'js/app/spender/income-page/income-page.html',
-    controller: function(DataService, PaymentMethodService) {
+    controller: function(DataService, IncomeCategoryService, PaymentMethodService) {
       var ctrl = this;
 
       function initIncome() {
         ctrl.income = {
-          Amount: 0
+          amount: 0
         };
       }
 
@@ -21,16 +21,16 @@ angular.module('spender')
 
       initPaymentMethods();
 
-      DataService.getIncomeCategories().then(function(categories) {
+      IncomeCategoryService.loadAll().then(function(categories) {
         ctrl.categories = categories;
       });
 
       ctrl.save = function() {
-        if (ctrl.income.IncomeCategory && ctrl.income.PaymentMethod) {
-          ctrl.income.IncomeCategoryId = ctrl.income.IncomeCategory.Id;
-          ctrl.income.PaymentMethodId = ctrl.income.PaymentMethod.Id;
-          delete ctrl.income.IncomeCategory;
-          delete ctrl.income.PaymentMethod;
+        if (ctrl.income.incomeCategory && ctrl.income.paymentMethod) {
+          ctrl.income.incomeCategoryId = ctrl.income.incomeCategory.id;
+          ctrl.income.paymentMethodId = ctrl.income.paymentMethod.id;
+          delete ctrl.income.incomeCategory;
+          delete ctrl.income.paymentMethod;
 
           DataService.saveIncome(ctrl.income).then(function () {
             initIncome();

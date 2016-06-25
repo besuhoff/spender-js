@@ -1,7 +1,7 @@
 angular.module('spender')
   .component('categoriesPage', {
     templateUrl: 'js/app/spender/categories-page/categories-page.html',
-    controller: function(DataService, CategoryService) {
+    controller: function(CategoryService) {
       var ctrl = this;
 
       function initCategory() {
@@ -18,7 +18,7 @@ angular.module('spender')
       initCategory();
 
       ctrl.saveCategory = function(category) {
-        if (category.Name) {
+        if (category.name) {
           return CategoryService.update(category).then(function() {
             return initCategories();
           });
@@ -26,7 +26,7 @@ angular.module('spender')
       };
 
       ctrl.addCategory = function() {
-        if (ctrl.category.Name) {
+        if (ctrl.category.name) {
           return CategoryService.add(ctrl.category).then(function () {
             return initCategories().then(function () {
               initCategory();

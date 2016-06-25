@@ -18,10 +18,10 @@ angular.module('spender')
     };
 
     this.update = function (data) {
-      return Restangular.one('payment-methods', data.Id).patch(data);
+      return Restangular.one('payment-methods', data.id).patch(data);
     };
 
     this.delete = function (data) {
-      return Restangular.one('payment-methods', data.Id).remove();
+      return Restangular.one('payment-methods', data.id).remove();
     };
   });
