@@ -1,0 +1,27 @@
+<div class="form">Перевёл <input class="form-control form-control--sm" type="number" ng-model="$ctrl.spent.amount" step="0.01">
+  {{$ctrl.spent.paymentMethod.currency}}
+  <select class="form-control"
+          ng-model="$ctrl.spent.paymentMethod"
+          ng-options="paymentMethod as paymentMethod.name for paymentMethod in $ctrl.paymentMethods">
+    <option value="">- платёжным средством -</option>
+  </select>
+  на <select class="form-control"
+             ng-model="$ctrl.income.paymentMethod"
+             ng-options="paymentMethod as paymentMethod.name disable when paymentMethod.id === $ctrl.spent.paymentMethod.id for paymentMethod in $ctrl.paymentMethods">
+    <option value="">- платёжное средство -</option>
+  </select>
+  <span ng-if="$ctrl.spent.paymentMethod && $ctrl.income.paymentMethod && $ctrl.spent.paymentMethod.currency !== $ctrl.income.paymentMethod.currency">
+    по курсу <input class="form-control form-control--sm" type="number" ng-model="$ctrl.sourceIncomeCurrencyRate">
+    к <input class="form-control form-control--sm" type="number" ng-model="$ctrl.targetIncomeCurrencyRate">
+  </span>
+  <span ng-if="$ctrl.getTargetAmount() !== undefined">
+    <br/>
+    ({{$ctrl.getTargetAmount() | currency:$ctrl.income.paymentMethod.currency:2}} будет начислено на {{$ctrl.income.paymentMethod.name}})
+  </span>
+  <br/>
+  Комментарий: <input class="form-control"
+         ng-model="$ctrl.spent.comment">
+  <button class="btn-primary btn"
+          ng-disabled="$ctrl.getTargetAmount() === undefined"
+          ng-click="$ctrl.save()">Записать</button>
+</div>

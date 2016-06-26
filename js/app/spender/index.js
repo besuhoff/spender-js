@@ -52,6 +52,10 @@ angular.module('spender', ['restangular', 'ui.router', 'ui.bootstrap'])
         url: '/expenses',
         template: '<expenses-page></expenses-page>'
       })
+      .state('home.transfers', {
+        url: '/transfers',
+        template: '<transfers-page></transfers-page>'
+      })
       .state('home.income', {
         url: '/income',
         template: '<income-page></income-page>'
