@@ -35,5 +35,9 @@
       <tr ng-repeat="paymentMethod in $ctrl.paymentMethods"><td class="td-label">{{paymentMethod.name}}</td><td class="td-number">{{(paymentMethod.incomes - paymentMethod.expenses) | currency:'':2 }}</td></tr>
     </table>
   </div>
+
+  <div class="copy">
+    Сделано в студии <a href="http://pereborstudio.com">&laquo;Перебор&raquo;</a> в 2016 году.
+  </div>
 </div>
 

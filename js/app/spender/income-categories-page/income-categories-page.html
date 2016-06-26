@@ -4,15 +4,15 @@
       Название: <input class="form-control" type="text" ng-model="category.name">
       <button class="btn-default btn"
               ng-click="$ctrl.saveCategory(category)"
-              ng-disabled="!category.name">Сохранить</button>
-      <button class="btn-default btn" ng-click="$ctrl.deleteCategory(category)">Удалить</button>
+              ng-disabled="!category.name"><i class="glyphicon glyphicon-ok"></i></button>
+      <button class="btn-default btn" ng-click="$ctrl.deleteCategory(category)"><i class="glyphicon glyphicon-remove"></i></button>
     </li>
 
     <li>
       Название: <input class="form-control" type="text" ng-model="$ctrl.category.name">
       <button class="btn-primary btn"
               ng-click="$ctrl.addCategory()"
-              ng-disabled="!$ctrl.category.name">Добавить</button>
+              ng-disabled="!$ctrl.category.name"><i class="glyphicon glyphicon-ok"></i></button>
     </li>
   </ul>
 </div>

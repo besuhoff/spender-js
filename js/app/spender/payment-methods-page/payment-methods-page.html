@@ -5,8 +5,8 @@
       валюта: <input class="form-control form-control--sm" type="text" ng-model="paymentMethod.currency">
       <button class="btn-default btn"
               ng-click="$ctrl.saveMethod(paymentMethod)"
-              ng-disabled="!paymentMethod.name || !paymentMethod.currency">Сохранить</button>
-      <button class="btn-default btn" ng-click="$ctrl.deleteMethod(paymentMethod)">Удалить</button>
+              ng-disabled="!paymentMethod.name || !paymentMethod.currency"><i class="glyphicon glyphicon-ok"></i></button>
+      <button class="btn-default btn" ng-click="$ctrl.deleteMethod(paymentMethod)"><i class="glyphicon glyphicon-remove"></i></button>
     </li>
 
     <li>
@@ -14,7 +14,7 @@
       валюта: <input class="form-control form-control--sm" type="text" ng-model="$ctrl.paymentMethod.currency">
       <button class="btn-primary btn"
               ng-click="$ctrl.addMethod()"
-              ng-disabled="!$ctrl.paymentMethod.name || !$ctrl.paymentMethod.currency">Добавить</button>
+              ng-disabled="!$ctrl.paymentMethod.name || !$ctrl.paymentMethod.currency"><i class="glyphicon glyphicon-ok"></i></button>
     </li>
   </ul>
 </div>

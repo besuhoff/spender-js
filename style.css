@@ -19,6 +19,10 @@
     line-height: 42px;
 }
 
+.form .btn {
+    margin: 8px 0;
+}
+
 .form .form-control {
     width: 220px;
     display: inline-block;
@@ -34,7 +38,7 @@
 }
 
 .management {
-    padding-top: 20px;
+    padding: 20px 0 18px;
 }
 
 .list-form li {
@@ -56,4 +60,10 @@
 .table-remains .td-number {
     text-align: right;
     padding-left: 20px;
+}
+
+.copy {
+    font-size: 85%;
+    padding: 12px 0;
+    color: #999;
 }
