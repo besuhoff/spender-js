@@ -19,7 +19,7 @@
     line-height: 42px;
 }
 
-.form .btn {
+.form .btn-inline {
     margin: 8px 0;
 }
 
@@ -66,4 +66,30 @@
     font-size: 85%;
     padding: 12px 0;
     color: #999;
+}
+
+
+.date-group .form-control {
+    display: inline-block;
+    width: 100px;
+}
+
+.date-group > * {
+    display: inline-block;
+}
+
+.date-group .time-group .time {
+    width: 120px;
+}
+
+.date-group .time-group .time-hint {
+    margin: 0 5px;
+}
+
+.date-group {
+    display: inline-block;
+}
+
+.glyphicon {
+    line-height: 1.5;
 }

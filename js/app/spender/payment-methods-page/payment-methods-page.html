@@ -3,16 +3,16 @@
     <li ng-repeat="paymentMethod in $ctrl.paymentMethods">
       Название: <input class="form-control" type="text" ng-model="paymentMethod.name">,
       валюта: <input class="form-control form-control--sm" type="text" ng-model="paymentMethod.currency">
-      <button class="btn-default btn"
+      <button class="btn-default btn btn-inline"
               ng-click="$ctrl.saveMethod(paymentMethod)"
               ng-disabled="!paymentMethod.name || !paymentMethod.currency"><i class="glyphicon glyphicon-ok"></i></button>
-      <button class="btn-default btn" ng-click="$ctrl.deleteMethod(paymentMethod)"><i class="glyphicon glyphicon-remove"></i></button>
+      <button class="btn-default btn btn-inline" ng-click="$ctrl.deleteMethod(paymentMethod)"><i class="glyphicon glyphicon-remove"></i></button>
     </li>
 
     <li>
       Название: <input class="form-control" type="text" ng-model="$ctrl.paymentMethod.name">,
       валюта: <input class="form-control form-control--sm" type="text" ng-model="$ctrl.paymentMethod.currency">
-      <button class="btn-primary btn"
+      <button class="btn-primary btn btn-inline"
               ng-click="$ctrl.addMethod()"
               ng-disabled="!$ctrl.paymentMethod.name || !$ctrl.paymentMethod.currency"><i class="glyphicon glyphicon-ok"></i></button>
     </li>

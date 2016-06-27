@@ -43,6 +43,7 @@ angular.module('spender')
         if (ctrl.getTargetAmount() !== undefined) {
           ctrl.income.amount = ctrl.getTargetAmount();
           ctrl.income.comment = ctrl.spent.comment;
+          ctrl.income.createdAt = ctrl.spent.createdAt;
 
           ctrl.spent.paymentMethodId = ctrl.spent.paymentMethod.id;
           ctrl.income.paymentMethodId = ctrl.income.paymentMethod.id;

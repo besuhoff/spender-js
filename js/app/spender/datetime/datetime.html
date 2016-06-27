@@ -1,0 +1,20 @@
+<div class="date-group">
+  <input type="text"
+         class="form-control date m-t-md"
+         datepicker-popup
+         ng-disabled="$ctrl.disabled"
+         date-to-iso
+         is-open="$ctrl.datePopupOpened"
+         min-date="$ctrl.today"
+         ng-model="$ctrl.date"
+         ng-click="$ctrl.datePopupOpened = !$ctrl.datePopupOpened"
+         ng-change="$ctrl.setValue()">
+
+  <div class="time-group m-t-md">
+    <input type="time"
+           ng-disabled="$ctrl.disabled"
+           class="form-control time"
+           ng-model="$ctrl.time"
+           ng-change="$ctrl.setValue()">
+  </div>
+</div>
