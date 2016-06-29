@@ -18,3 +18,7 @@
           ng-disabled="!$ctrl.spent.paymentMethod || !$ctrl.spent.category"
           ng-click="$ctrl.save()">Записать</button>
 </div>
+
+<div class="chart">
+  <c3-bar data="expensesChart"></c3-bar>
+</div>

@@ -5,6 +5,7 @@
     "angular-ui-bootstrap": "0.12.1",
     "angular-ui-router": "1.0.0-alpha.5",
     "bootstrap": "3.3.6",
+    "c3-angularjs": "1.0.7",
     "lodash": "4.13.1",
     "restangular": "1.5.2"
   },

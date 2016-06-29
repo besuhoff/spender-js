@@ -7,6 +7,8 @@ var gulp            = require('gulp'),
     templateCache   = require('gulp-angular-templatecache');
 
 var vendorScripts = [
+  'node_modules/c3/c3.js',
+  'node_modules/d3/d3.js',
   'node_modules/lodash/lodash.js',
   'node_modules/angular/angular.js',
   'node_modules/angular-ui-router/release/angular-ui-router.js',
@@ -15,10 +17,12 @@ var vendorScripts = [
   'node_modules/restangular/dist/restangular.js',
   'node_modules/moment/moment.js',
   'node_modules/angular-moment/angular-moment.js',
+  'node_modules/c3-angularjs/c3-angular.js',
 ];
 
 var vendorCss = [
   'node_modules/bootstrap/dist/css/bootstrap.css',
+  'node_modules/c3/c3.css',
 ];
 
 var appCss = [

@@ -1,4 +1,4 @@
-angular.module('spender', ['restangular', 'ui.router', 'ui.bootstrap', 'angularMoment', 'templates'])
+angular.module('spender', ['restangular', 'ui.router', 'ui.bootstrap', 'angularMoment', 'templates', 'c3-angularjs'])
   .constant('BACKEND_URL', 'http://spender-api.pereborstudio.com/')
   .constant('GAPI_CLIENT_ID', '843225840486-ilkj47kggue9tvh6ajfvvog45mertgfg.apps.googleusercontent.com')
 

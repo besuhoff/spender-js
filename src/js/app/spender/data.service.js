@@ -14,10 +14,6 @@ angular.module('spender')
       $http.defaults.headers.common['X-Auth-Token'] = token;
     };
 
-    this.saveExpense = function(data) {
-      return Restangular.all('expenses').post(data);
-    };
-
     this.saveIncome = function(data) {
       return Restangular.all('incomes').post(data);
     };

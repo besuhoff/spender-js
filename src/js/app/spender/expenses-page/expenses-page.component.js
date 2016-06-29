@@ -1,13 +1,31 @@
 angular.module('spender')
   .component('expensesPage', {
     templateUrl: 'js/app/spender/expenses-page/expenses-page.html',
-    controller: function(DataService, CategoryService, PaymentMethodService) {
+    controller: function(ExpenseService, CategoryService, PaymentMethodService) {
       var ctrl = this;
 
       function initExpense() {
         ctrl.spent = {
           amount: 0
         };
+      }
+
+      function buildChart(expenses) {
+        var total = 0,
+            chart = {};
+
+        expenses.forEach(function(e) {
+          total += e.amount; chart[e.createdAt] = total;
+        });
+
+        return chart;
+      }
+
+      function initExpenses() {
+        ExpenseService.loadAll().then(function(expenses) {
+          ctrl.expenses = expenses;
+          ctrl.expensesChart = buildChart(expenses);
+        });
       }
 
       function initPaymentMethods() {
@@ -18,7 +36,9 @@ angular.module('spender')
 
       ctrl.paymentMethods = [];
       ctrl.categories = [];
+      ctrl.expenses = [];
 
+      initExpenses();
       initPaymentMethods();
 
       CategoryService.loadAll().then(function(categories) {
@@ -32,7 +52,7 @@ angular.module('spender')
           delete ctrl.spent.category;
           delete ctrl.spent.paymentMethod;
 
-          DataService.saveExpense(ctrl.spent).then(function() {
+          ExpenseService.add(ctrl.spent).then(function() {
             initExpense();
             initPaymentMethods();
           });
