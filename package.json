@@ -12,6 +12,7 @@
   "devDependencies": {
     "gulp": "3.9.1",
     "gulp-angular-templatecache": "2.0.0",
+    "gulp-cli": "^1.2.1",
     "gulp-concat": "2.6.0",
     "gulp-cssmin": "0.1.7",
     "gulp-ng-annotate": "2.0.0",
@@ -20,7 +21,8 @@
     "local-web-server": "1.2.6"
   },
   "scripts": {
-    "start": "ws"
+    "start": "ws",
+    "build": "gulp"
   },
   "local-web-server": {
     "port": 8081,

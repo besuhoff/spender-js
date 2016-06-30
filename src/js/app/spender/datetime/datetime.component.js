@@ -7,8 +7,7 @@ angular.module('spender')
       templateUrl: 'js/app/spender/datetime/datetime.html',
       controller: function($attrs, moment) {
         var ctrl = this;
-        ctrl.today = new Date();
-    
+
         $attrs.$observe('disabled', function(isDisabled) { ctrl.disabled = isDisabled; });
 
         ctrl.setValue = function() {
