@@ -4,6 +4,7 @@ var gulp            = require('gulp'),
     cssmin          = require('gulp-cssmin'),
     concat          = require('gulp-concat'),
     ngAnnotate      = require('gulp-ng-annotate'),
+    sass            = require('gulp-sass'),
     templateCache   = require('gulp-angular-templatecache');
 
 var vendorScripts = [
@@ -26,7 +27,7 @@ var vendorCss = [
 ];
 
 var appCss = [
-  'src/css/style.css',
+  'src/css/style.scss',
 ];
 
 var fonts = [
@@ -74,6 +75,7 @@ gulp.task('css-vendor', function() {
 
 gulp.task('css-app', function() {
   return gulp.src(appCss)
+    .pipe(sass().on('error', sass.logError))
     .pipe(concat('app.css'))
     .pipe(gulp.dest('build/css'))
     .pipe(rename({ suffix: '.min' }))

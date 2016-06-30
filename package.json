@@ -17,11 +17,12 @@
     "gulp-cssmin": "0.1.7",
     "gulp-ng-annotate": "2.0.0",
     "gulp-rename": "1.2.2",
+    "gulp-sass": "^2.3.2",
     "gulp-uglify": "1.5.4",
     "local-web-server": "1.2.6"
   },
   "scripts": {
-    "start": "ws",
+    "start": "ws --directory=build/",
     "build": "gulp"
   },
   "local-web-server": {
@@ -37,6 +38,10 @@
       },
       {
         "from": "/income",
+        "to": "/index.html"
+      },
+      {
+        "from": "/transfers",
         "to": "/index.html"
       },
       {
