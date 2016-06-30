@@ -18,3 +18,14 @@
           ng-disabled="!$ctrl.income.paymentMethod || !$ctrl.income.incomeCategory"
           ng-click="$ctrl.save()">Записать</button>
 </div>
+
+<div class="row">
+  <div class="chart col-md-6" ng-repeat="(currency, chartData) in $ctrl.incomesChart">
+    <h3>{{currency}}</h3>
+    <canvas class="chart chart-bar"
+            chart-labels="chartData.labels"
+            chart-options="chartData.options"
+            chart-data="chartData.data"
+            chart-dataset-override="chartData.datasets"></canvas>
+  </div>
+</div>

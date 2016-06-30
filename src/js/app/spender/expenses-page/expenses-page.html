@@ -19,6 +19,13 @@
           ng-click="$ctrl.save()">Записать</button>
 </div>
 
-<div class="chart">
-  <c3-bar data="expensesChart"></c3-bar>
+<div class="row">
+  <div class="chart col-md-6" ng-repeat="(currency, chartData) in $ctrl.expensesChart">
+    <h3>{{currency}}</h3>
+    <canvas class="chart chart-bar"
+            chart-labels="chartData.labels"
+            chart-options="chartData.options"
+            chart-data="chartData.data"
+            chart-dataset-override="chartData.datasets"></canvas>
+  </div>
 </div>

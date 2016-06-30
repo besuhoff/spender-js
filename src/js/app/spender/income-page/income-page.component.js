@@ -1,13 +1,20 @@
 angular.module('spender')
   .component('incomePage', {
     templateUrl: 'js/app/spender/income-page/income-page.html',
-    controller: function(DataService, IncomeCategoryService, PaymentMethodService) {
+    controller: function(IncomeService, ChartService, IncomeCategoryService, PaymentMethodService) {
       var ctrl = this;
 
       function initIncome() {
         ctrl.income = {
           amount: 0
         };
+      }
+
+      function initIncomes() {
+        IncomeService.loadAll().then(function(incomes) {
+          ctrl.incomes = incomes;
+          ctrl.incomesChart = ChartService.buildChart(incomes);
+        });
       }
 
       function initPaymentMethods() {
@@ -18,7 +25,9 @@ angular.module('spender')
 
       ctrl.paymentMethods = [];
       ctrl.categories = [];
+      ctrl.incomes = [];
 
+      initIncomes();
       initPaymentMethods();
 
       IncomeCategoryService.loadAll().then(function(categories) {
@@ -32,8 +41,9 @@ angular.module('spender')
           delete ctrl.income.incomeCategory;
           delete ctrl.income.paymentMethod;
 
-          DataService.saveIncome(ctrl.income).then(function () {
+          IncomeService.add(ctrl.income).then(function () {
             initIncome();
+            initIncomes();
             initPaymentMethods();
           });
         }

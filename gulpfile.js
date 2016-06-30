@@ -8,8 +8,6 @@ var gulp            = require('gulp'),
     templateCache   = require('gulp-angular-templatecache');
 
 var vendorScripts = [
-  'node_modules/c3/c3.js',
-  'node_modules/d3/d3.js',
   'node_modules/lodash/lodash.js',
   'node_modules/angular/angular.js',
   'node_modules/angular-ui-router/release/angular-ui-router.js',
@@ -18,7 +16,21 @@ var vendorScripts = [
   'node_modules/restangular/dist/restangular.js',
   'node_modules/moment/moment.js',
   'node_modules/angular-moment/angular-moment.js',
-  'node_modules/c3-angularjs/c3-angular.js',
+  'node_modules/chart.js/dist/Chart.js',
+  'node_modules/angular-chart.js/dist/angular-chart.js',
+];
+
+var vendorScriptsMin = [
+  'node_modules/lodash/lodash.min.js',
+  'node_modules/angular/angular.min.js',
+  'node_modules/angular-ui-router/release/angular-ui-router.min.js',
+  'node_modules/angular-ui-bootstrap/ui-bootstrap.min.js',
+  'node_modules/angular-ui-bootstrap/ui-bootstrap-tpls.min.js',
+  'node_modules/restangular/dist/restangular.min.js',
+  'node_modules/moment/moment.min.js',
+  'node_modules/angular-moment/angular-moment.min.js',
+  'node_modules/chart.js/dist/Chart.min.js',
+  'node_modules/angular-chart.js/dist/angular-chart.min.js',
 ];
 
 var vendorCss = [
@@ -42,9 +54,12 @@ var files = [
 gulp.task('scripts-vendor', function() {
   return gulp.src(vendorScripts)
     .pipe(concat('vendor.js'))
-    .pipe(gulp.dest('build/js'))
-    .pipe(rename({ suffix: '.min' }))
-    .pipe(uglify())
+    .pipe(gulp.dest('build/js'));
+});
+
+gulp.task('scripts-vendor-min', function() {
+  return gulp.src(vendorScriptsMin)
+    .pipe(concat('vendor.js'))
     .pipe(gulp.dest('build/js'));
 });
 
@@ -93,4 +108,6 @@ gulp.task('files', function() {
     .pipe(gulp.dest('build'));
 });
 
-gulp.task('default', ['scripts-vendor', 'scripts-app', 'css-vendor', 'css-app', 'files', 'fonts', 'templates']);
+gulp.task('scripts', ['scripts-app', 'scripts-vendor', 'scripts-vendor-min', 'templates']);
+gulp.task('css', ['css-app', 'css-vendor']);
+gulp.task('default', ['files', 'scripts', 'css', 'fonts']);
