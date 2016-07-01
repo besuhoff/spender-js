@@ -7,10 +7,11 @@ body {
 }
 
 .user-avatar {
-  border-radius: 50%;
   width: 64px;
   height: 64px;
   margin-right: 10px;
+  background: center center no-repeat;
+  background-size: cover;
 }
 
 .tab-content .tab-pane {
@@ -29,10 +30,6 @@ body {
     margin: 6px 0;
   }
 
-  .btn-default {
-    border-style: dashed;
-  }
-
   .text-nowrap {
     display: inline-block;
   }
@@ -45,7 +42,6 @@ body {
     box-shadow: none;
     border-radius: 0;
     padding: 0;
-    border-style: dashed;
     color: inherit;
     line-height: 24px !important;
     height: 24px;

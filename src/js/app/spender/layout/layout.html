@@ -7,6 +7,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
+      <span class="navbar-brand">Транжира</span>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -14,8 +15,8 @@
       <ul class="nav navbar-nav main-menu">
         <li ui-sref-active="active" class="main-menu__tab main-menu__tab--expenses"><a ui-sref="home.expenses">Траты</a></li>
         <li ui-sref-active="active" class="main-menu__tab main-menu__tab--income"><a ui-sref="home.income">Доход</a></li>
-        <li ui-sref-active="active" class="main-menu__tab main-menu__tab--transfers"><a ui-sref="home.transfers">Со счета на счет</a></li>
-        <li ui-sref-active="active" class="main-menu__tab main-menu__tab--categories"><a ui-sref="home.categories">Категории трат</a></li>
+        <li ui-sref-active="active" class="main-menu__tab main-menu__tab--transfers"><a ui-sref="home.transfers">Переводы</a></li>
+        <li ui-sref-active="active" class="main-menu__tab main-menu__tab--categories"><a ui-sref="home.categories">Категории</a></li>
         <li ui-sref-active="active" class="main-menu__tab main-menu__tab--income-categories"><a ui-sref="home.income-categories">Источники дохода</a></li>
         <li ui-sref-active="active" class="main-menu__tab main-menu__tab--payment-methods"><a ui-sref="home.payment-methods">Cредства</a></li>
       </ul>
@@ -26,7 +27,7 @@
 <div class="container navbar-padded">
   <div class="media header">
     <div class="media-left">
-      <img class="media-object user-avatar" ng-src="{{$ctrl.profile.getImageUrl()}}">
+      <div class="media-object user-avatar" ng-style="{ 'background-image': 'url(' + $ctrl.profile.getImageUrl() + ')' }"></div>
     </div>
     <div class="media-body">
       <h4 class="media-heading">Хэй, {{$ctrl.profile.getGivenName()}}!</h4>

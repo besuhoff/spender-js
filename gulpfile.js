@@ -38,12 +38,11 @@ var vendorScriptsMin = [
 ];
 
 var vendorCss = [
-  'node_modules/bootstrap/dist/css/bootstrap.css',
-  'node_modules/c3/c3.css',
+  'src/css/lib/bootstrap.bootswatch-lumen.css',
 ];
 
 var appCss = [
-  'src/css/style.scss',
+  'src/css/app/style.scss',
 ];
 
 var fonts = [
