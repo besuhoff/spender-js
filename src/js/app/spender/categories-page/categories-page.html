@@ -1,7 +1,7 @@
 <div class="form">
   <ul class="list-unstyled list-form">
     <li ng-repeat="category in $ctrl.categories">
-      Название: <input class="form-control" type="text" ng-model="category.name">
+      <input class="form-control" type="text" placeholder="Название" ng-model="category.name">
       <button class="btn-default btn btn-inline"
               ng-click="$ctrl.saveCategory(category)"
               ng-disabled="!category.name"><i class="glyphicon glyphicon-ok"></i></button>
@@ -9,10 +9,10 @@
     </li>
 
     <li>
-      Название: <input class="form-control" type="text" ng-model="$ctrl.category.name">
+      <input class="form-control" type="text" placeholder="Название" ng-model="$ctrl.category.name">
       <button class="btn-primary btn btn-inline"
               ng-click="$ctrl.addCategory()"
-              ng-disabled="!$ctrl.category.name"><i class="glyphicon glyphicon-ok"></i></button>
+              ng-disabled="!$ctrl.category.name"><i class="glyphicon glyphicon-plus"></i></button>
     </li>
   </ul>
 </div>

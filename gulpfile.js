@@ -8,6 +8,8 @@ var gulp            = require('gulp'),
     templateCache   = require('gulp-angular-templatecache');
 
 var vendorScripts = [
+  'node_modules/jquery/dist/jquery.js',
+  'node_modules/bootstrap/dist/js/bootstrap.js',
   'node_modules/lodash/lodash.js',
   'node_modules/angular/angular.js',
   'node_modules/angular-ui-router/release/angular-ui-router.js',
@@ -21,6 +23,8 @@ var vendorScripts = [
 ];
 
 var vendorScriptsMin = [
+  'node_modules/jquery/dist/jquery.min.js',
+  'node_modules/bootstrap/dist/js/bootstrap.min.js',
   'node_modules/lodash/lodash.min.js',
   'node_modules/angular/angular.min.js',
   'node_modules/angular-ui-router/release/angular-ui-router.min.js',

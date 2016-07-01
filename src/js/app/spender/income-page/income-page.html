@@ -1,22 +1,28 @@
-<div class="form">Получил <input class="form-control form-control--sm" type="number" ng-model="$ctrl.income.amount" step="0.01">
-  {{$ctrl.income.paymentMethod.currency}}
-  <select class="form-control"
-          ng-model="$ctrl.income.paymentMethod"
-          ng-options="paymentMethod as paymentMethod.name for paymentMethod in $ctrl.paymentMethods">
-    <option value="">- на платёжное средство -</option>
-  </select>
-  от <select class="form-control"
-             ng-model="$ctrl.income.incomeCategory"
-             ng-options="category as category.name for category in $ctrl.categories">
-    <option value="">- источника дохода -</option>
-  </select>
-  <br/>
-  Дата: <datetime ng-model="$ctrl.income.createdAt"></datetime>,
-  комментарий: <input class="form-control"
-                      ng-model="$ctrl.income.comment">
-  <button class="btn-primary btn btn-inline"
-          ng-disabled="!$ctrl.income.paymentMethod || !$ctrl.income.incomeCategory"
-          ng-click="$ctrl.save()">Записать</button>
+<div class="form">
+  <div>
+    Получил <input class="form-control form-control--sm" type="number" ng-model="$ctrl.income.amount" step="0.01">
+    {{$ctrl.income.paymentMethod.currency}}
+    <select class="form-control"
+            ng-model="$ctrl.income.paymentMethod"
+            ng-options="paymentMethod as paymentMethod.name for paymentMethod in $ctrl.paymentMethods">
+      <option value="">- на платёжное средство -</option>
+    </select>
+    <span class="text-nowrap">
+      от <select class="form-control"
+                 ng-model="$ctrl.income.incomeCategory"
+                 ng-options="category as category.name for category in $ctrl.categories">
+        <option value="">- источника дохода -</option>
+      </select>
+    </span>
+  </div>
+  <div>
+    Дата: <datetime ng-model="$ctrl.income.createdAt"></datetime>,
+    комментарий: <input class="form-control"
+                        ng-model="$ctrl.income.comment">
+    <button class="btn-primary btn btn-inline"
+            ng-disabled="!$ctrl.income.paymentMethod || !$ctrl.income.incomeCategory"
+            ng-click="$ctrl.save()">Записать</button>
+  </div>
 </div>
 
 <div class="charts" ng-if="$ctrl.incomesChart">

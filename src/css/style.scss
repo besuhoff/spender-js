@@ -15,29 +15,58 @@ body {
 
 .tab-content .tab-pane {
   border: 1px solid #dddddd;
-  border-top: 0;
-  padding: 20px 16px;
+  padding: 0 10px;
+
+  @media (min-width: 992px) {
+    padding: 10px 16px;
+  }
 }
 
 .form {
   line-height: 42px;
 
   .btn-inline {
-    margin: 8px 0;
+    margin: 6px 0;
+  }
+
+  .btn-default {
+    border-style: dashed;
+  }
+
+  .text-nowrap {
+    display: inline-block;
   }
 
   .form-control {
     width: 220px;
     display: inline-block;
     margin: 0 3px;
+    border-width: 0 0 1px;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+    border-style: dashed;
+    color: inherit;
+    line-height: 24px !important;
+    height: 24px;
 
     &--sm {
       width: 100px;
     }
 
+    &--xs {
+      width: 40px;
+    }
+
     &[type="number"] {
       text-align: right;
     }
+  }
+
+  &__hint {
+    color: #666;
+    font-size: 12px;
+    padding: 6px 0;
   }
 }
 
@@ -46,7 +75,7 @@ body {
 }
 
 .list-form li {
-  padding: 0 0 10px;
+
 }
 
 .table-remains {
@@ -77,6 +106,20 @@ body {
 .date-group {
   display: inline-block;
 
+  .dropdown-menu {
+    .btn-default {
+      border-width: 0;
+    }
+
+    em {
+      font-size: 9px;
+    }
+
+    *:focus {
+      outline: none;
+    }
+  }
+
   > * {
     display: inline-block;
   }
@@ -88,7 +131,7 @@ body {
 
   .time-group {
     .time {
-      width: 120px;
+      width: 60px;
     }
 
     .time-hint {
@@ -113,4 +156,8 @@ body {
   .chart {
     margin-bottom: 20px;
   }
+}
+
+.navbar-padded {
+  padding-top: 50px;
 }
