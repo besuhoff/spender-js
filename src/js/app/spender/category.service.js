@@ -1,12 +1,17 @@
 angular.module('spender')
   .service('CategoryService', function(Restangular) {
-    var _categories = [];
+    var _categories = [],
+      _categoriesPromise = false;
 
-    this.loadAll = function() {
-      return Restangular.all('categories').getList().then(function(categories) {
-        _categories = categories;
-        return _categories;
-      });
+    this.loadAll = function(reload) {
+      if (!_categoriesPromise || reload) {
+        _categoriesPromise = Restangular.all('categories').getList().then(function(categories) {
+          _categories = categories;
+          return _categories;
+        });
+      }
+
+      return _categoriesPromise;
     };
 
     this.getAll = function() {

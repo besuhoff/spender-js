@@ -13,8 +13,4 @@ angular.module('spender')
     this.setToken = function(token) {
       $http.defaults.headers.common['X-Auth-Token'] = token;
     };
-
-    this.saveIncome = function(data) {
-      return Restangular.all('incomes').post(data);
-    };
   });

@@ -1,12 +1,17 @@
 angular.module('spender')
   .service('IncomeService', function(Restangular) {
-    var _incomes = [];
+    var _incomes = [],
+      _incomesPromise = false;
 
-    this.loadAll = function() {
-      return Restangular.all('incomes').getList().then(function(incomes) {
-        _incomes = incomes;
-        return _incomes;
-      });
+    this.loadAll = function(reload) {
+      if (!_incomesPromise || reload) {
+        _incomesPromise = Restangular.all('incomes').getList().then(function(incomes) {
+          _incomes = incomes;
+          return _incomes;
+        });
+      }
+
+      return _incomesPromise;
     };
 
     this.getAll = function() {

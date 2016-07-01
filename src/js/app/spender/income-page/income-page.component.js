@@ -10,15 +10,15 @@ angular.module('spender')
         };
       }
 
-      function initIncomes() {
-        IncomeService.loadAll().then(function(incomes) {
+      function initIncomes(reload) {
+        IncomeService.loadAll(reload).then(function(incomes) {
           ctrl.incomes = incomes;
-          ctrl.incomesChart = ChartService.buildChart(incomes);
+          ctrl.incomesChart = ChartService.buildTransactionsChart(incomes);
         });
       }
 
-      function initPaymentMethods() {
-        PaymentMethodService.loadAll().then(function(paymentMethods) {
+      function initPaymentMethods(reload) {
+        PaymentMethodService.loadAll(reload).then(function(paymentMethods) {
           ctrl.paymentMethods = paymentMethods;
         });
       }
@@ -43,8 +43,8 @@ angular.module('spender')
 
           IncomeService.add(ctrl.income).then(function () {
             initIncome();
-            initIncomes();
-            initPaymentMethods();
+            initIncomes(true);
+            initPaymentMethods(true);
           });
         }
       }

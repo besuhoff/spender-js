@@ -1,12 +1,17 @@
 angular.module('spender')
   .service('PaymentMethodService', function(Restangular) {
-    var _paymentMethods = [];
+    var _paymentMethods = [],
+      _paymentMethodsPromise = false;
 
-    this.loadAll = function() {
-      return Restangular.all('payment-methods').getList().then(function(paymentMethods) {
-        _paymentMethods = paymentMethods;
-        return _paymentMethods;
-      });
+    this.loadAll = function(reload) {
+      if (!_paymentMethodsPromise || reload) {
+        _paymentMethodsPromise = Restangular.all('payment-methods').getList().then(function(paymentMethods) {
+          _paymentMethods = paymentMethods;
+          return _paymentMethods;
+        });
+      }
+
+      return _paymentMethodsPromise;
     };
 
     this.getAll = function() {

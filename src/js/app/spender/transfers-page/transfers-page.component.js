@@ -1,7 +1,7 @@
 angular.module('spender')
   .component('transfersPage', {
     templateUrl: 'js/app/spender/transfers-page/transfers-page.html',
-    controller: function(DataService, ExpenseService, CategoryService, PaymentMethodService) {
+    controller: function(IncomeService, ExpenseService, CategoryService, PaymentMethodService) {
       var ctrl = this;
 
       function initExpense() {
@@ -50,7 +50,7 @@ angular.module('spender')
           delete ctrl.spent.paymentMethod;
           delete ctrl.income.paymentMethod;
 
-          DataService.saveIncome(ctrl.income).then(function(income) {
+          IncomeService.add(ctrl.income).then(function(income) {
             ctrl.spent.targetIncomeId = income.id;
             ExpenseService.add(ctrl.spent).then(function() {
               initExpense();

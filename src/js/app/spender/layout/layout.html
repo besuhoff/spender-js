@@ -36,6 +36,21 @@
     </table>
   </div>
 
+  <div class="charts" ng-if="$ctrl.balanceChart">
+    <h3>Динамика остатков за последний месяц</h3>
+    <div class="row">
+      <div class="chart col-md-6" ng-repeat="(currency, chartData) in $ctrl.balanceChart">
+        <h4>{{currency}}</h4>
+        <canvas class="chart chart-line"
+                chart-labels="chartData.labels"
+                chart-options="chartData.options"
+                chart-data="chartData.data"
+                chart-dataset-override="chartData.datasets">
+        </canvas>
+      </div>
+    </div>
+  </div>
+
   <div class="copy">
     Сделано в студии <a href="http://pereborstudio.com">&laquo;Перебор&raquo;</a> в 2016 году.
   </div>

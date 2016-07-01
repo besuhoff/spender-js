@@ -1,7 +1,7 @@
 angular.module('spender')
   .component('expensesPage', {
     templateUrl: 'js/app/spender/expenses-page/expenses-page.html',
-    controller: function(ExpenseService, ChartService, CategoryService, PaymentMethodService, moment) {
+    controller: function(ExpenseService, ChartService, CategoryService, PaymentMethodService) {
       var ctrl = this;
 
       function initExpense() {
@@ -10,15 +10,15 @@ angular.module('spender')
         };
       }
 
-      function initExpenses() {
-        ExpenseService.loadAll().then(function(expenses) {
+      function initExpenses(reload) {
+        ExpenseService.loadAll(reload).then(function(expenses) {
           ctrl.expenses = expenses;
-          ctrl.expensesChart = ChartService.buildChart(expenses);
+          ctrl.expensesChart = ChartService.buildTransactionsChart(expenses);
         });
       }
 
-      function initPaymentMethods() {
-        PaymentMethodService.loadAll().then(function(paymentMethods) {
+      function initPaymentMethods(reload) {
+        PaymentMethodService.loadAll(reload).then(function(paymentMethods) {
           ctrl.paymentMethods = paymentMethods;
         });
       }
@@ -43,8 +43,8 @@ angular.module('spender')
 
           ExpenseService.add(ctrl.spent).then(function() {
             initExpense();
-            initExpenses();
-            initPaymentMethods();
+            initExpenses(true);
+            initPaymentMethods(true);
           });
         }
       }
