@@ -10,7 +10,6 @@
       <span class="navbar-brand">Транжира</span>
     </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="header-navbar" data-toggle="collapse" data-target="#header-navbar.collapse.in">
       <ul class="nav navbar-nav main-menu">
         <li ui-sref-active="active" class="main-menu__tab main-menu__tab--expenses"><a ui-sref="home.expenses">Траты</a></li>
@@ -20,7 +19,7 @@
         <li ui-sref-active="active" class="main-menu__tab main-menu__tab--income-categories"><a ui-sref="home.income-categories">Источники дохода</a></li>
         <li ui-sref-active="active" class="main-menu__tab main-menu__tab--payment-methods"><a ui-sref="home.payment-methods">Cредства</a></li>
       </ul>
-    </div><!-- /.navbar-collapse -->
+    </div>
   </div>
 </nav>
 
@@ -55,7 +54,7 @@
   <div class="charts" ng-if="$ctrl.balanceChart">
     <h3>Динамика остатков за последний месяц</h3>
     <div class="row">
-      <div class="chart col-md-6" ng-repeat="(currency, chartData) in $ctrl.balanceChart">
+      <div class="col-md-6" ng-repeat="(currency, chartData) in $ctrl.balanceChart">
         <h4>{{currency}}</h4>
         <canvas class="chart chart-line"
                 chart-labels="chartData.labels"

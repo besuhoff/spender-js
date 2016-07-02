@@ -1,7 +1,7 @@
 angular.module('spender')
   .component('categoriesPage', {
     templateUrl: 'js/app/spender/categories-page/categories-page.html',
-    controller: function(CategoryService) {
+    controller: function(CategoryService, ChartService, ExpenseService) {
       var ctrl = this;
 
       function initCategory() {
@@ -14,6 +14,17 @@ angular.module('spender')
         });
       }
 
+      function initExpenses() {
+        ExpenseService.loadAll().then(function(expenses) {
+          ctrl.expenses = expenses;
+          ctrl.categoriesChart = ChartService.buildCategoriesChart(expenses, 'category');
+        });
+      }
+
+      ctrl.categories = false;
+      ctrl.expenses = [];
+
+      initExpenses();
       initCategories();
       initCategory();
 

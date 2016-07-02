@@ -1,30 +1,32 @@
 angular.module('spender')
   .service('ChartService', function(moment) {
+    var colors = [
+      "#E53935",
+      "#546E7A",
+      "#D81B60",
+      "#757575",
+      "#8E24AA",
+      "#6D4C41",
+      "#5E35B1",
+      "#F4511E",
+      "#3949AB",
+      "#FB8C00",
+      "#1E88E5",
+      "#FFB300",
+      "#039BE5",
+      "#FDD835",
+      "#00ACC1",
+      "#C0CA33",
+      "#00897B",
+      "#7CB342",
+      "#43A047"
+    ];
+
+
     function _buildChart(chartMap, paymentMethodsMap, datesMap, datasetConfig) {
       datasetConfig = datasetConfig || {};
 
-      var chart = {},
-        colors = [
-          "#E53935",
-          "#546E7A",
-          "#D81B60",
-          "#757575",
-          "#8E24AA",
-          "#6D4C41",
-          "#5E35B1",
-          "#F4511E",
-          "#3949AB",
-          "#FB8C00",
-          "#1E88E5",
-          "#FFB300",
-          "#039BE5",
-          "#FDD835",
-          "#00ACC1",
-          "#C0CA33",
-          "#00897B",
-          "#7CB342",
-          "#43A047"
-        ];
+      var chart = {};
 
       // Fill everything with zeros
       Object.keys(chartMap).forEach(function (currency) {
@@ -83,7 +85,7 @@ angular.module('spender')
           }));
 
           chart[currency].data.push(line);
-        })
+        });
       });
 
       return chart;
@@ -91,7 +93,7 @@ angular.module('spender')
 
     function _fillInMaps(transactions, chartMap, paymentMethodsMap, datesMap) {
       transactions.forEach(function(e) {
-        var currency = e.paymentMethod.currency,
+        var currency = e.paymentMethodCurrency,
           date = e.createdAt.split('T')[0];
 
         if (!chartMap[currency]) {
@@ -114,7 +116,7 @@ angular.module('spender')
           chartMap[currency][e.paymentMethodId][date] = 0;
         }
 
-        paymentMethodsMap[currency][e.paymentMethodId] = e.paymentMethod.name;
+        paymentMethodsMap[currency][e.paymentMethodId] = e.paymentMethodName;
         datesMap[currency][date] = date;
         chartMap[currency][e.paymentMethodId][date] += +e.amount;
       });
@@ -184,5 +186,52 @@ angular.module('spender')
       });
 
       return _buildChart(chartMap, paymentMethodsMap, datesMap, { fill: false, lineTension: 0 });
+    };
+
+    this.buildCategoriesChart = function(transactions, categoryKey) {
+      var categoriesMap = {};
+
+      // Fill everything with zeros
+      var chart = {};
+
+      transactions.forEach(function(e) {
+        var categoryId = e[categoryKey + 'Id'],
+          currency = e.paymentMethodCurrency;
+
+        if (!categoriesMap[currency]) {
+          categoriesMap[currency] = {};
+        }
+
+        if (!categoriesMap[currency][categoryId]) {
+          categoriesMap[currency][categoryId] = {
+            label: e[categoryKey + 'Name'],
+            total: 0
+          };
+        }
+
+        categoriesMap[currency][categoryId].total += +e.amount;
+      });
+
+      Object.keys(categoriesMap).map(function(currency) {
+        chart[currency] = {
+          data: [],
+          labels: [],
+          options: {}
+        };
+
+        Object.keys(categoriesMap[currency]).map(function(key) {
+          chart[currency].data.push(categoriesMap[currency][key].total);
+          chart[currency].labels.push(categoriesMap[currency][key].label);
+        });
+
+        chart[currency].datasets = [{
+          borderColor: colors,
+          hoverBorderColor: colors,
+          backgroundColor: colors,
+          hoverBackgroundColor: colors
+        }];
+      });
+
+      return chart;
     };
   });

@@ -28,7 +28,7 @@
 <div class="charts" ng-if="$ctrl.incomesChart">
   <h3>Доходы за последний месяц</h3>
   <div class="row">
-    <div class="chart col-md-6" ng-repeat="(currency, chartData) in $ctrl.incomesChart">
+    <div class="col-md-6" ng-repeat="(currency, chartData) in $ctrl.incomesChart">
       <h4>{{currency}}</h4>
       <canvas class="chart chart-bar"
               chart-labels="chartData.labels"
