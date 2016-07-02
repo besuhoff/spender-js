@@ -8,8 +8,8 @@ angular.module('spender')
         ctrl.category = {};
       }
 
-      function initCategories() {
-        return IncomeCategoryService.loadAll().then(function(categories) {
+      function initCategories(reload) {
+        return IncomeCategoryService.loadAll(reload).then(function(categories) {
           ctrl.categories = categories;
         });
       }
@@ -20,7 +20,7 @@ angular.module('spender')
       ctrl.saveCategory = function(category) {
         if (category.name) {
           return IncomeCategoryService.update(category).then(function() {
-            return initCategories();
+            return initCategories(true);
           });
         }
       };
@@ -28,7 +28,7 @@ angular.module('spender')
       ctrl.addCategory = function() {
         if (ctrl.category.name) {
           return IncomeCategoryService.add(ctrl.category).then(function () {
-            return initCategories().then(function () {
+            return initCategories(true).then(function () {
               initCategory();
             });
           })
@@ -37,7 +37,7 @@ angular.module('spender')
 
       ctrl.deleteCategory = function(category) {
         return IncomeCategoryService.delete(category).then(function() {
-          return initCategories();
+          return initCategories(true);
         })
       };
     }

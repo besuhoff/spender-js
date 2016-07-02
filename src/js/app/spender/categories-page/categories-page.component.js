@@ -8,8 +8,8 @@ angular.module('spender')
         ctrl.category = {};
       }
 
-      function initCategories() {
-        return CategoryService.loadAll().then(function(categories) {
+      function initCategories(reload) {
+        return CategoryService.loadAll(reload).then(function(categories) {
           ctrl.categories = categories;
         });
       }
@@ -31,7 +31,7 @@ angular.module('spender')
       ctrl.saveCategory = function(category) {
         if (category.name) {
           return CategoryService.update(category).then(function() {
-            return initCategories();
+            return initCategories(true);
           });
         }
       };
@@ -39,7 +39,7 @@ angular.module('spender')
       ctrl.addCategory = function() {
         if (ctrl.category.name) {
           return CategoryService.add(ctrl.category).then(function () {
-            return initCategories().then(function () {
+            return initCategories(true).then(function () {
               initCategory();
             });
           })
@@ -48,7 +48,7 @@ angular.module('spender')
 
       ctrl.deleteCategory = function(category) {
         return CategoryService.delete(category).then(function() {
-          return initCategories();
+          return initCategories(true);
         })
       };
     }
