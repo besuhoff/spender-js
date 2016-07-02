@@ -1,18 +1,39 @@
 <div class="form">
-  <ul class="list-unstyled list-form">
-    <li ng-repeat="category in $ctrl.categories">
-      <input class="form-control" type="text" placeholder="Название" ng-model="category.name">
-      <button class="btn-default btn-sm btn btn-inline"
-              ng-click="$ctrl.saveCategory(category)"
-              ng-disabled="!category.name"><i class="glyphicon glyphicon-ok"></i></button>
-      <button class="btn-default btn-sm btn btn-inline" ng-click="$ctrl.deleteCategory(category)"><i class="glyphicon glyphicon-remove"></i></button>
-    </li>
+  <div class="row">
+    <div class="col-md-6">
+      <ul class="list-unstyled list-form">
+        <li ng-repeat="category in $ctrl.categories">
+          <input class="form-control" type="text" placeholder="Название" ng-model="category.name">
+          <button class="btn-default btn-sm btn btn-inline"
+                  ng-click="$ctrl.saveCategory(category)"
+                  ng-disabled="!category.name"><i class="glyphicon glyphicon-ok"></i></button>
+          <button class="btn-default btn-sm btn btn-inline" ng-click="$ctrl.deleteCategory(category)"><i class="glyphicon glyphicon-remove"></i></button>
+        </li>
 
-    <li>
-      <input class="form-control" type="text" placeholder="Название" ng-model="$ctrl.category.name">
-      <button class="btn-primary btn-sm btn btn-inline"
-              ng-click="$ctrl.addCategory()"
-              ng-disabled="!$ctrl.category.name"><i class="glyphicon glyphicon-plus"></i></button>
-    </li>
-  </ul>
+        <li>
+          <input class="form-control" type="text" placeholder="Название" ng-model="$ctrl.category.name">
+          <button class="btn-primary btn-sm btn btn-inline"
+                  ng-click="$ctrl.addCategory()"
+                  ng-disabled="!$ctrl.category.name"><i class="glyphicon glyphicon-plus"></i></button>
+        </li>
+      </ul>
+
+    </div>
+    <div class="col-md-6">
+      <div class="charts" ng-if="$ctrl.categoriesChart">
+        <h3>Распределение в последний месяц</h3>
+        <div class="row">
+          <div class="col-md-12" ng-repeat="(currency, chartData) in $ctrl.categoriesChart">
+            <h4>{{currency}}</h4>
+            <canvas class="chart chart-pie"
+                    chart-labels="chartData.labels"
+                    chart-options="chartData.options"
+                    chart-data="chartData.data"
+                    chart-dataset-override="chartData.datasets">
+            </canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

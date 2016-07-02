@@ -1,7 +1,7 @@
 angular.module('spender')
   .component('incomeCategoriesPage', {
     templateUrl: 'js/app/spender/income-categories-page/income-categories-page.html',
-    controller: function(IncomeCategoryService) {
+    controller: function(IncomeService, ChartService, IncomeCategoryService) {
       var ctrl = this;
 
       function initCategory() {
@@ -14,6 +14,17 @@ angular.module('spender')
         });
       }
 
+      function initIncomes() {
+        IncomeService.loadAll().then(function(incomes) {
+          ctrl.incomes = incomes;
+          ctrl.categoriesChart = ChartService.buildCategoriesChart(incomes, 'incomeCategory');
+        });
+      }
+
+      ctrl.categories = false;
+      ctrl.incomes = [];
+
+      initIncomes();
       initCategories();
       initCategory();
 
