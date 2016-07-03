@@ -8,8 +8,8 @@ angular.module('spender')
         ctrl.paymentMethod = {};
       }
 
-      function initMethods() {
-        return PaymentMethodService.loadAll().then(function(paymentMethods) {
+      function initMethods(reload) {
+        return PaymentMethodService.loadAll(reload).then(function(paymentMethods) {
           ctrl.paymentMethods = paymentMethods;
         });
       }
@@ -20,7 +20,7 @@ angular.module('spender')
       ctrl.saveMethod = function(paymentMethod) {
         if (paymentMethod.name && paymentMethod.currency) {
           return PaymentMethodService.update(paymentMethod).then(function() {
-            return initMethods();
+            return initMethods(true);
           });
         }
       };
@@ -37,8 +37,12 @@ angular.module('spender')
 
       ctrl.deleteMethod = function(paymentMethod) {
         return PaymentMethodService.delete(paymentMethod).then(function() {
-          return initMethods();
+          return initMethods(true);
         })
       };
+
+      ctrl.updateSelectedColors = function() {
+        ctrl.selectedColors = ctrl.paymentMethods.map(function(p) { return p.color; });
+      }
     }
   });

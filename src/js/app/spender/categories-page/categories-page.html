@@ -4,17 +4,27 @@
       <ul class="list-unstyled list-form">
         <li ng-repeat="category in $ctrl.categories">
           <input class="form-control" type="text" placeholder="Название" ng-model="category.name">
+          <color-picker ng-model="category.color"
+                        disabled-options="$ctrl.selectedColors"
+                        ng-change="$ctrl.updateSelectedColors()">
+
+          </color-picker>
           <button class="btn-default btn-sm btn btn-inline"
                   ng-click="$ctrl.saveCategory(category)"
-                  ng-disabled="!category.name"><i class="glyphicon glyphicon-ok"></i></button>
-          <button class="btn-default btn-sm btn btn-inline" ng-click="$ctrl.deleteCategory(category)"><i class="glyphicon glyphicon-remove"></i></button>
+                  ng-disabled="!category.name"><i class="fa fa-lg fa-check"></i></button>
+          <button class="btn-default btn-sm btn btn-inline" ng-click="$ctrl.deleteCategory(category)"><i class="fa fa-lg fa-remove"></i></button>
         </li>
 
         <li>
           <input class="form-control" type="text" placeholder="Название" ng-model="$ctrl.category.name">
+          <color-picker ng-model="$ctrl.category.color"
+                        disabled-options="$ctrl.selectedColors"
+                        ng-change="$ctrl.updateSelectedColors()">
+
+          </color-picker>
           <button class="btn-primary btn-sm btn btn-inline"
                   ng-click="$ctrl.addCategory()"
-                  ng-disabled="!$ctrl.category.name"><i class="glyphicon glyphicon-plus"></i></button>
+                  ng-disabled="!$ctrl.category.name"><i class="fa fa-lg fa-plus"></i></button>
         </li>
       </ul>
     </div>

@@ -23,11 +23,24 @@ body {
   }
 }
 
+.btn {
+  &:hover {
+    margin-top: 0;
+    border-bottom-width: 4px;
+  }
+
+  &:focus, &:active {
+    outline: none;
+  }
+}
+
 .form {
   line-height: 42px;
 
-  .btn-inline {
-    margin: 6px 0;
+  .btn {
+    .fa.fa-lg {
+      line-height: 1.25em;
+    }
   }
 
   .text-nowrap {
@@ -110,10 +123,6 @@ body {
     em {
       font-size: 9px;
     }
-
-    *:focus {
-      outline: none;
-    }
   }
 
   > * {
@@ -156,4 +165,91 @@ body {
 
 .navbar-padded {
   padding-top: 50px;
+}
+
+.btn-colorpicker {
+  position: relative;
+
+  .color {
+    margin: -1px -3px;
+    padding: 1px;
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+  }
+
+  .colors {
+    position: absolute;
+    background: #eee;
+    border: 1px solid #e2e2e2;
+    top: 100%;
+    left: 0;
+    z-index: 2;
+    padding: 2px;
+    margin-left: -1px;
+    margin-top: 6px;
+    border-radius: 2px;
+    white-space: normal;
+    width: 226px;
+    height: auto;
+
+    &:before, &:after {
+      position: absolute;
+      width: 0;
+      height: 0;
+      bottom: 100%;
+      left: 8px;
+      margin-bottom: 0;
+      border-style: solid;
+      display: block;
+      content: '';
+    }
+
+    &:before {
+      border-width: 0 10px 10px 10px;
+      border-color: transparent transparent #e2e2e2 transparent;
+    }
+
+    &:after {
+      margin-left: 2px;
+      margin-right: 2px;
+      border-width: 0 8px 8px 8px;
+      border-color: transparent transparent #eee transparent;
+    }
+
+    .color {
+      margin: 0;
+
+      &.selected {
+        border: 1px dashed #555;
+      }
+
+      &.disabled {
+        position: relative;
+        overflow: hidden;
+        line-height: 20px;
+/*
+        &:before, &:after {
+          content: '';
+          display: block;
+          height: 141.4213562%;
+          width: 141.4213562%;
+          border-left: 1px solid #555;
+          position: absolute;
+          left: 6px;
+          top: 6px;
+        }
+
+        &:before {
+          transform: rotate(45deg);
+        }
+
+        &:after {
+          margin-top: -21px;
+          transform: rotate(-45deg);
+        }
+*/
+      }
+    }
+  }
 }

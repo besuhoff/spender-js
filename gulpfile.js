@@ -38,6 +38,7 @@ var vendorScriptsMin = [
 ];
 
 var vendorCss = [
+  'node_modules/font-awesome/css/font-awesome.css',
   'src/css/lib/bootstrap.bootswatch-lumen.css',
 ];
 
@@ -47,6 +48,7 @@ var appCss = [
 
 var fonts = [
   'node_modules/bootstrap/dist/fonts/**/*.*',
+  'node_modules/font-awesome/fonts/**/*.*',
 ]
 
 var files = [

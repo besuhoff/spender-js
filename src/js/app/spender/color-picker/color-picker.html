@@ -1,0 +1,17 @@
+<button class="btn btn-sm btn-default btn-colorpicker" ng-click="$ctrl.isOpen = !$ctrl.isOpen;">
+    <span class="color"
+          ng-style="{ 'background-color': $ctrl.ngModelController.$viewValue }"
+          ng-class="{ 'fa fa-lg fa-eyedropper': !$ctrl.ngModelController.$viewValue }">
+
+    </span>
+    <span class="colors" ng-show="$ctrl.isOpen">
+        <span class="color"
+              ng-click="$ctrl.setColor(color)"
+              ng-style="{ 'background-color': color }"
+              ng-class="{
+                'selected': $ctrl.ngModelController.$viewValue === color,
+                'disabled fa fa-check': $ctrl.isOptionsDisabled(color) && $ctrl.ngModelController.$viewValue !== color
+              }"
+              ng-repeat="color in $ctrl.colors"></span>
+    </span>
+</button>

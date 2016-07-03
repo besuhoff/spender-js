@@ -5,10 +5,15 @@
       <span class="text-nowrap">
         валюта: <input class="form-control form-control--sm" type="text" ng-model="paymentMethod.currency">
       </span>
+      <color-picker ng-model="paymentMethod.color"
+                    disabled-options="$ctrl.selectedColors"
+                    ng-change="$ctrl.updateSelectedColors()">
+
+      </color-picker>
       <button class="btn-default btn-sm btn btn-inline"
               ng-click="$ctrl.saveMethod(paymentMethod)"
-              ng-disabled="!paymentMethod.name || !paymentMethod.currency"><i class="glyphicon glyphicon-ok"></i></button>
-      <button class="btn-default btn-sm btn btn-inline" ng-click="$ctrl.deleteMethod(paymentMethod)"><i class="glyphicon glyphicon-remove"></i></button>
+              ng-disabled="!paymentMethod.name || !paymentMethod.currency"><i class="fa fa-lg fa-check"></i></button>
+      <button class="btn-default btn-sm btn btn-inline" ng-click="$ctrl.deleteMethod(paymentMethod)"><i class="fa fa-lg fa-remove"></i></button>
     </li>
 
     <li>
@@ -16,9 +21,14 @@
       <span class="text-nowrap">
         валюта: <input class="form-control form-control--sm" type="text" ng-model="$ctrl.paymentMethod.currency">
       </span>
+      <color-picker ng-model="$ctrl.paymentMethod.color"
+                    disabled-options="$ctrl.selectedColors"
+                    ng-change="$ctrl.updateSelectedColors()">
+
+      </color-picker>
       <button class="btn-primary btn-sm btn btn-inline"
               ng-click="$ctrl.addMethod()"
-              ng-disabled="!$ctrl.paymentMethod.name || !$ctrl.paymentMethod.currency"><i class="glyphicon glyphicon-plus"></i></button>
+              ng-disabled="!$ctrl.paymentMethod.name || !$ctrl.paymentMethod.currency"><i class="fa fa-lg fa-plus"></i></button>
     </li>
   </ul>
 </div>

@@ -51,5 +51,9 @@ angular.module('spender')
           return initCategories(true);
         })
       };
+
+      ctrl.updateSelectedColors = function() {
+        ctrl.selectedColors = ctrl.categories.map(function(c) { return c.color; });
+      }
     }
   });

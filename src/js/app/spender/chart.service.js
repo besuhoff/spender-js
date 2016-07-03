@@ -1,28 +1,5 @@
 angular.module('spender')
   .service('ChartService', function(moment) {
-    var colors = [
-      "#E53935",
-      "#546E7A",
-      "#D81B60",
-      "#757575",
-      "#8E24AA",
-      "#6D4C41",
-      "#5E35B1",
-      "#F4511E",
-      "#3949AB",
-      "#FB8C00",
-      "#1E88E5",
-      "#FFB300",
-      "#039BE5",
-      "#FDD835",
-      "#00ACC1",
-      "#C0CA33",
-      "#00897B",
-      "#7CB342",
-      "#43A047"
-    ];
-
-
     function _buildChart(chartMap, paymentMethodsMap, datesMap, datasetConfig) {
       datasetConfig = datasetConfig || {};
 
@@ -73,14 +50,14 @@ angular.module('spender')
           });
 
           chart[currency].datasets.push(angular.extend({}, datasetConfig, {
-            label: paymentMethodsMap[currency][paymentMethodId],
-            borderColor: colors[paymentMethodIndex % colors.length],
-            hoverBorderColor: colors[paymentMethodIndex % colors.length],
-            backgroundColor: colors[paymentMethodIndex % colors.length],
-            hoverBackgroundColor: colors[paymentMethodIndex % colors.length],
-            pointBorderColor: colors[paymentMethodIndex % colors.length],
-            pointHoverBorderColor: colors[paymentMethodIndex % colors.length],
-            pointHoverBackgroundColor: colors[paymentMethodIndex % colors.length],
+            label: paymentMethodsMap[currency][paymentMethodId].name,
+            borderColor: paymentMethodsMap[currency][paymentMethodId].color,
+            hoverBorderColor: paymentMethodsMap[currency][paymentMethodId].color,
+            backgroundColor: 'rgba(' + hex(paymentMethodsMap[currency][paymentMethodId].color) + ',' + (datasetConfig.backgroundOpacity || '0.5') + ')',
+            hoverBackgroundColor: 'rgba(' + hex(paymentMethodsMap[currency][paymentMethodId].color) + ','  + (datasetConfig.backgroundOpacity || '0.5') + ')',
+            pointBorderColor: paymentMethodsMap[currency][paymentMethodId].color,
+            pointHoverBorderColor: paymentMethodsMap[currency][paymentMethodId].color,
+            pointHoverBackgroundColor: paymentMethodsMap[currency][paymentMethodId].color,
             pointBackgroundColor: "#fff"
           }));
 
@@ -116,7 +93,10 @@ angular.module('spender')
           chartMap[currency][e.paymentMethodId][date] = 0;
         }
 
-        paymentMethodsMap[currency][e.paymentMethodId] = e.paymentMethodName;
+        paymentMethodsMap[currency][e.paymentMethodId] = {
+          name: e.paymentMethodName,
+          color: e.paymentMethodColor
+        };
         datesMap[currency][date] = date;
         chartMap[currency][e.paymentMethodId][date] += +e.amount;
       });
@@ -130,7 +110,7 @@ angular.module('spender')
       // Create a widely rarefied matrix of transactions
       _fillInMaps(transactions, chartMap, paymentMethodsMap, datesMap);
 
-      return _buildChart(chartMap, paymentMethodsMap, datesMap, { borderWidth: 0 });
+      return _buildChart(chartMap, paymentMethodsMap, datesMap, { borderWidth: 0, backgroundOpacity: 1  });
     };
 
     this.buildBalanceChart = function(expenses, incomes, paymentMethods) {
@@ -185,7 +165,7 @@ angular.module('spender')
         });
       });
 
-      return _buildChart(chartMap, paymentMethodsMap, datesMap, { fill: false, lineTension: 0 });
+      return _buildChart(chartMap, paymentMethodsMap, datesMap, { lineTension: 0,  backgroundOpacity: 0.25 });
     };
 
     this.buildCategoriesChart = function(transactions, categoryKey) {
@@ -205,6 +185,7 @@ angular.module('spender')
         if (!categoriesMap[currency][categoryId]) {
           categoriesMap[currency][categoryId] = {
             label: e[categoryKey + 'Name'],
+            color: e[categoryKey + 'Color'],
             total: 0
           };
         }
@@ -213,25 +194,48 @@ angular.module('spender')
       });
 
       Object.keys(categoriesMap).map(function(currency) {
-        chart[currency] = {
-          data: [],
-          labels: [],
-          options: {}
-        };
+        var colors = [],
+          data = [],
+          labels = [];
 
         Object.keys(categoriesMap[currency]).map(function(key) {
-          chart[currency].data.push(categoriesMap[currency][key].total);
-          chart[currency].labels.push(categoriesMap[currency][key].label);
+          data.push(categoriesMap[currency][key].total);
+          labels.push(categoriesMap[currency][key].label);
+          colors.push(categoriesMap[currency][key].color);
         });
 
-        chart[currency].datasets = [{
-          borderColor: colors,
-          hoverBorderColor: colors,
-          backgroundColor: colors,
-          hoverBackgroundColor: colors
-        }];
+        chart[currency] = {
+          labels: labels,
+          data: [data],
+          options: {},
+          datasets: [{
+            borderColor: colors,
+            hoverBorderColor: colors,
+            backgroundColor: colors,
+            hoverBackgroundColor: colors
+          }]
+        };
       });
 
       return chart;
     };
+
+    function hex(hex) {
+      if (/^#/.test(hex)) {
+        hex = hex.slice(1);
+      }
+      if (hex.length !== 3 && hex.length !== 6) {
+        throw new Error("Invaild hex String");
+      }
+
+      var digit = hex.split("");
+
+      if (digit.length === 3) {
+        digit = [digit[0], digit[0], digit[1], digit[1], digit[2], digit[2]]
+      }
+      var r = parseInt([digit[0], digit[1]].join(""), 16);
+      var g = parseInt([digit[2], digit[3]].join(""), 16);
+      var b = parseInt([digit[4], digit[5]].join(""), 16);
+      return [r, g, b];
+    }
   });

@@ -4,6 +4,7 @@
   "description": "Spender: Funds Management Made Easy",
   "author": "Sergiy Pereverziev <albert.besuhoff@gmail.com>",
   "homepage": "http://spender.pereborstudio.com",
+  "repository": "http://github.com/besuhoff/spender-js",
   "dependencies": {
     "angular": "1.5.7",
     "angular-chart.js": "^1.0.0-alpha8",
@@ -11,6 +12,7 @@
     "angular-ui-bootstrap": "0.12.1",
     "angular-ui-router": "1.0.0-alpha.5",
     "bootstrap": "3.3.6",
+    "font-awesome": "^4.6.3",
     "jquery": "2.2.4",
     "lodash": "4.13.1",
     "restangular": "1.5.2"
