@@ -5,6 +5,9 @@ var gulp            = require('gulp'),
     concat          = require('gulp-concat'),
     ngAnnotate      = require('gulp-ng-annotate'),
     sass            = require('gulp-sass'),
+    rev             = require('gulp-rev'),
+    revReplace      = require('gulp-rev-replace'),
+    clean           = require('gulp-clean'),
     templateCache   = require('gulp-angular-templatecache');
 
 var vendorScripts = [
@@ -55,62 +58,89 @@ var files = [
   'src/index.html', 'src/favicon.png'
 ];
 
+gulp.task('clean', function() {
+  return gulp.src('build/', {read: false})
+    .pipe(clean());
+});
+
 //scripts
-gulp.task('scripts-vendor', function() {
+gulp.task('scripts-vendor', ['clean'], function() {
   return gulp.src(vendorScripts)
     .pipe(concat('vendor.js'))
-    .pipe(gulp.dest('build/js'));
+    .pipe(rev())
+    .pipe(gulp.dest('build/js'))
+    .pipe(rev.manifest({ merge: true, base: 'build/js' }))
+    .pipe(gulp.dest('build'));
 });
 
-gulp.task('scripts-vendor-min', function() {
+gulp.task('scripts-vendor-min', ['clean'], function() {
   return gulp.src(vendorScriptsMin)
-    .pipe(concat('vendor.js'))
-    .pipe(gulp.dest('build/js'));
+    .pipe(concat('vendor.min.js'))
+    .pipe(rev())
+    .pipe(gulp.dest('build/js'))
+    .pipe(rev.manifest({ merge: true, base: 'build/js' }))
+    .pipe(gulp.dest('build'));
 });
 
-gulp.task('scripts-app', function() {
+gulp.task('scripts-app', ['clean'], function() {
   return gulp.src('src/js/app/**/*.js')
     .pipe(concat('app.js'))
     .pipe(ngAnnotate())
     .pipe(gulp.dest('build/js/app'))
+    .pipe(rev())
     .pipe(rename({ suffix: '.min' }))
     .pipe(uglify())
-    .pipe(gulp.dest('build/js/app'));
+    .pipe(gulp.dest('build/js/app'))
+    .pipe(rev.manifest({ merge: true, base: 'build/js/app' }))
+    .pipe(gulp.dest('build'));
 });
 
-gulp.task('templates', function () {
+gulp.task('templates', ['clean'], function () {
   return gulp.src('src/js/app/**/*.html')
     .pipe(templateCache({ base: function(file) { return 'js/app/' + file.path.replace(file.base, ''); } }))
-    .pipe(gulp.dest('build/js/app'));
+    .pipe(rev())
+    .pipe(gulp.dest('build/js/app'))
+    .pipe(rev.manifest({ merge: true, base: 'build/js/app' }))
+    .pipe(gulp.dest('build'));
 });
 
-gulp.task('css-vendor', function() {
+gulp.task('css-vendor', ['clean'], function() {
   return gulp.src(vendorCss)
     .pipe(concat('vendor.css'))
+    .pipe(rev())
     .pipe(gulp.dest('build/css'))
     .pipe(rename({ suffix: '.min' }))
     .pipe(cssmin())
-    .pipe(gulp.dest('build/css'));
+    .pipe(gulp.dest('build/css'))
+    .pipe(rev.manifest({ merge: true, base: 'build/css' }))
+    .pipe(gulp.dest('build'));
 });
 
-gulp.task('css-app', function() {
+gulp.task('css-app', ['clean'], function() {
   return gulp.src(appCss)
     .pipe(sass().on('error', sass.logError))
     .pipe(concat('app.css'))
+    .pipe(rev())
     .pipe(gulp.dest('build/css'))
     .pipe(rename({ suffix: '.min' }))
     .pipe(cssmin())
-    .pipe(gulp.dest('build/css'));
+    .pipe(gulp.dest('build/css'))
+    .pipe(rev.manifest({ merge: true, base: 'build/css' }))
+    .pipe(gulp.dest('build'));
 });
 
-gulp.task('fonts', function() {
+gulp.task('fonts', ['clean'], function() {
   return gulp.src(fonts)
-    .pipe(gulp.dest('build/fonts'));
+    .pipe(rev())
+    .pipe(gulp.dest('build/fonts'))
+    .pipe(rev.manifest({ merge: true, base: 'build/fonts' }))
+    .pipe(gulp.dest('build'));
 });
 
-gulp.task('files', function() {
+gulp.task('files', ['clean'], function() {
   return gulp.src(files)
     .pipe(gulp.dest('build'));
+
 });
 
 gulp.task('scripts', ['scripts-app', 'scripts-vendor', 'scripts-vendor-min', 'templates']);
