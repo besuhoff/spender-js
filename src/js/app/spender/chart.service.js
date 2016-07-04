@@ -49,15 +49,17 @@ angular.module('spender')
             line.push(+((chartMap[currency][paymentMethodId] && chartMap[currency][paymentMethodId][date] || 0).toFixed(2)));
           });
 
+	  var color = paymentMethodsMap[currency][paymentMethodId].color || '#bbb';
+
           chart[currency].datasets.push(angular.extend({}, datasetConfig, {
             label: paymentMethodsMap[currency][paymentMethodId].name,
-            borderColor: paymentMethodsMap[currency][paymentMethodId].color,
-            hoverBorderColor: paymentMethodsMap[currency][paymentMethodId].color,
-            backgroundColor: 'rgba(' + hex(paymentMethodsMap[currency][paymentMethodId].color) + ',' + (datasetConfig.backgroundOpacity || '0.5') + ')',
-            hoverBackgroundColor: 'rgba(' + hex(paymentMethodsMap[currency][paymentMethodId].color) + ','  + (datasetConfig.backgroundOpacity || '0.5') + ')',
-            pointBorderColor: paymentMethodsMap[currency][paymentMethodId].color,
-            pointHoverBorderColor: paymentMethodsMap[currency][paymentMethodId].color,
-            pointHoverBackgroundColor: paymentMethodsMap[currency][paymentMethodId].color,
+            borderColor: color,
+            hoverBorderColor: color,
+            backgroundColor: 'rgba(' + hex(color) + ',' + (datasetConfig.backgroundOpacity || '0.5') + ')',
+            hoverBackgroundColor: 'rgba(' + hex(color) + ','  + (datasetConfig.backgroundOpacity || '0.5') + ')',
+            pointBorderColor: color,
+            pointHoverBorderColor: color,
+            pointHoverBackgroundColor: color,
             pointBackgroundColor: "#fff"
           }));
 
@@ -185,7 +187,7 @@ angular.module('spender')
         if (!categoriesMap[currency][categoryId]) {
           categoriesMap[currency][categoryId] = {
             label: e[categoryKey + 'Name'],
-            color: e[categoryKey + 'Color'],
+            color: e[categoryKey + 'Color'] || '#bbb',
             total: 0
           };
         }
@@ -195,13 +197,15 @@ angular.module('spender')
 
       Object.keys(categoriesMap).map(function(currency) {
         var colors = [],
+          opacityColors = [],
           data = [],
           labels = [];
 
         Object.keys(categoriesMap[currency]).map(function(key) {
           data.push(categoriesMap[currency][key].total);
           labels.push(categoriesMap[currency][key].label);
-          colors.push(categoriesMap[currency][key].color);
+          colors.push(categoriesMap[currency][key].color || '#bbb');
+          opacityColors.push('rgba(' + hex(colors[colors.length - 1]) + ',0.5)');
         });
 
         chart[currency] = {
@@ -212,7 +216,7 @@ angular.module('spender')
             borderColor: colors,
             hoverBorderColor: colors,
             backgroundColor: colors,
-            hoverBackgroundColor: colors
+            hoverBackgroundColor: opacityColors
           }]
         };
       });
