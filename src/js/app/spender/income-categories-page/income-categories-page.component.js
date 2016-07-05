@@ -11,6 +11,7 @@ angular.module('spender')
       function initCategories(reload) {
         return IncomeCategoryService.loadAll(reload).then(function(categories) {
           ctrl.categories = categories;
+          ctrl.updateSelectedColors();
         });
       }
 
@@ -30,9 +31,7 @@ angular.module('spender')
 
       ctrl.saveCategory = function(category) {
         if (category.name) {
-          return IncomeCategoryService.update(category).then(function() {
-            return initCategories(true);
-          });
+          return IncomeCategoryService.update(category);
         }
       };
 
@@ -42,18 +41,21 @@ angular.module('spender')
             return initCategories(true).then(function () {
               initCategory();
             });
-          })
+          });
         }
       };
 
       ctrl.deleteCategory = function(category) {
         return IncomeCategoryService.delete(category).then(function() {
           return initCategories(true);
-        })
+        });
       };
 
       ctrl.updateSelectedColors = function() {
         ctrl.selectedColors = ctrl.categories.map(function(c) { return c.color; });
-      }
+        if (ctrl.category.color) {
+          ctrl.selectedColors.push(ctrl.category.color);
+        }
+      };
     }
   });

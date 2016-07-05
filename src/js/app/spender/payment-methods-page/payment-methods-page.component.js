@@ -11,6 +11,7 @@ angular.module('spender')
       function initMethods(reload) {
         return PaymentMethodService.loadAll(reload).then(function(paymentMethods) {
           ctrl.paymentMethods = paymentMethods;
+          ctrl.updateSelectedColors();
         });
       }
 
@@ -19,9 +20,7 @@ angular.module('spender')
 
       ctrl.saveMethod = function(paymentMethod) {
         if (paymentMethod.name && paymentMethod.currency) {
-          return PaymentMethodService.update(paymentMethod).then(function() {
-            return initMethods(true);
-          });
+          return PaymentMethodService.update(paymentMethod);
         }
       };
 
@@ -31,18 +30,21 @@ angular.module('spender')
             return initMethods().then(function () {
               initMethod();
             });
-          })
+          });
         }
       };
 
       ctrl.deleteMethod = function(paymentMethod) {
         return PaymentMethodService.delete(paymentMethod).then(function() {
           return initMethods(true);
-        })
+        });
       };
 
       ctrl.updateSelectedColors = function() {
         ctrl.selectedColors = ctrl.paymentMethods.map(function(p) { return p.color; });
-      }
+        if (ctrl.paymentMethod.color) {
+          ctrl.selectedColors.push(ctrl.paymentMethod.color);
+        }
+      };
     }
   });

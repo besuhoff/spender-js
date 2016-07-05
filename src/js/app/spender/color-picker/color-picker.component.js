@@ -49,7 +49,7 @@ angular.module('spender')
       };
 
       ctrl.isOptionsDisabled = function(color) {
-        return this.disabledOptions.indexOf(color) !== -1;
+        return ctrl.disabledOptions.indexOf(color) !== -1;
       }
     }
   });

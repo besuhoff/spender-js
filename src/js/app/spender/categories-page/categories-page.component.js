@@ -11,6 +11,7 @@ angular.module('spender')
       function initCategories(reload) {
         return CategoryService.loadAll(reload).then(function(categories) {
           ctrl.categories = categories;
+          ctrl.updateSelectedColors();
         });
       }
 
@@ -30,9 +31,7 @@ angular.module('spender')
 
       ctrl.saveCategory = function(category) {
         if (category.name) {
-          return CategoryService.update(category).then(function() {
-            return initCategories(true);
-          });
+          return CategoryService.update(category);
         }
       };
 
@@ -42,18 +41,21 @@ angular.module('spender')
             return initCategories(true).then(function () {
               initCategory();
             });
-          })
+          });
         }
       };
 
       ctrl.deleteCategory = function(category) {
         return CategoryService.delete(category).then(function() {
           return initCategories(true);
-        })
+        });
       };
 
       ctrl.updateSelectedColors = function() {
         ctrl.selectedColors = ctrl.categories.map(function(c) { return c.color; });
-      }
+        if (ctrl.category.color) {
+          ctrl.selectedColors.push(ctrl.category.color);
+        }
+      };
     }
   });

@@ -1,4 +1,4 @@
-<button class="btn btn-sm btn-default btn-colorpicker" ng-click="$ctrl.isOpen = !$ctrl.isOpen;">
+<div class="btn btn-sm btn-default btn-colorpicker" ng-click="$ctrl.isOpen = !$ctrl.isOpen;">
     <span class="color"
           ng-style="{ 'background-color': $ctrl.ngModelController.$viewValue }"
           ng-class="{ 'fa fa-lg fa-eyedropper': !$ctrl.ngModelController.$viewValue }">
@@ -14,4 +14,4 @@
               }"
               ng-repeat="color in $ctrl.colors"></span>
     </span>
-</button>
+</div>
