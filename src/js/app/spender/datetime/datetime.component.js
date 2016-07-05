@@ -14,7 +14,7 @@ angular.module('spender')
           // If both date and time are correct, let's set value
           if (ctrl.date && ctrl.time) {
             var value = moment(
-                ctrl.date + 'T' + moment(ctrl.time).format('HH:mm:ss'),
+                moment(ctrl.date).format('YYYY-MM-DD') + 'T' + moment(ctrl.time).format('HH:mm:ss'),
                 moment.ISO_8601
             );
 

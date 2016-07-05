@@ -6,7 +6,7 @@ angular.module('spender')
 
       function initExpense() {
         ctrl.spent = {
-          amount: 0
+
         };
       }
 

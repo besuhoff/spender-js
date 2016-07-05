@@ -73,7 +73,7 @@ angular.module('spender')
     function _fillInMaps(transactions, chartMap, paymentMethodsMap, datesMap) {
       transactions.forEach(function(e) {
         var currency = e.paymentMethodCurrency,
-          date = e.createdAt.split('T')[0];
+          date = moment(e.createdAt).format('YYYY-MM-DD');
 
         if (!chartMap[currency]) {
           chartMap[currency] = {};
@@ -129,7 +129,8 @@ angular.module('spender')
           return e;
         })
       ).sort(function(a, b) {
-        return a.createdAt > b.createdAt ? -1 : a.createdAt < b.createdAt ? 1 : 0;
+        var diff = +moment(a.createdAt) - +moment(b.createdAt);
+        return diff > 0 ? -1 : diff < 0 ? 1 : 0;
       });
 
       paymentMethods.forEach(function(paymentMethod) {

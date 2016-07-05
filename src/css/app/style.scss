@@ -118,6 +118,7 @@ body {
   .dropdown-menu {
     .btn-default {
       border-width: 0;
+      border-radius: 0;
     }
 
     em {
@@ -132,6 +133,10 @@ body {
   .form-control {
     display: inline-block;
     width: 100px;
+
+    &.date {
+      text-align: right;
+    }
   }
 
   .time-group {
@@ -228,27 +233,6 @@ body {
         position: relative;
         overflow: hidden;
         line-height: 20px;
-/*
-        &:before, &:after {
-          content: '';
-          display: block;
-          height: 141.4213562%;
-          width: 141.4213562%;
-          border-left: 1px solid #555;
-          position: absolute;
-          left: 6px;
-          top: 6px;
-        }
-
-        &:before {
-          transform: rotate(45deg);
-        }
-
-        &:after {
-          margin-top: -21px;
-          transform: rotate(-45deg);
-        }
-*/
       }
     }
   }

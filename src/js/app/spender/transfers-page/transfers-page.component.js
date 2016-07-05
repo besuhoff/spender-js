@@ -6,7 +6,7 @@ angular.module('spender')
 
       function initExpense() {
         ctrl.spent = {
-          amount: 0
+
         };
         
         ctrl.income = {
@@ -31,8 +31,8 @@ angular.module('spender')
         return undefined;
       };
 
-      function initPaymentMethods() {
-        PaymentMethodService.loadAll().then(function(paymentMethods) {
+      function initPaymentMethods(reload) {
+        PaymentMethodService.loadAll(reload).then(function(paymentMethods) {
           ctrl.paymentMethods = paymentMethods;
         });
       }
@@ -54,7 +54,7 @@ angular.module('spender')
             ctrl.spent.targetIncomeId = income.id;
             ExpenseService.add(ctrl.spent).then(function() {
               initExpense();
-              initPaymentMethods();
+              initPaymentMethods(true);
             });
 
           });
