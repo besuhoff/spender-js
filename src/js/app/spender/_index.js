@@ -76,4 +76,9 @@ angular.module('spender', ['restangular', 'ui.router', 'ui.bootstrap', 'angularM
   .config(function(RestangularProvider, BACKEND_URL) {
     RestangularProvider
       .setBaseUrl(BACKEND_URL);
+  })
+  .config(function(ChartJsProvider) {
+    ChartJsProvider.setOptions('Line', {
+      defaultFontFamily: '"Open Sans", sans-serif'
+    });
   });
