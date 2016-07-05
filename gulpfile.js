@@ -6,13 +6,13 @@ var gulp            = require('gulp'),
     ngAnnotate      = require('gulp-ng-annotate'),
     sass            = require('gulp-sass'),
     rev             = require('gulp-rev'),
+    merge           = require('merge-stream'),
+    revdel          = require('gulp-rev-delete-original'),
     revreplace      = require('gulp-rev-replace'),
     clean           = require('gulp-clean'),
     filter          = require('gulp-filter'),
     base            = require('gulp-base'),
-    templateCache   = require('gulp-angular-templatecache'),
-    merge           = require('merge-stream'),
-    revdel          = require('gulp-rev-delete-original');
+    templateCache   = require('gulp-angular-templatecache');
 
 var vendorScripts = [
   'node_modules/jquery/dist/jquery.js',
@@ -160,9 +160,18 @@ gulp.task('rev', ['files', 'scripts', 'css', 'fonts'], function() {
         .pipe(notIndexFilter.restore);
 
     return merge(jsStream, cssStream, filesStream)
-      .pipe(gulp.dest('build'))
-      .pipe(revreplace())
       .pipe(gulp.dest('build'));
 });
 
-gulp.task('default', ['rev']);
+gulp.task('rev-replace', ['rev'], function() {
+  return gulp.src('build/index.html')
+    .pipe(revreplace({ base: 'build', manifest: gulp.src('build/manifest.json') }))
+    .pipe(gulp.dest('build'));
+});
+
+gulp.task('rev-clean', ['rev-replace'], function() {
+  return gulp.src('build/manifest.json')
+    .pipe(clean());
+});
+
+gulp.task('default', ['rev-clean']);
