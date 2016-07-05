@@ -27,6 +27,7 @@ angular.module('spender')
       ctrl.categories = [];
       ctrl.incomes = [];
 
+      initIncome();
       initIncomes();
       initPaymentMethods();
 

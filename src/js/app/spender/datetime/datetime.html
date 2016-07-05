@@ -9,10 +9,8 @@
          ng-change="$ctrl.setValue()">
 
   <div class="time-group m-t-md">
-    <input type="time"
-           ng-disabled="$ctrl.disabled"
-           class="form-control time"
-           ng-model="$ctrl.time"
-           ng-change="$ctrl.setValue()">
+    <uib-timepicker ng-disabled="$ctrl.disabled"
+                    ng-model="$ctrl.time"
+                    ng-change="$ctrl.setValue()">
   </div>
 </div>
