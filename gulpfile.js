@@ -6,9 +6,13 @@ var gulp            = require('gulp'),
     ngAnnotate      = require('gulp-ng-annotate'),
     sass            = require('gulp-sass'),
     rev             = require('gulp-rev'),
-    revReplace      = require('gulp-rev-replace'),
+    revreplace      = require('gulp-rev-replace'),
     clean           = require('gulp-clean'),
-    templateCache   = require('gulp-angular-templatecache');
+    filter          = require('gulp-filter'),
+    base            = require('gulp-base'),
+    templateCache   = require('gulp-angular-templatecache'),
+    merge           = require('merge-stream'),
+    revdel          = require('gulp-rev-delete-original');
 
 var vendorScripts = [
   'node_modules/jquery/dist/jquery.js',
@@ -63,23 +67,16 @@ gulp.task('clean', function() {
     .pipe(clean());
 });
 
-//scripts
 gulp.task('scripts-vendor', ['clean'], function() {
   return gulp.src(vendorScripts)
     .pipe(concat('vendor.js'))
-    .pipe(rev())
-    .pipe(gulp.dest('build/js'))
-    .pipe(rev.manifest({ merge: true, base: 'build/js' }))
-    .pipe(gulp.dest('build'));
+    .pipe(gulp.dest('build/js'));
 });
 
 gulp.task('scripts-vendor-min', ['clean'], function() {
   return gulp.src(vendorScriptsMin)
     .pipe(concat('vendor.min.js'))
-    .pipe(rev())
-    .pipe(gulp.dest('build/js'))
-    .pipe(rev.manifest({ merge: true, base: 'build/js' }))
-    .pipe(gulp.dest('build'));
+    .pipe(gulp.dest('build/js'));
 });
 
 gulp.task('scripts-app', ['clean'], function() {
@@ -87,54 +84,39 @@ gulp.task('scripts-app', ['clean'], function() {
     .pipe(concat('app.js'))
     .pipe(ngAnnotate())
     .pipe(gulp.dest('build/js/app'))
-    .pipe(rev())
     .pipe(rename({ suffix: '.min' }))
     .pipe(uglify())
-    .pipe(gulp.dest('build/js/app'))
-    .pipe(rev.manifest({ merge: true, base: 'build/js/app' }))
-    .pipe(gulp.dest('build'));
+    .pipe(gulp.dest('build/js/app'));
 });
 
 gulp.task('templates', ['clean'], function () {
   return gulp.src('src/js/app/**/*.html')
     .pipe(templateCache({ base: function(file) { return 'js/app/' + file.path.replace(file.base, ''); } }))
-    .pipe(rev())
-    .pipe(gulp.dest('build/js/app'))
-    .pipe(rev.manifest({ merge: true, base: 'build/js/app' }))
-    .pipe(gulp.dest('build'));
+    .pipe(gulp.dest('build/js/app'));
 });
 
 gulp.task('css-vendor', ['clean'], function() {
   return gulp.src(vendorCss)
     .pipe(concat('vendor.css'))
-    .pipe(rev())
     .pipe(gulp.dest('build/css'))
     .pipe(rename({ suffix: '.min' }))
     .pipe(cssmin())
-    .pipe(gulp.dest('build/css'))
-    .pipe(rev.manifest({ merge: true, base: 'build/css' }))
-    .pipe(gulp.dest('build'));
+    .pipe(gulp.dest('build/css'));
 });
 
 gulp.task('css-app', ['clean'], function() {
   return gulp.src(appCss)
     .pipe(sass().on('error', sass.logError))
     .pipe(concat('app.css'))
-    .pipe(rev())
     .pipe(gulp.dest('build/css'))
     .pipe(rename({ suffix: '.min' }))
     .pipe(cssmin())
-    .pipe(gulp.dest('build/css'))
-    .pipe(rev.manifest({ merge: true, base: 'build/css' }))
-    .pipe(gulp.dest('build'));
+    .pipe(gulp.dest('build/css'));
 });
 
 gulp.task('fonts', ['clean'], function() {
   return gulp.src(fonts)
-    .pipe(rev())
-    .pipe(gulp.dest('build/fonts'))
-    .pipe(rev.manifest({ merge: true, base: 'build/fonts' }))
-    .pipe(gulp.dest('build'));
+    .pipe(gulp.dest('build/fonts'));
 });
 
 gulp.task('files', ['clean'], function() {
@@ -145,4 +127,42 @@ gulp.task('files', ['clean'], function() {
 
 gulp.task('scripts', ['scripts-app', 'scripts-vendor', 'scripts-vendor-min', 'templates']);
 gulp.task('css', ['css-app', 'css-vendor']);
-gulp.task('default', ['files', 'scripts', 'css', 'fonts']);
+
+gulp.task('rev', ['files', 'scripts', 'css', 'fonts'], function() {
+  var patterns = ['build/js/**/*.js', 'build/css/**/*.css', 'build/*.*'],
+
+    notIndexFilter = filter(['**/*', '!build/index.html'], {restore: true});
+
+    var jsStream = gulp.src(patterns[0], { base: 'build/js' })
+      .pipe(rev())
+      .pipe(gulp.dest('build/js'))
+      .pipe(revdel())
+      .pipe(base({ base: 'build', original: false }))
+      .pipe(gulp.dest('build/js'))
+      .pipe(rev.manifest('build/manifest.json', { merge: true, base: 'build' })),
+
+      cssStream = gulp.src(patterns[1], { base: 'build/css' })
+        .pipe(rev())
+        .pipe(gulp.dest('build/css'))
+        .pipe(revdel())
+        .pipe(gulp.dest('build/css'))
+        .pipe(base({ base: 'build', original: false }))
+        .pipe(rev.manifest('build/manifest.json', { merge: true, base: 'build' })),
+
+      filesStream = gulp.src(patterns[2], { base: 'build' })
+        .pipe(notIndexFilter)
+        .pipe(rev())
+        .pipe(gulp.dest('build'))
+        .pipe(revdel())
+        .pipe(gulp.dest('build'))
+        .pipe(base({ base: 'build', original: false }))
+        .pipe(rev.manifest('build/manifest.json', { merge: true, base: 'build' }))
+        .pipe(notIndexFilter.restore);
+
+    return merge(jsStream, cssStream, filesStream)
+      .pipe(gulp.dest('build'))
+      .pipe(revreplace())
+      .pipe(gulp.dest('build'));
+});
+
+gulp.task('default', ['rev']);
