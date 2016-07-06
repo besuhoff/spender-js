@@ -1,18 +1,16 @@
 <div class="form">
   <ul class="list-unstyled list-form">
     <li ng-repeat="paymentMethod in $ctrl.paymentMethods">
-      <input class="form-control" type="text" placeholder="Название" ng-model="paymentMethod.name">,
+      <input class="form-control" type="text" placeholder="Название" ng-change="$ctrl.saveMethod(paymentMethod)" ng-model="paymentMethod.name">,
       <span class="text-nowrap">
-        валюта: <input class="form-control form-control--sm" type="text" ng-model="paymentMethod.currency">
+        валюта: <input class="form-control form-control--sm" type="text" ng-model="paymentMethod.currency" ng-change="$ctrl.saveMethod(paymentMethod)">
       </span>
       <color-picker ng-model="paymentMethod.color"
                     disabled-options="$ctrl.selectedColors"
-                    ng-change="$ctrl.updateSelectedColors()">
+                    ng-change="$ctrl.updateSelectedColors(); $ctrl.saveMethod(paymentMethod)">
 
       </color-picker>
-      <button class="btn-default btn-sm btn btn-inline"
-              ng-click="$ctrl.saveMethod(paymentMethod)"
-              ng-disabled="!paymentMethod.name || !paymentMethod.currency"><i class="fa fa-lg fa-check"></i></button>
+      <spinner is-loaded="$ctrl.isLoaded[paymentMethod.id]"></spinner>
       <button class="btn-default btn-sm btn btn-inline" ng-click="$ctrl.deleteMethod(paymentMethod)"><i class="fa fa-lg fa-remove"></i></button>
     </li>
 
@@ -26,6 +24,7 @@
                     ng-change="$ctrl.updateSelectedColors()">
 
       </color-picker>
+      <spinner is-loaded="$ctrl.isNewLoaded"></spinner>
       <button class="btn-primary btn-sm btn btn-inline"
               ng-click="$ctrl.addMethod()"
               ng-disabled="!$ctrl.paymentMethod.name || !$ctrl.paymentMethod.currency"><i class="fa fa-lg fa-plus"></i></button>

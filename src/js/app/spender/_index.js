@@ -1,4 +1,14 @@
-angular.module('spender', ['restangular', 'ui.router', 'ui.bootstrap', 'angularMoment', 'templates', 'chart.js'])
+angular.module(
+  'spender',
+  [
+    'restangular',
+    'ui.router',
+    'ui.bootstrap',
+    'angularMoment',
+    'ngAnimate',
+    'templates',
+    'chart.js'
+  ])
   .constant('BACKEND_URL', 'https://spender-api.pereborstudio.com/')
   .constant('GAPI_CLIENT_ID', '843225840486-ilkj47kggue9tvh6ajfvvog45mertgfg.apps.googleusercontent.com')
 

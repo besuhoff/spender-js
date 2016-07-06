@@ -6,11 +6,13 @@ angular.module('spender')
 
       function initMethod() {
         ctrl.paymentMethod = {};
+        ctrl.isNewLoaded = undefined;
       }
 
       function initMethods(reload) {
         return PaymentMethodService.loadAll(reload).then(function(paymentMethods) {
           ctrl.paymentMethods = paymentMethods;
+          ctrl.isLoaded = {};
           ctrl.updateSelectedColors();
         });
       }
@@ -20,24 +22,30 @@ angular.module('spender')
 
       ctrl.saveMethod = function(paymentMethod) {
         if (paymentMethod.name && paymentMethod.currency) {
-          return PaymentMethodService.update(paymentMethod);
+          ctrl.isLoaded[paymentMethod.id] = PaymentMethodService.update(paymentMethod);
+
+          return ctrl.isLoaded[paymentMethod.id];
         }
       };
 
       ctrl.addMethod = function() {
         if (ctrl.paymentMethod.name && ctrl.paymentMethod.currency) {
-          return PaymentMethodService.add(ctrl.paymentMethod).then(function () {
-            return initMethods().then(function () {
-              initMethod();
-            });
+          ctrl.isNewLoaded = PaymentMethodService.add(ctrl.paymentMethod).then(function (paymentMethod) {
+            ctrl.paymentMethods.push(paymentMethod);
+
+            return initMethod();
           });
+
+          return ctrl.isNewLoaded;
         }
       };
 
       ctrl.deleteMethod = function(paymentMethod) {
-        return PaymentMethodService.delete(paymentMethod).then(function() {
-          return initMethods(true);
+        ctrl.isLoaded[paymentMethod.id] = PaymentMethodService.delete(paymentMethod).then(function() {
+          ctrl.paymentMethods.splice(ctrl.paymentMethods.indexOf(paymentMethod), 1);
         });
+
+        return ctrl.isLoaded[paymentMethod.id];
       };
 
       ctrl.updateSelectedColors = function() {
