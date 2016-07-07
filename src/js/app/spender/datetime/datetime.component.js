@@ -11,8 +11,13 @@ angular.module('spender')
         $attrs.$observe('disabled', function(isDisabled) { ctrl.disabled = isDisabled; });
 
         ctrl.setValue = function() {
-          // If both date and time are correct, let's set value
-          if (ctrl.date && ctrl.time) {
+          // If time is not set, assume 00:00:00
+          if (!ctrl.time) {
+            ctrl.time = new Date(0, 0, 0, 0, 0, 0);
+          }
+
+          // If date is correct, let's set value
+          if (ctrl.date) {
             var value = moment(
                 moment(ctrl.date).format('YYYY-MM-DD') + 'T' + moment(ctrl.time).format('HH:mm:ss'),
                 moment.ISO_8601
@@ -29,7 +34,7 @@ angular.module('spender')
           ctrl.ngModelController.$render = function() {
             var datetime = ctrl.ngModelController.$viewValue;
             ctrl.time = datetime ? moment(moment(datetime).format('HH:mm'), 'HH:mm').toDate() : null;
-            ctrl.date = datetime ? moment(datetime).format('YYYY-MM-DD') : null;
+            ctrl.date = datetime ? moment(datetime).toDate() : null;
           };
         };
       }

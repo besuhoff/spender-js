@@ -1,12 +1,12 @@
 angular.module('spender')
   .component('expensesPage', {
     templateUrl: 'js/app/spender/expenses-page/expenses-page.html',
-    controller: function(ExpenseService, ChartService, CategoryService, PaymentMethodService) {
+    controller: function(ExpenseService, ChartService, CategoryService, PaymentMethodService, moment) {
       var ctrl = this;
 
       function initExpense() {
         ctrl.spent = {
-
+          createdAt: moment().format()
         };
       }
 
