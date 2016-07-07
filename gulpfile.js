@@ -15,6 +15,7 @@ var gulp            = require('gulp'),
     templateCache   = require('gulp-angular-templatecache');
 
 var vendorScripts = [
+  'node_modules/moment/moment.js',
   'node_modules/jquery/dist/jquery.js',
   'node_modules/bootstrap/dist/js/bootstrap.js',
   'node_modules/lodash/lodash.js',
@@ -23,7 +24,6 @@ var vendorScripts = [
   'node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js',
   'node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
   'node_modules/restangular/dist/restangular.js',
-  'node_modules/moment/moment.js',
   'node_modules/angular-moment/angular-moment.js',
   'node_modules/angular-animate/angular-animate.js',
   'node_modules/chart.js/dist/Chart.js',
@@ -31,6 +31,7 @@ var vendorScripts = [
 ];
 
 var vendorScriptsMin = [
+  'node_modules/moment/min/moment.min.js',
   'node_modules/jquery/dist/jquery.min.js',
   'node_modules/bootstrap/dist/js/bootstrap.min.js',
   'node_modules/lodash/lodash.min.js',
@@ -39,7 +40,6 @@ var vendorScriptsMin = [
   'node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js',
   'node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
   'node_modules/restangular/dist/restangular.min.js',
-  'node_modules/moment/min/moment.min.js',
   'node_modules/angular-moment/angular-moment.min.js',
   'node_modules/angular-animate/angular-animate.min.js',
   'node_modules/chart.js/dist/Chart.min.js',
