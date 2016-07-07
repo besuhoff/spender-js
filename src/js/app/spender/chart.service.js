@@ -207,7 +207,7 @@ angular.module('spender')
           labels = [];
 
         Object.keys(categoriesMap[currency]).map(function(key) {
-          data.push(categoriesMap[currency][key].total);
+          data.push(categoriesMap[currency][key].total.toFixed(2));
           labels.push(categoriesMap[currency][key].label);
           colors.push(categoriesMap[currency][key].color || '#bbb');
           opacityColors.push('rgba(' + hex(colors[colors.length - 1]) + ',0.5)');
