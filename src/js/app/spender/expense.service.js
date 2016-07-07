@@ -14,6 +14,11 @@ angular.module('spender')
       return _expensesPromise;
     };
 
+    this.resetAll = function() {
+      _expenses = [];
+      _expensesPromise = false;
+    };
+
     this.getAll = function() {
       return _expenses;
     };

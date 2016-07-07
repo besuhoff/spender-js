@@ -146,7 +146,7 @@ gulp.task('rev', ['files', 'scripts', 'css', 'fonts'], function() {
       .pipe(gulp.dest('build/js'))
       .pipe(revdel())
       .pipe(base({ base: 'build', original: false }))
-      .pipe(gulp.dest('build/js'))
+      .pipe(gulp.dest('build'))
       .pipe(rev.manifest('build/manifest.json', { merge: true, base: 'build' })),
 
       cssStream = gulp.src(patterns[1], { base: 'build/css' })

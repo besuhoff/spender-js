@@ -18,7 +18,7 @@ angular.module(
     $urlRouterProvider.otherwise('/');
 
     // BEGIN ABSTRACT REDIRECT
-    $transitionsProvider.onStart({ to: function(state) { return !!state.redirectTo; } }, function($transition$, $state) {
+    $transitionsProvider.onStart({ to: function(state) { return !!state.redirectTo; } }, /* @ngInject */function($transition$, $state) {
       var val = $transition$.to().redirectTo;
       return $state.go(val, $transition$.params());
     });

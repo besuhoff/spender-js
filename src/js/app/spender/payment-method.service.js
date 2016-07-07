@@ -18,6 +18,11 @@ angular.module('spender')
       return _paymentMethods;
     };
 
+    this.resetAll = function() {
+      _paymentMethods = [];
+      _paymentMethodsPromise = false;
+    };
+
     this.add = function (data) {
       return Restangular.all('payment-methods').post(data);
     };

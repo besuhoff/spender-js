@@ -18,6 +18,11 @@ angular.module('spender')
       return _incomes;
     };
 
+    this.resetAll = function() {
+      _incomes = [];
+      _incomesPromise = false;
+    };
+
     this.add = function (data) {
       return Restangular.all('incomes').post(data);
     };

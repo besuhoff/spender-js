@@ -1,7 +1,7 @@
 angular.module('spender')
   .service('IncomeCategoryService', function(Restangular) {
     var _categories = [],
-    _categoriesPromise = false;
+      _categoriesPromise = false;
 
     this.loadAll = function(reload) {
       if (!_categoriesPromise || reload) {
@@ -16,6 +16,11 @@ angular.module('spender')
 
     this.getAll = function() {
       return _categories;
+    };
+
+    this.resetAll = function() {
+      _categories = [];
+      _categoriesPromise = false;
     };
 
     this.add = function (data) {

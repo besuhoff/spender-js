@@ -181,6 +181,10 @@ angular.module('spender')
         var categoryId = e[categoryKey + 'Id'],
           currency = e.paymentMethodCurrency;
 
+        if (!categoryId) {
+          return;
+        }
+
         if (!categoriesMap[currency]) {
           categoriesMap[currency] = {};
         }

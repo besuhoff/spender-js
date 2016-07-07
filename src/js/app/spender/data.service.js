@@ -1,5 +1,6 @@
 angular.module('spender')
-  .service('DataService', function(Restangular, $http) {
+  .service('DataService', function(Restangular, $http,
+                                   CategoryService, ExpenseService, IncomeService, IncomeCategoryService, PaymentMethodService) {
     var _profile;
 
     this.getProfile = function() {
@@ -8,6 +9,10 @@ angular.module('spender')
 
     this.setProfile = function(profile) {
       _profile = profile;
+
+      [CategoryService, ExpenseService, IncomeService, IncomeCategoryService, PaymentMethodService].forEach(function(service) {
+        service.resetAll();
+      });
     };
 
     this.setToken = function(token) {

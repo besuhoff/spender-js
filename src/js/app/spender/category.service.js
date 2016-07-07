@@ -18,6 +18,11 @@ angular.module('spender')
       return _categories;
     };
 
+    this.resetAll = function() {
+      _categories = [];
+      _categoriesPromise = false;
+    };
+
     this.add = function (data) {
       return Restangular.all('categories').post(data);
     };
