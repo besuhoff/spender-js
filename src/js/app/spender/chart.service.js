@@ -182,7 +182,16 @@ angular.module('spender')
           currency = e.paymentMethodCurrency;
 
         if (!categoryId) {
-          return;
+          // Expenses/Incomes for transfers within the same currency we don't count, and incomes from transfers from another currency account are considered as such
+          if (categoryKey === 'incomeCategory' &&
+            e['sourceExpensePaymentMethodCurrency'] &&
+            e['sourceExpensePaymentMethodCurrency'] !== e['paymentMethodCurrency']) {
+
+            e[categoryKey + 'Name'] = 'Перевод с других счетов';
+            e[categoryKey + 'Color'] = '#d0d0d0';
+          } else {
+            return;
+          }
         }
 
         if (!categoriesMap[currency]) {
