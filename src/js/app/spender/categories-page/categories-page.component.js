@@ -1,7 +1,7 @@
 angular.module('spender')
   .component('categoriesPage', {
     templateUrl: 'js/app/spender/categories-page/categories-page.html',
-    controller: function(CategoryService, ChartService, ExpenseService) {
+    controller: function($scope, CategoryService, ChartService, ExpenseService) {
       var ctrl = this;
 
       function initCategory() {
@@ -17,23 +17,20 @@ angular.module('spender')
         });
       }
 
-      function initExpenses() {
-        ExpenseService.loadAll().then(function(expenses) {
-          ctrl.expenses = expenses;
-          ctrl.categoriesChart = ChartService.buildCategoriesChart(expenses, 'category');
-        });
-      }
+      $scope.$watch(function() {
+        return ExpenseService.getListChangedAt();
+      }, function() {
+        ctrl.expenses = ExpenseService.getAll();
+        ctrl.categoriesChart = ChartService.buildCategoriesChart(ctrl.expenses, 'category');
+      });
 
-      ctrl.categories = false;
-      ctrl.expenses = [];
-
-      initExpenses();
       initCategories();
       initCategory();
 
       ctrl.saveCategory = function(category) {
         if (category.name) {
           ctrl.isLoaded[category.id] = CategoryService.update(category);
+
           return ctrl.isLoaded[category.id];
         }
       };
@@ -41,8 +38,6 @@ angular.module('spender')
       ctrl.addCategory = function() {
         if (ctrl.category.name) {
           ctrl.isNewLoaded = CategoryService.add(ctrl.category).then(function(category) {
-            ctrl.categories.push(category);
-
             return initCategory();
           });
 
@@ -51,9 +46,7 @@ angular.module('spender')
       };
 
       ctrl.deleteCategory = function(category) {
-        ctrl.isLoaded[category.id] = CategoryService.delete(category).then(function() {
-          ctrl.categories.splice(ctrl.categories.indexOf(category), 1);
-        });
+        ctrl.isLoaded[category.id] = CategoryService.delete(category);
 
         return ctrl.isLoaded[category.id];
       };

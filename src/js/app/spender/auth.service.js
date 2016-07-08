@@ -1,5 +1,5 @@
 angular.module('spender')
-  .service('DataService', function(Restangular, $http,
+  .service('AuthService', function(Restangular, $http,
                                    CategoryService, ExpenseService, IncomeService, IncomeCategoryService, PaymentMethodService) {
     var _profile;
 

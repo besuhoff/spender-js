@@ -38,14 +38,14 @@ angular.module(
           $scope.profile = profile;
         },
         resolve: {
-          profile: function(DataService, GapiService, $state, $q) {
+          profile: function(AuthService, GapiService, $state, $q) {
             return GapiService.load().then(function(gapi) {
               var currentUser = gapi.auth2.getAuthInstance().currentUser.get();
 
               if (currentUser && currentUser.isSignedIn()) {
                 var id_token = currentUser.getAuthResponse().id_token;
-                DataService.setToken(id_token);
-                DataService.setProfile(currentUser.getBasicProfile());
+                AuthService.setToken(id_token);
+                AuthService.setProfile(currentUser.getBasicProfile());
 
                 return currentUser.getBasicProfile();
               } else {

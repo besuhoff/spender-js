@@ -4,7 +4,8 @@ angular.module('spender')
     bindings: {
       profile: '='
     },
-    controller: function(GapiService, ChartService, IncomeService, ExpenseService, PaymentMethodService, $state, $scope) {
+    controller: function(GapiService, ChartService, IncomeService, ExpenseService, PaymentMethodService,
+                         $state, $scope) {
       var ctrl = this;
 
       PaymentMethodService.loadAll();
@@ -31,30 +32,30 @@ angular.module('spender')
 
       $scope.$watch(
         function() {
-          return PaymentMethodService.getAll()
+          return PaymentMethodService.getListChangedAt();
         },
-        function(paymentMethods) {
-          ctrl.paymentMethods = paymentMethods;
+        function() {
+          ctrl.paymentMethods = PaymentMethodService.getAll();
           buildChart();
         }
       );
 
       $scope.$watch(
         function() {
-          return IncomeService.getAll()
+          return IncomeService.getListChangedAt();
         },
-        function(incomes) {
-          ctrl.incomes = incomes;
+        function() {
+          ctrl.incomes = IncomeService.getAll();
           buildChart();
         }
       );
 
       $scope.$watch(
         function() {
-          return ExpenseService.getAll()
+          return ExpenseService.getListChangedAt();
         },
-        function(incomes) {
-          ctrl.expenses = incomes;
+        function() {
+          ctrl.expenses = ExpenseService.getAll();
           buildChart();
         }
       );

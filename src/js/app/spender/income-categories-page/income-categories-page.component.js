@@ -1,7 +1,7 @@
 angular.module('spender')
   .component('incomeCategoriesPage', {
     templateUrl: 'js/app/spender/income-categories-page/income-categories-page.html',
-    controller: function(IncomeService, ChartService, IncomeCategoryService, $q) {
+    controller: function($scope, IncomeService, ChartService, IncomeCategoryService) {
       var ctrl = this;
 
       function initCategory() {
@@ -17,23 +17,22 @@ angular.module('spender')
         });
       }
 
-      function initIncomes() {
-        IncomeService.loadAll().then(function(incomes) {
-          ctrl.incomes = incomes;
-          ctrl.categoriesChart = ChartService.buildCategoriesChart(incomes, 'incomeCategory');
-        });
-      }
+      $scope.$watch(function() {
+        return IncomeService.getListChangedAt();
+      }, function() {
+        ctrl.incomes = IncomeService.getAll();
+        ctrl.categoriesChart = ChartService.buildCategoriesChart(ctrl.incomes, 'incomeCategory');
+      });
 
       ctrl.categories = false;
-      ctrl.incomes = [];
 
-      initIncomes();
       initCategories();
       initCategory();
 
       ctrl.saveCategory = function(category) {
         if (category.name) {
           ctrl.isLoaded[category.id] = IncomeCategoryService.update(category);
+
           return ctrl.isLoaded[category.id];
         }
       };
@@ -41,8 +40,6 @@ angular.module('spender')
       ctrl.addCategory = function() {
         if (ctrl.category.name) {
           ctrl.isNewLoaded = IncomeCategoryService.add(ctrl.category).then(function(category) {
-            ctrl.categories.push(category);
-
             return initCategory();
           });
 
@@ -51,9 +48,7 @@ angular.module('spender')
       };
 
       ctrl.deleteCategory = function(category) {
-        ctrl.isLoaded[category.id] = IncomeCategoryService.delete(category).then(function() {
-          ctrl.categories.splice(ctrl.categories.indexOf(category), 1);
-        });
+        ctrl.isLoaded[category.id] = IncomeCategoryService.delete(category);
 
         return ctrl.isLoaded[category.id];
       };

@@ -1,7 +1,7 @@
 angular.module('spender')
   .component('paymentMethodsPage', {
     templateUrl: 'js/app/spender/payment-methods-page/payment-methods-page.html',
-    controller: function(DataService, PaymentMethodService) {
+    controller: function(PaymentMethodService) {
       var ctrl = this;
 
       function initMethod() {
@@ -31,8 +31,6 @@ angular.module('spender')
       ctrl.addMethod = function() {
         if (ctrl.paymentMethod.name && ctrl.paymentMethod.currency) {
           ctrl.isNewLoaded = PaymentMethodService.add(ctrl.paymentMethod).then(function (paymentMethod) {
-            ctrl.paymentMethods.push(paymentMethod);
-
             return initMethod();
           });
 
@@ -41,9 +39,7 @@ angular.module('spender')
       };
 
       ctrl.deleteMethod = function(paymentMethod) {
-        ctrl.isLoaded[paymentMethod.id] = PaymentMethodService.delete(paymentMethod).then(function() {
-          ctrl.paymentMethods.splice(ctrl.paymentMethods.indexOf(paymentMethod), 1);
-        });
+        ctrl.isLoaded[paymentMethod.id] = PaymentMethodService.delete(paymentMethod);
 
         return ctrl.isLoaded[paymentMethod.id];
       };

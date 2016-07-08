@@ -1,37 +1,28 @@
 angular.module('spender')
-  .service('CategoryService', function(Restangular) {
-    var _categories = [],
-      _categoriesPromise = false;
+  .service('CategoryService', function Service(Restangular, ExpenseService) {
+    DataService.call(this, Restangular, 'categories');
 
-    this.loadAll = function(reload) {
-      if (!_categoriesPromise || reload) {
-        _categoriesPromise = Restangular.all('categories').getList().then(function(categories) {
-          _categories = categories;
-          return _categories;
+    var update = this.update;
+
+    this.update = function(category) {
+      return update.call(this, category).then(function(category) {
+        var recordListChange = false;
+
+        ExpenseService.getAll().forEach(function(expense) {
+          if (expense.categoryId === category.id && (
+              expense.categoryName !== category.name ||
+              expense.categoryColor !== category.color
+          )) {
+            expense.categoryName = category.name;
+            expense.categoryColor = category.color;
+
+            recordListChange = true;
+          }
         });
-      }
 
-      return _categoriesPromise;
-    };
-
-    this.getAll = function() {
-      return _categories;
-    };
-
-    this.resetAll = function() {
-      _categories = [];
-      _categoriesPromise = false;
-    };
-
-    this.add = function (data) {
-      return Restangular.all('categories').post(data);
-    };
-
-    this.update = function (data) {
-      return Restangular.one('categories', data.id).patch(data);
-    };
-
-    this.delete = function (data) {
-      return Restangular.one('categories', data.id).remove();
-    };
+        if (recordListChange) {
+          ExpenseService.recordListChange();
+        }
+      });
+    }
   });

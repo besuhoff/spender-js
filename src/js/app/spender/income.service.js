@@ -1,29 +1,4 @@
 angular.module('spender')
-  .service('IncomeService', function(Restangular) {
-    var _incomes = [],
-      _incomesPromise = false;
-
-    this.loadAll = function(reload) {
-      if (!_incomesPromise || reload) {
-        _incomesPromise = Restangular.all('incomes').getList().then(function(incomes) {
-          _incomes = incomes;
-          return _incomes;
-        });
-      }
-
-      return _incomesPromise;
-    };
-
-    this.getAll = function() {
-      return _incomes;
-    };
-
-    this.resetAll = function() {
-      _incomes = [];
-      _incomesPromise = false;
-    };
-
-    this.add = function (data) {
-      return Restangular.all('incomes').post(data);
-    };
+  .service('IncomeService', function Service(Restangular) {
+    DataService.call(this, Restangular, 'incomes');
   });

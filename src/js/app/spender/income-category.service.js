@@ -1,37 +1,28 @@
 angular.module('spender')
-  .service('IncomeCategoryService', function(Restangular) {
-    var _categories = [],
-      _categoriesPromise = false;
+  .service('IncomeCategoryService', function Service(Restangular, IncomeService) {
+    DataService.call(this, Restangular, 'income-categories');
 
-    this.loadAll = function(reload) {
-      if (!_categoriesPromise || reload) {
-        _categoriesPromise = Restangular.all('income-categories').getList().then(function(categories) {
-          _categories = categories;
-          return _categories;
+    var update = this.update;
+
+    this.update = function(category) {
+      return update.call(this, category).then(function(category) {
+        var recordListChange = false;
+
+        IncomeService.getAll().forEach(function(income) {
+          if (income.incomeCategoryId === category.id && (
+              income.incomeCategoryName !== category.name ||
+              income.incomeCategoryColor !== category.color
+          )) {
+            income.incomeCategoryName = category.name;
+            income.incomeCategoryColor = category.color;
+
+            recordListChange = true;
+          }
         });
-      }
 
-      return _categoriesPromise;
-    };
-
-    this.getAll = function() {
-      return _categories;
-    };
-
-    this.resetAll = function() {
-      _categories = [];
-      _categoriesPromise = false;
-    };
-
-    this.add = function (data) {
-      return Restangular.all('income-categories').post(data);
-    };
-
-    this.update = function (data) {
-      return Restangular.one('income-categories', data.id).patch(data);
-    };
-
-    this.delete = function (data) {
-      return Restangular.one('income-categories', data.id).remove();
-    };
+        if (recordListChange) {
+          IncomeService.recordListChange();
+        }
+      });
+    }
   });

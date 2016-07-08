@@ -1,37 +1,40 @@
 angular.module('spender')
-  .service('PaymentMethodService', function(Restangular) {
-    var _paymentMethods = [],
-      _paymentMethodsPromise = false;
+  .service('PaymentMethodService', function Service(Restangular, IncomeService, ExpenseService) {
+    DataService.call(this, Restangular, 'payment-methods');
 
-    this.loadAll = function(reload) {
-      if (!_paymentMethodsPromise || reload) {
-        _paymentMethodsPromise = Restangular.all('payment-methods').getList().then(function(paymentMethods) {
-          _paymentMethods = paymentMethods;
-          return _paymentMethods;
+    var update = this.update;
+
+    this.update = function(paymentMethod) {
+      return update.call(this, paymentMethod).then(function(paymentMethod) {
+        [IncomeService, ExpenseService].forEach(function(service) {
+          var recordListChange = false;
+
+          service.getAll().forEach(function(transaction) {
+            if (transaction.paymentMethodId === paymentMethod.id && (
+              transaction.paymentMethodName !== paymentMethod.name ||
+              transaction.paymentMethodColor !== paymentMethod.color ||
+              transaction.paymentMethodCurrency !== paymentMethod.currency
+            )) {
+              transaction.paymentMethodName = paymentMethod.name;
+              transaction.paymentMethodColor = paymentMethod.color;
+              transaction.paymentMethodCurrency = paymentMethod.currency;
+
+              recordListChange = true;
+            }
+
+            if (transaction.sourceExpensePaymentMethodId === paymentMethod.id &&
+              transaction.sourceExpensePaymentMethodCurrency !== paymentMethod.currency
+            ) {
+              transaction.sourceExpensePaymentMethodCurrency = paymentMethod.currency;
+
+              recordListChange = true;
+            }
+          });
+
+          if (recordListChange) {
+            service.recordListChange();
+          }
         });
-      }
-
-      return _paymentMethodsPromise;
-    };
-
-    this.getAll = function() {
-      return _paymentMethods;
-    };
-
-    this.resetAll = function() {
-      _paymentMethods = [];
-      _paymentMethodsPromise = false;
-    };
-
-    this.add = function (data) {
-      return Restangular.all('payment-methods').post(data);
-    };
-
-    this.update = function (data) {
-      return Restangular.one('payment-methods', data.id).patch(data);
-    };
-
-    this.delete = function (data) {
-      return Restangular.one('payment-methods', data.id).remove();
-    };
+      });
+    }
   });
