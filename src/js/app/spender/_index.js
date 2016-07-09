@@ -89,6 +89,6 @@ angular.module(
   })
   .config(function(ChartJsProvider) {
     ChartJsProvider.setOptions('Line', {
-      defaultFontFamily: '"Open Sans", sans-serif'
+      defaultFontFamily: '"Fira Sans", sans-serif'
     });
   });
