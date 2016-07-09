@@ -6,7 +6,7 @@ angular.module('spender')
 
       function initExpense() {
         ctrl.spent = {
-          createdAt: moment().format()
+          createdAt: ctrl.spent ? ctrl.spent.createdAt : moment().format()
         };
       }
 

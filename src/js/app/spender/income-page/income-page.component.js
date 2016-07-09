@@ -6,7 +6,7 @@ angular.module('spender')
 
       function initIncome() {
         ctrl.income = {
-          createdAt: moment().format()
+          createdAt: ctrl.income ? ctrl.income.createdAt : moment().format()
         };
       }
 

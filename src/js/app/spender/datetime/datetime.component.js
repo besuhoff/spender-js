@@ -11,15 +11,10 @@ angular.module('spender')
         $attrs.$observe('disabled', function(isDisabled) { ctrl.disabled = isDisabled; });
 
         ctrl.setValue = function() {
-          // If time is not set, assume 00:00:00
-          if (!ctrl.time) {
-            ctrl.time = new Date(0, 0, 0, 0, 0, 0);
-          }
-
           // If date is correct, let's set value
           if (ctrl.date) {
             var value = moment(
-                moment(ctrl.date).format('YYYY-MM-DD') + 'T' + moment(ctrl.time).format('HH:mm:ss'),
+                moment(ctrl.date).format('YYYY-MM-DD') + 'T' + moment(ctrl.time ||  new Date(0, 0, 0, 0, 0, 0)).format('HH:mm:ss'),
                 moment.ISO_8601
             );
 
