@@ -1,6 +1,6 @@
 angular.module('spender')
   .service('ChartService', function(moment) {
-    function _buildChart(chartMap, paymentMethodsMap, datesMap, datasetConfig) {
+    function _buildLineChart(chartMap, paymentMethodsMap, datesMap, datasetConfig) {
       datasetConfig = datasetConfig || {};
 
       var chart = {};
@@ -109,10 +109,15 @@ angular.module('spender')
         paymentMethodsMap = {},
         datesMap = {};
 
+      // Don't include expenses/incomes for transfers
+      transactions = transactions.filter(function(transaction) {
+        return transaction.categoryId || transaction.incomeCategoryId;
+      });
+
       // Create a widely rarefied matrix of transactions
       _fillInMaps(transactions, chartMap, paymentMethodsMap, datesMap);
 
-      return _buildChart(chartMap, paymentMethodsMap, datesMap, { borderWidth: 0, backgroundOpacity: 1  });
+      return _buildLineChart(chartMap, paymentMethodsMap, datesMap, { borderWidth: 0, backgroundOpacity: 1  });
     };
 
     this.buildBalanceChart = function(expenses, incomes, paymentMethods) {
@@ -168,7 +173,7 @@ angular.module('spender')
         });
       });
 
-      return _buildChart(chartMap, paymentMethodsMap, datesMap, { lineTension: 0,  backgroundOpacity: 0.25 });
+      return _buildLineChart(chartMap, paymentMethodsMap, datesMap, { lineTension: 0,  backgroundOpacity: 0.25 });
     };
 
     this.buildCategoriesChart = function(transactions, categoryKey) {
@@ -181,17 +186,9 @@ angular.module('spender')
         var categoryId = e[categoryKey + 'Id'],
           currency = e.paymentMethodCurrency;
 
+        // Don't include expenses/incomes for transfers
         if (!categoryId) {
-          // Expenses/Incomes for transfers within the same currency we don't count, and incomes from transfers from another currency account are considered as such
-          if (categoryKey === 'incomeCategory' &&
-            e['sourceExpensePaymentMethodCurrency'] &&
-            e['sourceExpensePaymentMethodCurrency'] !== e['paymentMethodCurrency']) {
-
-            e[categoryKey + 'Name'] = 'Перевод с других счетов';
-            e[categoryKey + 'Color'] = '#d0d0d0';
-          } else {
-            return;
-          }
+          return;
         }
 
         if (!categoriesMap[currency]) {
