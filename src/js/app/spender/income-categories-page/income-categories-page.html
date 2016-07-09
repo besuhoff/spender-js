@@ -3,7 +3,12 @@
     <div class="col-md-6">
       <ul class="list-unstyled list-form">
         <li ng-repeat="category in $ctrl.categories">
-          <input class="form-control" type="text" placeholder="Название" ng-model="category.name" ng-change="$ctrl.saveCategory(category)">
+          <input class="form-control"
+                 type="text"
+                 placeholder="Название"
+                 ng-model="category.name"
+                 ng-model-options="{ debounce: 300 }"
+                 ng-change="$ctrl.saveCategory(category)">
           <color-picker ng-model="category.color"
                         disabled-options="$ctrl.selectedColors"
                         ng-change="$ctrl.updateSelectedColors(); $ctrl.saveCategory(category)">
