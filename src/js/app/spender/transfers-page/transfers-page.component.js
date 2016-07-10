@@ -22,7 +22,7 @@ angular.module('spender')
 
       ctrl.getTargetAmount = function() {
         if (ctrl.spent.paymentMethod && ctrl.income.paymentMethod) {
-          if (ctrl.spent.paymentMethod.currency === ctrl.income.paymentMethod.currency) {
+          if (ctrl.spent.paymentMethod.currencyId === ctrl.income.paymentMethod.currencyId) {
             return (ctrl.spent.amount || 0);
           } else if (ctrl.targetIncomeCurrencyRate && ctrl.sourceIncomeCurrencyRate) {
             return (ctrl.spent.amount || 0) * (ctrl.targetIncomeCurrencyRate / ctrl.sourceIncomeCurrencyRate);

@@ -19,7 +19,7 @@ angular.module('spender')
 
           if (income.sourceExpenseId) {
             income.categoryName = 'перевод';
-            income.comment = $filter('currency')(income.sourceExpenseAmount, '', 2) + ' ' + income.sourceExpensePaymentMethodCurrency + ' со счета ' + income.sourceExpensePaymentMethodName;
+            income.comment = $filter('currency')(income.sourceExpenseAmount, income.sourceExpensePaymentMethodCurrencySymbol, 2) + ' со счета ' + income.sourceExpensePaymentMethodName;
           }
 
           return income;
@@ -36,7 +36,7 @@ angular.module('spender')
           if (expense.targetIncomeId) {
             var income = incomesMap[expense.targetIncomeId];
             expense.categoryName = 'перевод';
-            expense.comment = $filter('currency')(income.amount, '', 2) + ' ' + income.paymentMethodCurrency + ' на счет ' + income.paymentMethodName;
+            expense.comment = $filter('currency')(income.amount, income.paymentMethodCurrencySymbol, 2) + ' на счет ' + income.paymentMethodName;
           }
 
           return expense;

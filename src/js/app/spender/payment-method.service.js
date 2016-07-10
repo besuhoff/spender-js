@@ -13,19 +13,19 @@ angular.module('spender')
             if (transaction.paymentMethodId === paymentMethod.id && (
               transaction.paymentMethodName !== paymentMethod.name ||
               transaction.paymentMethodColor !== paymentMethod.color ||
-              transaction.paymentMethodCurrency !== paymentMethod.currency
+              transaction.paymentMethodCurrencyId !== paymentMethod.currencyId
             )) {
               transaction.paymentMethodName = paymentMethod.name;
               transaction.paymentMethodColor = paymentMethod.color;
-              transaction.paymentMethodCurrency = paymentMethod.currency;
+              transaction.paymentMethodCurrencyId = paymentMethod.currencyId;
 
               recordListChange = true;
             }
 
             if (transaction.sourceExpensePaymentMethodId === paymentMethod.id &&
-              transaction.sourceExpensePaymentMethodCurrency !== paymentMethod.currency
+              transaction.sourceExpensePaymentMethodCurrencyId !== paymentMethod.currencyId
             ) {
-              transaction.sourceExpensePaymentMethodCurrency = paymentMethod.currency;
+              transaction.sourceExpensePaymentMethodCurrencyId = paymentMethod.currencyId;
 
               recordListChange = true;
             }

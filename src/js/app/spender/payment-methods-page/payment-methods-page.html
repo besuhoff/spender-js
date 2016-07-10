@@ -8,11 +8,24 @@
              ng-model="paymentMethod.name"
              ng-model-options="{ debounce: 300 }">,
       <span class="text-nowrap">
-        валюта: <input class="form-control form-control--sm"
-                       type="text"
-                       ng-model="paymentMethod.currency"
-                       ng-model-options="{ debounce: 300 }"
-                       ng-change="$ctrl.saveMethod(paymentMethod)">
+        валюта:
+
+        <select class="fomnt-control form-control--sm"
+                ng-model="paymentMethod.currencyId"
+                ng-options="currency.id as currency.code for currency in $ctrl.currencies"
+                ng-model-options="{ debounce: 300 }">
+        </select>
+
+        <div class="button-hint">
+          <div class="button-hint__inner">
+            <input class="form-control form-control--sm"
+                   type="text"
+                   ng-model="paymentMethod.currencyPseudo"
+                   ng-model-options="{ debounce: 300 }"
+                   ng-change="$ctrl.saveMethod(paymentMethod)">
+            <div class="button-hint__text">красивое имя для графика</div>
+          </div>
+        </div>
       </span>
       <color-picker ng-model="paymentMethod.color"
                     disabled-options="$ctrl.selectedColors"
@@ -26,7 +39,22 @@
     <li>
       <input class="form-control" type="text" placeholder="Название" ng-model="$ctrl.paymentMethod.name">,
       <span class="text-nowrap">
-        валюта: <input class="form-control form-control--sm" type="text" ng-model="$ctrl.paymentMethod.currency">
+        валюта: <select class="fomnt-control form-control--sm"
+                        ng-model="$ctrl.paymentMethod.currencyId"
+                        ng-options="currency.id as currency.code for currency in $ctrl.currencies"
+                        ng-model-options="{ debounce: 300 }">
+        </select>
+
+        <div class="button-hint">
+          <div class="button-hint__inner">
+            <input class="form-control form-control--sm"
+                   type="text"
+                   ng-model="$ctrl.paymentMethod.currencyPseudo"
+                   ng-model-options="{ debounce: 300 }"
+                   ng-change="$ctrl.saveMethod(paymentMethod)">
+            <div class="button-hint__text">красивое имя для графика</div>
+          </div>
+        </div>
       </span>
       <color-picker ng-model="$ctrl.paymentMethod.color"
                     disabled-options="$ctrl.selectedColors"

@@ -1,7 +1,7 @@
 <div class="form">
   <div>
     Получил <input autofocus class="form-control form-control--sm" type="number" ng-model="$ctrl.income.amount" step="0.01">
-    {{$ctrl.income.paymentMethod.currency}}
+    {{$ctrl.income.paymentMethod.currencySymbol}}
     <select class="form-control"
             ng-model="$ctrl.income.paymentMethod"
             ng-options="paymentMethod as paymentMethod.name for paymentMethod in $ctrl.paymentMethods">

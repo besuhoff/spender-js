@@ -1,7 +1,7 @@
 <div class="form">
   <div>
     Перевёл <input autofocus class="form-control form-control--sm" type="number" ng-model="$ctrl.spent.amount" step="0.01">
-    {{$ctrl.spent.paymentMethod.currency}}
+    {{$ctrl.spent.paymentMethod.currencySymbol}}
 
     <select class="form-control"
             ng-model="$ctrl.spent.paymentMethod"
@@ -17,14 +17,14 @@
         <option value="">- платёжное средство -</option>
       </select>
     </span>
-    <span ng-if="$ctrl.spent.paymentMethod && $ctrl.income.paymentMethod && $ctrl.spent.paymentMethod.currency !== $ctrl.income.paymentMethod.currency">
+    <span ng-if="$ctrl.spent.paymentMethod && $ctrl.income.paymentMethod && $ctrl.spent.paymentMethod.currencyId !== $ctrl.income.paymentMethod.currencyId">
       по&nbsp;курсу <input class="form-control form-control--sm" type="number" ng-model="$ctrl.sourceIncomeCurrencyRate">
       <span class="text-nowrap">к <input class="form-control form-control--sm" type="number" ng-model="$ctrl.targetIncomeCurrencyRate"></span>
     </span>
   </div>
 
   <div ng-if="$ctrl.getTargetAmount() !== undefined" class="form__hint">
-    ({{$ctrl.getTargetAmount() | currency:$ctrl.income.paymentMethod.currency + ' ':2}} будет начислено на счёт «{{$ctrl.income.paymentMethod.name}}»)
+    ({{$ctrl.getTargetAmount() | currency:$ctrl.income.paymentMethod.currencyCode + ' ':2}} будет начислено на счёт «{{$ctrl.income.paymentMethod.name}}»)
   </div>
 
   <div>
@@ -42,8 +42,8 @@
           <span ng-show="!$ctrl.spent.paymentMethod">платежное средство</span><!--
           --><span ng-show="!$ctrl.income.paymentMethod && !$ctrl.spent.paymentMethod"> и </span><!--
           --><span ng-show="!$ctrl.income.paymentMethod">целевой счёт</span><!--
-          --><span ng-show="(!$ctrl.spent.paymentMethod || !$ctrl.income.paymentMethod) && ($ctrl.spent.paymentMethod.currency !== $ctrl.income.paymentMethod.currency && (!$ctrl.sourceIncomeCurrencyRate || !$ctrl.targetIncomeCurrencyRate))">, а также </span><!--
-          --><span ng-show="$ctrl.spent.paymentMethod.currency !== $ctrl.income.paymentMethod.currency && (!$ctrl.sourceIncomeCurrencyRate || !$ctrl.targetIncomeCurrencyRate)">курс обмена</span>
+          --><span ng-show="(!$ctrl.spent.paymentMethod || !$ctrl.income.paymentMethod) && ($ctrl.spent.paymentMethod.currencyId !== $ctrl.income.paymentMethod.currencyId && (!$ctrl.sourceIncomeCurrencyRate || !$ctrl.targetIncomeCurrencyRate))">, а также </span><!--
+          --><span ng-show="$ctrl.spent.paymentMethod.currencyId !== $ctrl.income.paymentMethod.currencyId && (!$ctrl.sourceIncomeCurrencyRate || !$ctrl.targetIncomeCurrencyRate)">курс обмена</span>
         </div>
       </div>
     </div>
