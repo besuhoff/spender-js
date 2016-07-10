@@ -32,7 +32,7 @@ angular.module(
       })
       .state('home', {
         url: '',
-        redirectTo: 'home.expenses',
+        redirectTo: 'expenses',
         template: '<layout profile="profile"></layout>',
         controller: function($scope, profile) {
           $scope.profile = profile;
@@ -58,27 +58,38 @@ angular.module(
           }
         }
       })
-      .state('home.expenses', {
+      .state('expenses', {
+        parent: 'home',
         url: '/expenses',
         template: '<expenses-page></expenses-page>'
       })
-      .state('home.transfers', {
-        url: '/transfers',
-        template: '<transfers-page></transfers-page>'
-      })
-      .state('home.income', {
+      .state('income', {
+        parent: 'home',
         url: '/income',
         template: '<income-page></income-page>'
       })
-      .state('home.categories', {
+      .state('transfers', {
+        parent: 'home',
+        url: '/transfers',
+        template: '<transfers-page></transfers-page>'
+      })
+      .state('history', {
+        parent: 'home',
+        url: '/history',
+        template: '<history-page></history-page>'
+      })
+      .state('categories', {
+        parent: 'home',
         url: '/categories',
         template: '<categories-page></categories-page>'
       })
-      .state('home.income-categories', {
+      .state('income-categories', {
+        parent: 'home',
         url: '/income-categories',
         template: '<income-categories-page></income-categories-page>'
       })
-      .state('home.payment-methods', {
+      .state('payment-methods', {
+        parent: 'home',
         url: '/payment-methods',
         template: '<payment-methods-page></payment-methods-page>'
       });
