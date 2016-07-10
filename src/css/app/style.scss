@@ -38,6 +38,11 @@ body {
 .form {
   line-height: 42px;
 
+  .button-hint {
+    vertical-align: top;
+    margin-top: 38px;
+  }
+
   .btn {
     .fa.fa-lg {
       line-height: 1.25em;
@@ -333,5 +338,24 @@ spinner {
         display: none;
       }
     }
+  }
+}
+
+.button-hint {
+  display: inline-block;
+  vertical-align: top;
+
+  &__inner {
+    display: table-cell;
+    width: 1px;
+  }
+
+  &__text {
+    display: inline-block;
+    font-size: 10px;
+    line-height: 14px;
+    color: #999;
+    padding-top: 6px;
+    width: 100%;
   }
 }
