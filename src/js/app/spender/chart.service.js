@@ -72,7 +72,7 @@ angular.module('spender')
 
     function _fillInMaps(transactions, chartMap, paymentMethodsMap, datesMap) {
       transactions.forEach(function(e) {
-        var currency = e.paymentMethodCurrencyPseudo || e.paymentMethodCurrencyCode,
+        var currency = e.paymentMethodCurrencyCode,
           date = moment(e.createdAt).format('YYYY-MM-DD');
 
         if (!chartMap[currency]) {
@@ -184,7 +184,7 @@ angular.module('spender')
 
       transactions.forEach(function(e) {
         var categoryId = e[categoryKey + 'Id'],
-          currency = e.paymentMethodCurrencyPseudo || e.paymentMethodCurrencyCode;
+          currency = e.paymentMethodCurrencyCode;
 
         // Don't include expenses/incomes for transfers
         if (!categoryId) {

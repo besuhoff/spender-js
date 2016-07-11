@@ -40,7 +40,14 @@ body {
 
   .button-hint {
     vertical-align: top;
-    margin-top: 39px;
+
+    .btn {
+      margin-top: 39px;
+    }
+
+    .form-control {
+      margin-top: 10px;
+    }
   }
 
   .btn {

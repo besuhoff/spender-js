@@ -22,7 +22,7 @@
   "devDependencies": {
     "gulp": "3.9.1",
     "gulp-angular-templatecache": "2.0.0",
-    "gulp-base": "git://github.com/besuhoff/gulp-base.git#patch-1",
+    "gulp-base": "git://github.com/aicest/gulp-base.git",
     "gulp-clean": "0.3.2",
     "gulp-cli": "1.2.1",
     "gulp-concat": "2.6.0",
