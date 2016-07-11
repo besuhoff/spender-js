@@ -40,7 +40,7 @@ body {
 
   .button-hint {
     vertical-align: top;
-    margin-top: 38px;
+    margin-top: 39px;
   }
 
   .btn {
@@ -141,17 +141,18 @@ body {
     width: 32px;
 
     &.date {
-      width: 84px;
+      width: 76px;
       text-align: right;
     }
   }
 
   .time-group {
-    margin-bottom: -2px;
+    margin-bottom: -1px;
     vertical-align: middle;
 
     .uib-separator {
       padding-bottom: 5px;
+      height: 38px;
     }
   }
 }
