@@ -23,12 +23,12 @@
     <div class="button-hint">
       <div class="button-hint__inner">
         <button class="btn-primary btn btn-inline"
-                ng-disabled="!$ctrl.income.paymentMethod || !$ctrl.income.category"
+                ng-disabled="!$ctrl.income.paymentMethod || !$ctrl.income.incomeCategory"
                 ng-click="$ctrl.save()">Записать транзакцию</button>
-        <div class="button-hint__text" ng-show="!$ctrl.income.paymentMethod || !$ctrl.income.category">
+        <div class="button-hint__text" ng-show="!$ctrl.income.paymentMethod || !$ctrl.income.incomeCategory">
           Укажите
           <span ng-show="!$ctrl.income.paymentMethod">платёжное средство</span>
-          <span ng-show="!$ctrl.income.paymentMethod && !$ctrl.income.category">и</span>
+          <span ng-show="!$ctrl.income.paymentMethod && !$ctrl.income.incomeCategory">и</span>
           <span ng-show="!$ctrl.income.incomeCategory">категорию</span>
         </div>
       </div>
