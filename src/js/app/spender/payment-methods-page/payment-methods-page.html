@@ -43,9 +43,20 @@
 
       </color-picker>
       <spinner is-loaded="$ctrl.isNewLoaded"></spinner>
-      <button class="btn-primary btn-sm btn btn-inline"
-              ng-click="$ctrl.addMethod()"
-              ng-disabled="!$ctrl.paymentMethod.name || !$ctrl.paymentMethod.currency"><i class="fa fa-lg fa-plus"></i></button>
+
+      <div class="button-hint">
+        <div class="button-hint__inner">
+          <button class="btn-primary btn-sm btn btn-inline"
+                  ng-disabled="!$ctrl.paymentMethod.name || !$ctrl.paymentMethod.currencyId"
+                  ng-click="$ctrl.addMethod()">Добавить средство</button>
+          <div class="button-hint__text" ng-show="!$ctrl.paymentMethod.name || !$ctrl.paymentMethod.currencyId">
+            Укажите
+            <span ng-show="!$ctrl.paymentMethod.name">название</span>
+            <span ng-show="!$ctrl.paymentMethod.name && !$ctrl.paymentMethod.currencyId">и</span>
+            <span ng-show="!$ctrl.paymentMethod.currencyId">валюту</span>
+          </div>
+        </div>
+      </div>
     </li>
   </ul>
 </div>

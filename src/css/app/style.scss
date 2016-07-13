@@ -40,9 +40,12 @@ body {
 
   .button-hint {
     vertical-align: top;
+    margin-top: 5px;
 
-    .btn {
-      margin-top: 39px;
+    &--lg {
+      .btn {
+        margin-top: 39px;
+      }
     }
 
     .form-control {
@@ -189,7 +192,7 @@ body {
   position: relative;
 
   .color {
-    margin: -1px -3px;
+    margin: -3px -3px -1px;
     padding: 1px;
     display: inline-block;
     width: 22px;
