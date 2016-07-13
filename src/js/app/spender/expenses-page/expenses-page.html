@@ -35,7 +35,7 @@
   </div>
 </div>
 
-<div class="charts" ng-if="$ctrl.expensesChart">
+<div class="charts" ng-if="$ctrl.hasChart()">
   <h3>Траты за последний месяц</h3>
   <div class="row">
     <div class="col-md-6" ng-repeat="(currency, chartData) in $ctrl.expensesChart">

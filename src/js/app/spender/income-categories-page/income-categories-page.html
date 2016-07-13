@@ -33,7 +33,7 @@
       </ul>
     </div>
     <div class="col-md-6">
-      <div class="charts" ng-if="$ctrl.categoriesChart">
+      <div class="charts" ng-if="$ctrl.hasChart()">
         <h3>Распределение в последний месяц</h3>
         <div class="row">
           <div class="col-md-12" ng-repeat="(currency, chartData) in $ctrl.categoriesChart">

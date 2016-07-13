@@ -48,6 +48,10 @@ angular.module('spender')
             initPaymentMethods(true);
           });
         }
-      }
+      };
+
+      ctrl.hasChart = function() {
+        return ctrl.incomesChart && Object.keys(ctrl.incomesChart).length > 0;
+      };
     }
   });

@@ -76,6 +76,10 @@
       {
         "from": "/payment-methods",
         "to": "/index.html"
+      },
+      {
+        "from": "/history",
+        "to": "/index.html"
       }
     ]
   }

@@ -47,12 +47,13 @@
 
   <div class="management">
     <h3>Остатки</h3>
-    <table class="table-remains">
+    <table class="table-remains" ng-if="$ctrl.paymentMethods.length">
       <tr ng-repeat="paymentMethod in $ctrl.paymentMethods"><td class="td-label">{{paymentMethod.name}}</td><td class="td-number">{{(paymentMethod.incomes - paymentMethod.expenses) | currency:'':2 }}</td></tr>
     </table>
+    <h5 ng-if="!$ctrl.paymentMethods.length">У вас нет ни одного счёта. <a ui-sref="payment-methods">Добавьте счета</a>, чтобы увидеть остатки по ним.</h5>
   </div>
 
-  <div class="charts" ng-if="$ctrl.balanceChart">
+  <div class="charts" ng-if="$ctrl.hasChart()">
     <h3>Динамика остатков за последний месяц</h3>
     <div class="row">
       <div class="col-md-6" ng-repeat="(currency, chartData) in $ctrl.balanceChart">

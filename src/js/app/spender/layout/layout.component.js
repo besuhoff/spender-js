@@ -30,6 +30,10 @@ angular.module('spender')
         });
       };
 
+      ctrl.hasChart = function() {
+        return ctrl.balanceChart && Object.keys(ctrl.balanceChart).length > 0;
+      };
+
       $scope.$watch(
         function() {
           return PaymentMethodService.getListChangedAt();

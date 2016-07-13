@@ -1,44 +1,48 @@
-<table class="history hidden-xs hidden-sm">
-  <tr class="history__row" ng-repeat="record in $ctrl.history">
-    <td class="date">
-      {{record.createdAtFormatted}} ({{record.createdAt | amTimeAgo}})
-    </td>
-    <td class="history__amount" ng-class="{ 'history__amount--expense': record.amount < 0 }">
-      <span ng-if="record.amount >= 0">+</span>{{record.amount | currency:'':2 }}
-    </td>
-    <td class="history__payment-method">
-      {{record.paymentMethodName}}
-    </td>
-    <td class="history__category">
-      {{record.categoryName}} <span class="comment" ng-show="record.comment">({{record.comment}})</span>
-    </td>
-    <td class="history__actions">
-      <span class="btn btn-xs btn-link fa fa-pencil" ng-click="$ctrl.editTransaction(record)"></span><span class="btn btn-xs btn-link fa fa-close" ng-click="$ctrl.removeTransaction(record)"></span>
-    </td>
-  </tr>
-</table>
+<h5 ng-if="!$ctrl.history.length">Вы не записали ни одной транзакции. Запишите <a ui-sref="income">доход</a>, <a ui-sref="expenses">трату</a> или <a ui-sref="transfers">перевод</a> чтобы увидеть историю платежей.</h5>
 
-<table class="history history--compact hidden-md hidden-lg">
-  <tr class="history__row" ng-repeat-start="record in $ctrl.history">
-    <td class="history__date">
-      {{record.createdAtFormattedCompact}}
-    </td>
-    <td class="history__amount" ng-class="{ 'history__amount--expense': record.amount < 0 }">
-      <span ng-if="record.amount >= 0">+</span>{{record.amount | currency:'':2 }}
-    </td>
-    <td class="history__payment-method">
-      {{record.paymentMethodName}}
-    </td>
-    <td class="history__actions" rowspan="2">
-      <span class="btn btn-xs btn-link fa fa-pencil" ng-click="$ctrl.editTransaction(record)"></span><span class="btn btn-xs btn-link fa fa-close" ng-click="$ctrl.removeTransaction(record)"></span>
-      <div class="hr"></div>
-    </td>
-  </tr>
+<div ng-if="$ctrl.history.length">
+  <table class="history hidden-xs hidden-sm">
+    <tr class="history__row" ng-repeat="record in $ctrl.history">
+      <td class="date">
+        {{record.createdAtFormatted}} ({{record.createdAt | amTimeAgo}})
+      </td>
+      <td class="history__amount" ng-class="{ 'history__amount--expense': record.amount < 0 }">
+        <span ng-if="record.amount >= 0">+</span>{{record.amount | currency:'':2 }}
+      </td>
+      <td class="history__payment-method">
+        {{record.paymentMethodName}}
+      </td>
+      <td class="history__category">
+        {{record.categoryName}} <span class="comment" ng-show="record.comment">({{record.comment}})</span>
+      </td>
+      <td class="history__actions">
+        <span class="btn btn-xs btn-link fa fa-pencil" ng-click="$ctrl.editTransaction(record)"></span><span class="btn btn-xs btn-link fa fa-close" ng-click="$ctrl.removeTransaction(record)"></span>
+      </td>
+    </tr>
+  </table>
 
-  <tr class="history__row" ng-repeat-end>
-    <td colspan="3" class="history__category">
-      {{record.categoryName}} <span class="comment" ng-show="record.comment">({{record.comment}})</span>
-      <div class="hr"></div>
-    </td>
-  </tr>
-</table>
+  <table class="history history--compact hidden-md hidden-lg">
+    <tr class="history__row" ng-repeat-start="record in $ctrl.history">
+      <td class="history__date">
+        {{record.createdAtFormattedCompact}}
+      </td>
+      <td class="history__amount" ng-class="{ 'history__amount--expense': record.amount < 0 }">
+        <span ng-if="record.amount >= 0">+</span>{{record.amount | currency:'':2 }}
+      </td>
+      <td class="history__payment-method">
+        {{record.paymentMethodName}}
+      </td>
+      <td class="history__actions" rowspan="2">
+        <span class="btn btn-xs btn-link fa fa-pencil" ng-click="$ctrl.editTransaction(record)"></span><span class="btn btn-xs btn-link fa fa-close" ng-click="$ctrl.removeTransaction(record)"></span>
+        <div class="hr"></div>
+      </td>
+    </tr>
+
+    <tr class="history__row" ng-repeat-end>
+      <td colspan="3" class="history__category">
+        {{record.categoryName}} <span class="comment" ng-show="record.comment">({{record.comment}})</span>
+        <div class="hr"></div>
+      </td>
+    </tr>
+  </table>
+</div>

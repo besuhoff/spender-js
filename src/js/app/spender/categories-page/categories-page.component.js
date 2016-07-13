@@ -57,5 +57,9 @@ angular.module('spender')
           ctrl.selectedColors.push(ctrl.category.color);
         }
       };
+
+      ctrl.hasChart = function() {
+        return ctrl.categoriesChart && Object.keys(ctrl.categoriesChart).length > 0;
+      };
     }
   });
