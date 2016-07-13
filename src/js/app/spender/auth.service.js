@@ -1,6 +1,7 @@
 angular.module('spender')
   .service('AuthService', function(Restangular, $http,
-                                   CategoryService, ExpenseService, IncomeService, IncomeCategoryService, PaymentMethodService) {
+                                   CategoryService, ExpenseService, IncomeService, IncomeCategoryService, UserService,
+                                   PaymentMethodService) {
     var _profile;
 
     this.getProfile = function() {
@@ -8,10 +9,12 @@ angular.module('spender')
     };
 
     this.setProfile = function(profile) {
-      _profile = profile;
+      UserService.create().then(function() {
+        _profile = profile;
 
-      [CategoryService, ExpenseService, IncomeService, IncomeCategoryService, PaymentMethodService].forEach(function(service) {
-        service.resetAll();
+        [CategoryService, ExpenseService, IncomeService, IncomeCategoryService, PaymentMethodService].forEach(function(service) {
+          service.resetAll();
+        });
       });
     };
 
