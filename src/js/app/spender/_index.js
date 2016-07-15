@@ -45,9 +45,7 @@ angular.module(
               if (currentUser && currentUser.isSignedIn()) {
                 var id_token = currentUser.getAuthResponse().id_token;
                 AuthService.setToken(id_token);
-                AuthService.setProfile(currentUser.getBasicProfile());
-
-                return currentUser.getBasicProfile();
+                return AuthService.setProfile(currentUser.getBasicProfile());
               } else {
                 return $q.reject('User is not authenticated');
               }
@@ -68,10 +66,53 @@ angular.module(
         url: '/income',
         template: '<income-page></income-page>'
       })
+      .state('income-edit', {
+        parent: 'home',
+        url: '/income/:id',
+        template: '<income-page income="income"></income-page>',
+        controller: function($scope, income) {
+          $scope.income = income;
+        },
+        resolve: {
+          income: function($stateParams, IncomeService) {
+            return IncomeService.getOne(+$stateParams.id);
+          }
+        }
+      })
+      .state('expense-edit', {
+        parent: 'home',
+        url: '/expenses/:id',
+        template: '<expenses-page expense="expense"></expenses-page>',
+        controller: function($scope, expense) {
+          $scope.expense = expense;
+        },
+        resolve: {
+          expense: function($stateParams, ExpenseService) {
+            return ExpenseService.getOne(+$stateParams.id);
+          }
+        }
+      })
       .state('transfers', {
         parent: 'home',
         url: '/transfers',
         template: '<transfers-page></transfers-page>'
+      })
+      .state('transfer-edit', {
+        parent: 'home',
+        url: '/transfers/:id',
+        template: '<transfers-page income="income" expense="expense"></transfers-page>',
+        controller: function($scope, income, expense) {
+          $scope.income = income;
+          $scope.expense = expense;
+        },
+        resolve: {
+          income: function($stateParams, IncomeService) {
+            return IncomeService.getOne(+$stateParams.id);
+          },
+          expense: function($stateParams, ExpenseService, income) {
+            return income.sourceExpense;
+          }
+        }
       })
       .state('history', {
         parent: 'home',

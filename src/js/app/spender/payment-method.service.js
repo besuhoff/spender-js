@@ -1,40 +1,16 @@
 angular.module('spender')
-  .service('PaymentMethodService', function Service(Restangular, IncomeService, ExpenseService) {
+  .service('PaymentMethodService', function Service(Restangular, $injector) {
     DataService.call(this, Restangular, 'payment-methods');
 
-    var update = this.update;
+    this.afterLoad = function(paymentMethod) {
+      paymentMethod.expenses = +paymentMethod.expenses;
+      paymentMethod.incomes = +paymentMethod.incomes;
+      paymentMethod._isRemoved = !!+paymentMethod._isRemoved;
+      return paymentMethod;
+    };
 
-    this.update = function(paymentMethod) {
-      return update.call(this, paymentMethod).then(function(paymentMethod) {
-        [IncomeService, ExpenseService].forEach(function(service) {
-          var recordListChange = false;
-
-          service.getAll().forEach(function(transaction) {
-            if (transaction.paymentMethodId === paymentMethod.id && (
-              transaction.paymentMethodName !== paymentMethod.name ||
-              transaction.paymentMethodColor !== paymentMethod.color ||
-              transaction.paymentMethodCurrencyId !== paymentMethod.currencyId
-            )) {
-              transaction.paymentMethodName = paymentMethod.name;
-              transaction.paymentMethodColor = paymentMethod.color;
-              transaction.paymentMethodCurrencyId = paymentMethod.currencyId;
-
-              recordListChange = true;
-            }
-
-            if (transaction.sourceExpensePaymentMethodId === paymentMethod.id &&
-              transaction.sourceExpensePaymentMethodCurrencyId !== paymentMethod.currencyId
-            ) {
-              transaction.sourceExpensePaymentMethodCurrencyId = paymentMethod.currencyId;
-
-              recordListChange = true;
-            }
-          });
-
-          if (recordListChange) {
-            service.recordListChange();
-          }
-        });
-      });
-    }
+    this.afterAdd = function(paymentMethod) {
+      $injector.get('CacheService').preparePaymentMethod(paymentMethod);
+      return paymentMethod;
+    };
   });

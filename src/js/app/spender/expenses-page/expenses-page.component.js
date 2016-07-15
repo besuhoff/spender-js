@@ -1,51 +1,44 @@
 angular.module('spender')
   .component('expensesPage', {
+    bindings: {
+      expense: '=?'
+    },
     templateUrl: 'js/app/spender/expenses-page/expenses-page.html',
-    controller: function(ExpenseService, ChartService, CategoryService, PaymentMethodService, moment) {
+    controller: function($state, moment, ExpenseService, ChartService, CategoryService, PaymentMethodService) {
       var ctrl = this;
 
       function initExpense() {
-        ctrl.spent = {
-          createdAt: ctrl.spent ? ctrl.spent.createdAt : moment().format()
+        ctrl.expense = {
+          createdAt: (ctrl.expense ? moment(ctrl.expense.createdAt).add(1, 'seconds') : moment()).format()
         };
       }
 
-      function initExpenses(reload) {
-        ExpenseService.loadAll(reload).then(function(expenses) {
-          ctrl.expenses = expenses;
-          ctrl.expensesChart = ChartService.buildTransactionsChart(expenses);
-        });
+      function initExpenses() {
+        ctrl.expenses = ExpenseService.getAll().filter(function(item) { return !item._isRemoved; });
+        ctrl.expensesChart = ChartService.buildTransactionsChart(ctrl.expenses);
       }
 
-      function initPaymentMethods(reload) {
-        PaymentMethodService.loadAll(reload).then(function(paymentMethods) {
-          ctrl.paymentMethods = paymentMethods;
-        });
-      }
-
-      ctrl.paymentMethods = [];
-      ctrl.categories = [];
-      ctrl.expenses = [];
-
-      initExpense();
       initExpenses();
-      initPaymentMethods();
+      if (!ctrl.expense) {
+        initExpense();
+      } else {
+        ctrl.expense.paymentMethod = PaymentMethodService.getOne(ctrl.expense.paymentMethodId);
+        ctrl.expense.category = CategoryService.getOne(ctrl.expense.categoryId);
+        ctrl.editMode = true;
+      }
 
-      CategoryService.loadAll().then(function(categories) {
-        ctrl.categories = categories;
-      });
+      ctrl.paymentMethods = PaymentMethodService.getAll().filter(function(item) { return !item._isRemoved; });
+      ctrl.categories = CategoryService.getAll().filter(function(item) { return !item._isRemoved; });
 
       ctrl.save = function() {
-        if (ctrl.spent.category && ctrl.spent.paymentMethod) {
-          ctrl.spent.categoryId = ctrl.spent.category.id;
-          ctrl.spent.paymentMethodId = ctrl.spent.paymentMethod.id;
-          delete ctrl.spent.category;
-          delete ctrl.spent.paymentMethod;
-
-          ExpenseService.add(ctrl.spent).then(function() {
-            initExpense();
-            initExpenses(true);
-            initPaymentMethods(true);
+        if (ctrl.expense.category && ctrl.expense.paymentMethod) {
+          ExpenseService[!ctrl.editMode ? 'add' : 'update'](ctrl.expense).then(function() {
+            if (ctrl.editMode) {
+              $state.go('expenses');
+            } else {
+              initExpense();
+              initExpenses();
+            }
           });
         }
       };

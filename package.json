@@ -54,11 +54,23 @@
         "to": "/index.html"
       },
       {
+        "from": "/expenses/*",
+        "to": "/index.html"
+      },
+      {
         "from": "/income",
         "to": "/index.html"
       },
       {
+        "from": "/income/*",
+        "to": "/index.html"
+      },
+      {
         "from": "/transfers",
+        "to": "/index.html"
+      },
+      {
+        "from": "/transfers/*",
         "to": "/index.html"
       },
       {

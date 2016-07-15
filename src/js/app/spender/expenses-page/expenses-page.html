@@ -1,34 +1,34 @@
 <div class="form">
   <div>
-    Потратил <input autofocus class="form-control form-control--sm" type="number" ng-model="$ctrl.spent.amount" step="0.01">
-    {{$ctrl.spent.paymentMethod.currencySymbol}}
+    Потратил <input autofocus class="form-control form-control--sm" type="number" ng-model="$ctrl.expense.amount" step="0.01">
+    {{$ctrl.expense.paymentMethod.currency.symbol}}
     <select class="form-control"
-            ng-model="$ctrl.spent.paymentMethod"
+            ng-model="$ctrl.expense.paymentMethod"
             ng-options="paymentMethod as paymentMethod.name for paymentMethod in $ctrl.paymentMethods">
       <option value="">- платёжным средством -</option>
     </select>
     <span class="text-nowrap">
       на <select class="form-control"
-                 ng-model="$ctrl.spent.category"
+                 ng-model="$ctrl.expense.category"
                  ng-options="category as category.name for category in $ctrl.categories">
         <option value="">- категорию -</option>
       </select>
     </span>
   </div>
   <div>
-    Дата: <datetime ng-model="$ctrl.spent.createdAt"></datetime>,
+    Дата: <datetime ng-model="$ctrl.expense.createdAt"></datetime>,
     комментарий: <input class="form-control"
-                        ng-model="$ctrl.spent.comment">
+                        ng-model="$ctrl.expense.comment">
     <div class="button-hint button-hint--lg">
       <div class="button-hint__inner">
         <button class="btn-primary btn btn-inline"
-                ng-disabled="!$ctrl.spent.paymentMethod || !$ctrl.spent.category"
+                ng-disabled="!$ctrl.expense.paymentMethod || !$ctrl.expense.category"
                 ng-click="$ctrl.save()">Записать транзакцию</button>
-        <div class="button-hint__text" ng-show="!$ctrl.spent.paymentMethod || !$ctrl.spent.category">
+        <div class="button-hint__text" ng-show="!$ctrl.expense.paymentMethod || !$ctrl.expense.category">
           Укажите
-          <span ng-show="!$ctrl.spent.paymentMethod">платёжное средство</span>
-          <span ng-show="!$ctrl.spent.paymentMethod && !$ctrl.spent.category">и</span>
-          <span ng-show="!$ctrl.spent.category">категорию</span>
+          <span ng-show="!$ctrl.expense.paymentMethod">платёжное средство</span>
+          <span ng-show="!$ctrl.expense.paymentMethod && !$ctrl.expense.category">и</span>
+          <span ng-show="!$ctrl.expense.category">категорию</span>
         </div>
       </div>
     </div>

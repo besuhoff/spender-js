@@ -284,14 +284,23 @@ spinner {
   font-family: 'Fira Mono', monospace;
   border-spacing: 0;
 
-  &__row {
-    display: table-row;
+  td, th {
+    padding: 7px 5px 0;
+    position: relative;
+  }
 
-    td {
-      padding: 7px 5px 0;
-      line-height: 12px;
-      font-size: 12px;
-      position: relative;
+  th {
+    font-size: 14px;
+  }
+
+  td {
+    line-height: 12px;
+    font-size: 12px;
+  }
+
+  &__row {
+    &.highlighted {
+      background: #f3f3f3;
     }
 
     .history__date {
@@ -332,7 +341,7 @@ spinner {
     right: 0;
   }
 
-  &--compact {
+  @media(max-width: 991px) {
     width: 100%;
 
     .history__category, .history__actions {
@@ -347,6 +356,22 @@ spinner {
     .history__row:last-child {
       .hr {
         display: none;
+      }
+    }
+
+    .history__row:nth-last-child(2) {
+      td[rowspan="2"] {
+        .hr {
+          display: none;
+        }
+      }
+    }
+
+    .history__row:nth-last-child(4) {
+      td[rowspan="4"] {
+        .hr {
+          display: none;
+        }
       }
     }
   }
@@ -369,4 +394,9 @@ spinner {
     padding-top: 6px;
     width: 100%;
   }
+}
+
+.btn[disabled] {
+  -webkit-filter: grayscale(1);
+  filter: grayscale(1);
 }

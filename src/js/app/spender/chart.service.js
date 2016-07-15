@@ -30,7 +30,7 @@ angular.module('spender')
           startDateMomentFormatted = startDateMoment.format('YYYY-MM-DD'),
           endDate = datePoints[datePoints.length - 1];
 
-        while(startDateMomentFormatted < endDate) {
+        while(startDateMoment.isBefore(moment(endDate, 'YYYY-MM-DD'))) {
           startDateMoment.add(1, 'days');
           startDateMomentFormatted = startDateMoment.format('YYYY-MM-DD');
 
@@ -42,7 +42,7 @@ angular.module('spender')
         datePoints = datePoints.sort();
         chart[currency].labels = datePoints;
 
-        Object.keys(paymentMethodsMap[currency]).forEach(function(paymentMethodId, paymentMethodIndex) {
+        Object.keys(paymentMethodsMap[currency]).forEach(function(paymentMethodId) {
           var line = [];
 
           datePoints.forEach(function(date) {
@@ -72,7 +72,7 @@ angular.module('spender')
 
     function _fillInMaps(transactions, chartMap, paymentMethodsMap, datesMap) {
       transactions.forEach(function(e) {
-        var currency = e.paymentMethodCurrencyCode,
+        var currency = e.paymentMethod.currency.code,
           date = moment(e.createdAt).format('YYYY-MM-DD');
 
         if (!chartMap[currency]) {
@@ -87,20 +87,20 @@ angular.module('spender')
           paymentMethodsMap[currency] = {};
         }
 
-        if (!chartMap[currency][e.paymentMethodId]) {
-          chartMap[currency][e.paymentMethodId] = {};
+        if (!chartMap[currency][e.paymentMethod.id]) {
+          chartMap[currency][e.paymentMethod.id] = {};
         }
 
-        if (chartMap[currency][e.paymentMethodId][date] === undefined) {
-          chartMap[currency][e.paymentMethodId][date] = 0;
+        if (chartMap[currency][e.paymentMethod.id][date] === undefined) {
+          chartMap[currency][e.paymentMethod.id][date] = 0;
         }
 
-        paymentMethodsMap[currency][e.paymentMethodId] = {
-          name: e.paymentMethodName,
-          color: e.paymentMethodColor
+        paymentMethodsMap[currency][e.paymentMethod.id] = {
+          name: e.paymentMethod.name,
+          color: e.paymentMethod.color
         };
         datesMap[currency][date] = date;
-        chartMap[currency][e.paymentMethodId][date] += +e.amount;
+        chartMap[currency][e.paymentMethod.id][date] += e.amount;
       });
     }
 
@@ -111,7 +111,7 @@ angular.module('spender')
 
       // Don't include expenses/incomes for transfers
       transactions = transactions.filter(function(transaction) {
-        return transaction.categoryId || transaction.incomeCategoryId;
+        return transaction.category || transaction.incomeCategory;
       });
 
       // Create a widely rarefied matrix of transactions
@@ -151,7 +151,7 @@ angular.module('spender')
           startDateMomentFormatted = startDateMoment.format('YYYY-MM-DD'),
           endDate = datePoints[datePoints.length - 1];
 
-        while(startDateMomentFormatted < endDate) {
+        while(startDateMoment.isBefore(moment(endDate, 'YYYY-MM-DD'))) {
           startDateMoment.add(1, 'days');
           startDateMomentFormatted = startDateMoment.format('YYYY-MM-DD');
 
@@ -177,14 +177,19 @@ angular.module('spender')
     };
 
     this.buildCategoriesChart = function(transactions, categoryKey) {
+      // Don't include expenses/incomes for transfers
+      transactions = transactions.filter(function(transaction) {
+        return transaction[categoryKey];
+      });
+
       var categoriesMap = {};
 
       // Fill everything with zeros
       var chart = {};
 
       transactions.forEach(function(e) {
-        var categoryId = e[categoryKey + 'Id'],
-          currency = e.paymentMethodCurrencyCode;
+        var categoryId = e[categoryKey].id,
+          currency = e.paymentMethod.currency.code;
 
         // Don't include expenses/incomes for transfers
         if (!categoryId) {
@@ -197,13 +202,13 @@ angular.module('spender')
 
         if (!categoriesMap[currency][categoryId]) {
           categoriesMap[currency][categoryId] = {
-            label: e[categoryKey + 'Name'],
-            color: e[categoryKey + 'Color'] || '#bbb',
+            label: e[categoryKey].name,
+            color: e[categoryKey].color || '#bbb',
             total: 0
           };
         }
 
-        categoriesMap[currency][categoryId].total += +e.amount;
+        categoriesMap[currency][categoryId].total += e.amount;
       });
 
       Object.keys(categoriesMap).map(function(currency) {

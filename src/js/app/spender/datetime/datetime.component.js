@@ -28,7 +28,7 @@ angular.module('spender')
         ctrl.$onInit = function() {
           ctrl.ngModelController.$render = function() {
             var datetime = ctrl.ngModelController.$viewValue;
-            ctrl.time = datetime ? moment(moment(datetime).format('HH:mm'), 'HH:mm').toDate() : null;
+            ctrl.time = datetime ? moment(moment(datetime).format('HH:mm:ss'), 'HH:mm:ss').toDate() : null;
             ctrl.date = datetime ? moment(datetime).toDate() : null;
           };
         };

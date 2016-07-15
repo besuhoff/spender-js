@@ -4,32 +4,21 @@ angular.module('spender')
     controller: function($scope, CategoryService, ChartService, ExpenseService) {
       var ctrl = this;
 
+      function initCategories() {
+        ctrl.categories = CategoryService.getAll().filter(function(item) { return !item._isRemoved; });
+        ctrl.categoriesChart = ChartService.buildCategoriesChart(ctrl.expenses, 'category');
+      }
+
       function initCategory() {
         ctrl.category = {};
         ctrl.isNewLoaded = undefined;
       }
 
-      function initCategories(reload) {
-        return CategoryService.loadAll(reload).then(function(categories) {
-          ctrl.categories = categories;
-          ctrl.isLoaded = {};
-          ctrl.updateSelectedColors();
-        });
-      }
-
-      $scope.$watch(function() {
-        return ExpenseService.getListChangedAt();
-      }, function() {
-        ctrl.expenses = ExpenseService.getAll();
-        ctrl.categoriesChart = ChartService.buildCategoriesChart(ctrl.expenses, 'category');
-      });
-
-      initCategories();
-      initCategory();
-
       ctrl.saveCategory = function(category) {
         if (category.name) {
-          ctrl.isLoaded[category.id] = CategoryService.update(category);
+          ctrl.isLoaded[category.id] = CategoryService.update(category).then(function() {
+            initCategories();
+          });
 
           return ctrl.isLoaded[category.id];
         }
@@ -37,7 +26,8 @@ angular.module('spender')
 
       ctrl.addCategory = function() {
         if (ctrl.category.name) {
-          ctrl.isNewLoaded = CategoryService.add(ctrl.category).then(function(category) {
+          ctrl.isNewLoaded = CategoryService.add(ctrl.category).then(function() {
+            initCategories();
             return initCategory();
           });
 
@@ -46,7 +36,9 @@ angular.module('spender')
       };
 
       ctrl.deleteCategory = function(category) {
-        ctrl.isLoaded[category.id] = CategoryService.delete(category);
+        ctrl.isLoaded[category.id] = CategoryService.delete(category).then(function() {
+          initCategories();
+        });
 
         return ctrl.isLoaded[category.id];
       };
@@ -61,5 +53,19 @@ angular.module('spender')
       ctrl.hasChart = function() {
         return ctrl.categoriesChart && Object.keys(ctrl.categoriesChart).length > 0;
       };
+
+      $scope.$watch(function() {
+        return ExpenseService.getListChangedAt();
+      }, function() {
+        ctrl.expenses = ExpenseService.getAll().filter(function(item) { return !item._isRemoved; });
+        ctrl.categoriesChart = ChartService.buildCategoriesChart(ctrl.expenses, 'category');
+      });
+
+      ctrl.expenses = ExpenseService.getAll().filter(function(item) { return !item._isRemoved; });
+      initCategory();
+      initCategories();
+
+      ctrl.isLoaded = {};
+      ctrl.updateSelectedColors();
     }
   });

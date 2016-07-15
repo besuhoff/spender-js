@@ -1,51 +1,46 @@
 angular.module('spender')
   .component('incomePage', {
+    bindings: {
+      income: '=?'
+    },
     templateUrl: 'js/app/spender/income-page/income-page.html',
-    controller: function(IncomeService, ChartService, IncomeCategoryService, PaymentMethodService) {
+    controller: function($state, moment, IncomeService, ChartService, IncomeCategoryService, PaymentMethodService) {
       var ctrl = this;
+
+      ctrl.editMode = false;
 
       function initIncome() {
         ctrl.income = {
-          createdAt: ctrl.income ? ctrl.income.createdAt : moment().format()
+          createdAt: (ctrl.income ? moment(ctrl.income.createdAt).add(1, 'seconds') : moment()).format()
         };
       }
 
-      function initIncomes(reload) {
-        IncomeService.loadAll(reload).then(function(incomes) {
-          ctrl.incomes = incomes;
-          ctrl.incomesChart = ChartService.buildTransactionsChart(incomes);
-        });
+      function initIncomes() {
+        ctrl.incomes = IncomeService.getAll().filter(function(item) { return !item._isRemoved; });
+        ctrl.incomesChart = ChartService.buildTransactionsChart(ctrl.incomes);
       }
 
-      function initPaymentMethods(reload) {
-        PaymentMethodService.loadAll(reload).then(function(paymentMethods) {
-          ctrl.paymentMethods = paymentMethods;
-        });
-      }
-
-      ctrl.paymentMethods = [];
-      ctrl.categories = [];
-      ctrl.incomes = [];
-
-      initIncome();
       initIncomes();
-      initPaymentMethods();
+      if (!ctrl.income) {
+        initIncome();
+      } else {
+        ctrl.income.paymentMethod = PaymentMethodService.getOne(ctrl.income.paymentMethodId);
+        ctrl.income.incomeCategory = IncomeCategoryService.getOne(ctrl.income.incomeCategoryId);
+        ctrl.editMode = true;
+      }
 
-      IncomeCategoryService.loadAll().then(function(categories) {
-        ctrl.categories = categories;
-      });
+      ctrl.paymentMethods = PaymentMethodService.getAll().filter(function(item) { return !item._isRemoved; });
+      ctrl.categories = IncomeCategoryService.getAll().filter(function(item) { return !item._isRemoved; });
 
       ctrl.save = function() {
         if (ctrl.income.incomeCategory && ctrl.income.paymentMethod) {
-          ctrl.income.incomeCategoryId = ctrl.income.incomeCategory.id;
-          ctrl.income.paymentMethodId = ctrl.income.paymentMethod.id;
-          delete ctrl.income.incomeCategory;
-          delete ctrl.income.paymentMethod;
-
-          IncomeService.add(ctrl.income).then(function () {
-            initIncome();
-            initIncomes(true);
-            initPaymentMethods(true);
+          IncomeService[!ctrl.editMode ? 'add' : 'update'](ctrl.income).then(function () {
+            if (ctrl.editMode) {
+              $state.go('income');
+            } else {
+              initIncome();
+              initIncomes();
+            }
           });
         }
       };

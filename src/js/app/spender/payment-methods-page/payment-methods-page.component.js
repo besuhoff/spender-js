@@ -4,39 +4,24 @@ angular.module('spender')
     controller: function(PaymentMethodService, CurrencyService) {
       var ctrl = this;
 
-      function initMethod() {
-        ctrl.paymentMethod = {};
-        ctrl.isNewLoaded = undefined;
-      }
-
-      function initMethods(reload) {
-        return PaymentMethodService.loadAll(reload).then(function(paymentMethods) {
-          ctrl.paymentMethods = paymentMethods;
-          ctrl.isLoaded = {};
-          ctrl.updateSelectedColors();
-        });
-      }
-
-      initMethods();
-      initMethod();
-
-      ctrl.currencies = [];
-
-      CurrencyService.loadAll().then(function(currencies) {
-        ctrl.currencies = currencies;
-      });
+      function initMethods() {
+        ctrl.paymentMethods = PaymentMethodService.getAll().filter(function(item) { return !item._isRemoved; });
+      };
 
       ctrl.saveMethod = function(paymentMethod) {
-        if (paymentMethod.name && paymentMethod.currencyId) {
-          ctrl.isLoaded[paymentMethod.id] = PaymentMethodService.update(paymentMethod);
+        if (paymentMethod.name && paymentMethod.currency) {
+          ctrl.isLoaded[paymentMethod.id] = PaymentMethodService.update(paymentMethod).then(function() {
+            initMethods();
+          });
 
           return ctrl.isLoaded[paymentMethod.id];
         }
       };
 
       ctrl.addMethod = function() {
-        if (ctrl.paymentMethod.name && ctrl.paymentMethod.currencyId) {
+        if (ctrl.paymentMethod.name && ctrl.paymentMethod.currency) {
           ctrl.isNewLoaded = PaymentMethodService.add(ctrl.paymentMethod).then(function (paymentMethod) {
+            initMethods();
             return initMethod();
           });
 
@@ -45,7 +30,9 @@ angular.module('spender')
       };
 
       ctrl.deleteMethod = function(paymentMethod) {
-        ctrl.isLoaded[paymentMethod.id] = PaymentMethodService.delete(paymentMethod);
+        ctrl.isLoaded[paymentMethod.id] = PaymentMethodService.delete(paymentMethod).then(function() {
+          initMethods();
+        });
 
         return ctrl.isLoaded[paymentMethod.id];
       };
@@ -56,5 +43,18 @@ angular.module('spender')
           ctrl.selectedColors.push(ctrl.paymentMethod.color);
         }
       };
+
+      function initMethod() {
+        ctrl.paymentMethod = {};
+        ctrl.isNewLoaded = undefined;
+      }
+
+      initMethod();
+      initMethods();
+
+      ctrl.isLoaded = {};
+      ctrl.updateSelectedColors();
+
+      ctrl.currencies = CurrencyService.getAll();
     }
   });

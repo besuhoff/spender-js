@@ -8,10 +8,6 @@ angular.module('spender')
                          $state, $scope) {
       var ctrl = this;
 
-      PaymentMethodService.loadAll();
-      IncomeService.loadAll();
-      ExpenseService.loadAll();
-
       ctrl.paymentMethods = false;
       ctrl.incomes = false;
       ctrl.expenses = false;
@@ -39,7 +35,7 @@ angular.module('spender')
           return PaymentMethodService.getListChangedAt();
         },
         function() {
-          ctrl.paymentMethods = PaymentMethodService.getAll();
+          ctrl.paymentMethods = PaymentMethodService.getAll().filter(function(item) { return !item._isRemoved; });
           buildChart();
         }
       );
@@ -49,7 +45,7 @@ angular.module('spender')
           return IncomeService.getListChangedAt();
         },
         function() {
-          ctrl.incomes = IncomeService.getAll();
+          ctrl.incomes = IncomeService.getAll().filter(function(item) { return !item._isRemoved; });
           buildChart();
         }
       );
@@ -59,7 +55,7 @@ angular.module('spender')
           return ExpenseService.getListChangedAt();
         },
         function() {
-          ctrl.expenses = ExpenseService.getAll();
+          ctrl.expenses = ExpenseService.getAll().filter(function(item) { return !item._isRemoved; });
           buildChart();
         }
       );

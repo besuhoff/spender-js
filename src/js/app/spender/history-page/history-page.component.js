@@ -1,52 +1,80 @@
 angular.module('spender')
   .component('historyPage', {
     templateUrl: 'js/app/spender/history-page/history-page.html',
-    controller: function(ExpenseService, IncomeService, $q, moment, $filter) {
+    controller: function(ExpenseService, IncomeService, $q, $state, moment, $filter) {
       var ctrl = this,
-        incomesMap = {},
-        isDataLoaded = [];
+        history = [];
 
-      ctrl.history = [];
+      ctrl.getEditLink = function(transaction) {
+        var type = transaction._isNextRecordBound ? 'transfer' : transaction.entityType;
+        return $state.href(type + '-edit', { id: transaction.id });
+      };
 
-      isDataLoaded.push(IncomeService.loadAll().then(function(incomes) {
-        ctrl.history = ctrl.history.concat(incomes.map(function(income) {
+      ctrl.removeTransaction = function(transaction) {
+        var loaded = $q.when({});
+
+        if (transaction.entityType === 'income') {
+          if (transaction.sourceExpense) {
+            history.splice(history.indexOf(transaction.sourceExpense), 1);
+            loaded = loaded.then(function() { return ExpenseService.delete(transaction.sourceExpense); });
+          }
+          history.splice(history.indexOf(transaction), 1);
+          loaded = loaded.then(function() { return IncomeService.delete(transaction); });
+        }
+
+        if (transaction.entityType === 'expense') {
+          history.splice(history.indexOf(transaction), 1);
+          loaded = loaded.then(function() { return ExpenseService.delete(transaction); });
+          if (transaction.targetIncome) {
+            history.splice(history.indexOf(transaction.targetIncome), 1);
+            loaded = loaded.then(function() { return IncomeService.delete(transaction.targetIncome); });
+          }
+        }
+      };
+
+      history = history.concat(IncomeService.getAll()
+        .filter(function(item) { return !item._isRemoved; })
+        .map(function(income) {
           income = angular.copy(income);
+          income.entityType = 'income';
+          income.category = income.incomeCategory;
 
           income.createdAtFormatted = moment(income.createdAt).format('DD/MM/YYYY HH:mm');
           income.createdAtFormattedCompact = moment(income.createdAt).format('DD/MM HH:mm');
 
-          incomesMap[income.id] = income;
-
-          if (income.sourceExpenseId) {
-            income.categoryName = 'перевод';
-            income.comment = $filter('currency')(income.sourceExpenseAmount, income.sourceExpensePaymentMethodCurrencySymbol, 2) + ' со счета ' + income.sourceExpensePaymentMethodName;
+          if (income.sourceExpense) {
+            income._isNextRecordBound = true;
+            income.category = { name: 'Перевод' };
+            income.comment = $filter('currency')(income.sourceExpense.amount, income.sourceExpense.paymentMethod.currency.symbol, 2) + ' со счета ' + income.sourceExpense.paymentMethod.name;
           }
 
           return income;
         }));
-      }));
 
-      isDataLoaded.push(ExpenseService.loadAll().then(function(expenses) {
-        ctrl.history = ctrl.history.concat(expenses.map(function(expense) {
+      history = history.concat(ExpenseService.getAll()
+        .filter(function(item) { return !item._isRemoved; })
+        .map(function(expense) {
           expense = angular.copy(expense);
+          expense.entityType = 'expense';
           expense.createdAtFormatted = moment(expense.createdAt).format('DD/MM/YYYY HH:mm');
           expense.createdAtFormattedCompact = moment(expense.createdAt).format('DD/MM HH:mm');
           expense.amount *= -1;
 
-          if (expense.targetIncomeId) {
-            var income = incomesMap[expense.targetIncomeId];
-            expense.categoryName = 'перевод';
-            expense.comment = $filter('currency')(income.amount, income.paymentMethodCurrencySymbol, 2) + ' на счет ' + income.paymentMethodName;
+          if (expense.targetIncome) {
+            expense._isPrevRecordBound = true;
+            expense.category = { name: 'Перевод' };
+            expense.comment = $filter('currency')(expense.targetIncome.amount, expense.targetIncome.paymentMethod.currency.symbol, 2) + ' на счет ' + expense.targetIncome.paymentMethod.name;
           }
 
           return expense;
         }));
-      }));
 
-      $q.all(isDataLoaded).then(function() {
-        ctrl.history = ctrl.history.sort(function(a, b) {
-          return a.createdAt < b.createdAt ? 1 : a.createdAt > b.createdAt ? -1 : 0;
-        })
-      })
+      ctrl.history = history.sort(function(a, b) {
+        return a.createdAt < b.createdAt ? 1 :
+          a.createdAt > b.createdAt ? -1 :
+            (b.sourceExpense && b.sourceExpense.id === a.id) ? 1 :
+              (a.sourceExpense && a.sourceExpense.id === b.id) ? -1 :
+                0;
+      });
     }
   });

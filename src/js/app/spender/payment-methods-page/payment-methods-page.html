@@ -11,9 +11,9 @@
         валюта:
 
         <select class="form-control form-control--sm"
-                ng-model="paymentMethod.currencyId"
+                ng-model="paymentMethod.currency"
                 ng-change="$ctrl.saveMethod(paymentMethod)"
-                ng-options="currency.id as currency.code for currency in $ctrl.currencies"
+                ng-options="currency as currency.code for currency in $ctrl.currencies"
                 ng-model-options="{ debounce: 300 }">
         </select>
       </span>
@@ -30,10 +30,8 @@
       <input class="form-control" type="text" placeholder="Название" ng-model="$ctrl.paymentMethod.name">,
       <span class="text-nowrap">
         валюта: <select class="form-control form-control--sm"
-                        ng-model="$ctrl.paymentMethod.currencyId"
-                        ng-options="currency.id as currency.code for currency in $ctrl.currencies"
-                        ng-change="$ctrl.saveMethod($ctrl.paymentMethod)"
-                        ng-model-options="{ debounce: 300 }">
+                        ng-model="$ctrl.paymentMethod.currency"
+                        ng-options="currency as currency.code for currency in $ctrl.currencies">
         </select>
 
       </span>
@@ -47,13 +45,13 @@
       <div class="button-hint">
         <div class="button-hint__inner">
           <button class="btn-primary btn-sm btn btn-inline"
-                  ng-disabled="!$ctrl.paymentMethod.name || !$ctrl.paymentMethod.currencyId"
+                  ng-disabled="!$ctrl.paymentMethod.name || !$ctrl.paymentMethod.currency"
                   ng-click="$ctrl.addMethod()">Добавить средство</button>
-          <div class="button-hint__text" ng-show="!$ctrl.paymentMethod.name || !$ctrl.paymentMethod.currencyId">
+          <div class="button-hint__text" ng-show="!$ctrl.paymentMethod.name || !$ctrl.paymentMethod.currency">
             Укажите
             <span ng-show="!$ctrl.paymentMethod.name">название</span>
-            <span ng-show="!$ctrl.paymentMethod.name && !$ctrl.paymentMethod.currencyId">и</span>
-            <span ng-show="!$ctrl.paymentMethod.currencyId">валюту</span>
+            <span ng-show="!$ctrl.paymentMethod.name && !$ctrl.paymentMethod.currency">и</span>
+            <span ng-show="!$ctrl.paymentMethod.currency">валюту</span>
           </div>
         </div>
       </div>
