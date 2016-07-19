@@ -6,7 +6,7 @@ angular.module('spender')
 
       function initMethods() {
         ctrl.paymentMethods = PaymentMethodService.getAll().filter(function(item) { return !item._isRemoved; });
-      };
+      }
 
       ctrl.saveMethod = function(paymentMethod) {
         if (paymentMethod.name && paymentMethod.currency) {
@@ -45,7 +45,9 @@ angular.module('spender')
       };
 
       function initMethod() {
-        ctrl.paymentMethod = {};
+        ctrl.paymentMethod = {
+          initialAmount: 0
+        };
         ctrl.isNewLoaded = undefined;
       }
 

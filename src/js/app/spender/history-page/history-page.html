@@ -18,7 +18,7 @@
           <span ng-if="!record._isPrevRecordBound">{{record.createdAtFormattedCompact}}</span>
         </td>
         <td class="history__amount" ng-class="{ 'history__amount--expense': record.amount < 0 }">
-          <span ng-if="record.amount >= 0">+</span>{{record.amount | currency:'':2 }}
+          {{ record.amount < 0 ? -record.amount : record.amount | currency:record.paymentMethod.currency.symbol:2 }}
         </td>
         <td class="history__category hidden-xs hidden-sm">
           {{record.category.name}} <span class="comment" ng-show="record.comment">({{record.comment}})</span>

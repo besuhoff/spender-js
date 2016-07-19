@@ -138,12 +138,43 @@ angular.module('spender')
         return diff > 0 ? -1 : diff < 0 ? 1 : 0;
       });
 
+      _fillInMaps(transactions, chartMap, paymentMethodsMap, datesMap);
+
       paymentMethods.forEach(function(paymentMethod) {
         // set initial values for retrospective
-        totalsMap[paymentMethod.id] = +paymentMethod.incomes - +paymentMethod.expenses;
-      });
+        totalsMap[paymentMethod.id] = paymentMethod.initialAmount + paymentMethod.incomes - paymentMethod.expenses;
 
-      _fillInMaps(transactions, chartMap, paymentMethodsMap, datesMap);
+        // Add date points as initial dates
+        var currency = paymentMethod.currency.code,
+          date = moment(paymentMethod.createdAt).format('YYYY-MM-DD');
+
+        if (!chartMap[currency]) {
+          chartMap[currency] = {};
+        }
+
+        if (!datesMap[currency]) {
+          datesMap[currency] = {};
+        }
+
+        if (!paymentMethodsMap[currency]) {
+          paymentMethodsMap[currency] = {};
+        }
+
+        if (!chartMap[currency][paymentMethod.id]) {
+          chartMap[currency][paymentMethod.id] = {};
+        }
+
+        if (chartMap[currency][paymentMethod.id][date] === undefined) {
+          chartMap[currency][paymentMethod.id][date] = 0;
+        }
+
+        paymentMethodsMap[currency][paymentMethod.id] = {
+          name: paymentMethod.name,
+          color: paymentMethod.color
+        };
+        datesMap[currency][date] = date;
+        chartMap[currency][paymentMethod.id][date] += paymentMethod.initialAmount;
+      });
 
       Object.keys(chartMap).forEach(function(currency) {
         var datePoints = Object.keys(datesMap[currency]).sort(),

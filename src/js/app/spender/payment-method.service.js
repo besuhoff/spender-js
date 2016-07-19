@@ -3,6 +3,7 @@ angular.module('spender')
     DataService.call(this, Restangular, 'payment-methods');
 
     this.afterLoad = function(paymentMethod) {
+      paymentMethod.initialAmount = +paymentMethod.initialAmount;
       paymentMethod.expenses = +paymentMethod.expenses;
       paymentMethod.incomes = +paymentMethod.incomes;
       paymentMethod._isRemoved = !!+paymentMethod._isRemoved;

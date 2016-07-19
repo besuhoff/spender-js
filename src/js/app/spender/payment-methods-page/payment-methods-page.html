@@ -16,7 +16,18 @@
                 ng-options="currency as currency.code for currency in $ctrl.currencies"
                 ng-model-options="{ debounce: 300 }">
         </select>
+      </span>,
+      <span class="text-nowrap">
+        вход:
+        <input class="form-control form-control--sm"
+               type="number"
+               step="0.01"
+               placeholder="вход"
+               ng-change="$ctrl.saveMethod(paymentMethod)"
+               ng-model="paymentMethod.initialAmount"
+               ng-model-options="{ debounce: 300 }">
       </span>
+
       <color-picker ng-model="paymentMethod.color"
                     disabled-options="$ctrl.selectedColors"
                     ng-change="$ctrl.updateSelectedColors(); $ctrl.saveMethod(paymentMethod)">
@@ -34,6 +45,15 @@
                         ng-options="currency as currency.code for currency in $ctrl.currencies">
         </select>
 
+      </span>
+      <span class="text-nowrap">
+        вход:
+        <input class="form-control form-control--sm"
+               type="number"
+               step="0.01"
+               placeholder="вход"
+               ng-model="$ctrl.paymentMethod.initialAmount"
+               ng-model-options="{ debounce: 300 }">
       </span>
       <color-picker ng-model="$ctrl.paymentMethod.color"
                     disabled-options="$ctrl.selectedColors"
