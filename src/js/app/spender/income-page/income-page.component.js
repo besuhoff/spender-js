@@ -36,7 +36,7 @@ angular.module('spender')
         if (ctrl.income.incomeCategory && ctrl.income.paymentMethod) {
           IncomeService[!ctrl.editMode ? 'add' : 'update'](ctrl.income).then(function () {
             if (ctrl.editMode) {
-              $state.go('income');
+              $state.go('history');
             } else {
               initIncome();
               initIncomes();

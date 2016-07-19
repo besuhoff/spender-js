@@ -34,7 +34,7 @@ angular.module('spender')
         if (ctrl.expense.category && ctrl.expense.paymentMethod) {
           ExpenseService[!ctrl.editMode ? 'add' : 'update'](ctrl.expense).then(function() {
             if (ctrl.editMode) {
-              $state.go('expenses');
+              $state.go('history');
             } else {
               initExpense();
               initExpenses();

@@ -21,10 +21,18 @@ angular.module('spender')
         ctrl.targetIncomeCurrencyRate = 1;
       }
 
-      ctrl.paymentMethods = PaymentMethodService.getAll();
+      ctrl.paymentMethods = PaymentMethodService.getAll().filter(function(item) { return !item._isRemoved; });
       if (!ctrl.expense && !ctrl.income) {
         initTransfer();
       } else {
+        ctrl.sourceIncomeCurrencyRate = 1;
+        ctrl.targetIncomeCurrencyRate = ctrl.income.amount / ctrl.expense.amount;
+
+        if (ctrl.targetIncomeCurrencyRate < 1) {
+          ctrl.sourceIncomeCurrencyRate /= ctrl.targetIncomeCurrencyRate;
+          ctrl.targetIncomeCurrencyRate = 1;
+        }
+
         ctrl.editMode = true;
       }
 
@@ -49,7 +57,7 @@ angular.module('spender')
             ctrl.expense.targetIncome = income;
             ExpenseService[!ctrl.editMode ? 'add' : 'update'](ctrl.expense).then(function() {
               if (ctrl.editMode) {
-                $state.go('transfers');
+                $state.go('history');
               } else {
                 initTransfer();
               }
