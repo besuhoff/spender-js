@@ -21,4 +21,8 @@ angular.module('spender')
     this.load = function() {
       return _apiDeferred.promise;
     };
+
+    this.get = function() {
+      return $window.gapi;
+    }
   });

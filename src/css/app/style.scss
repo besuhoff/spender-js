@@ -400,3 +400,13 @@ spinner {
   -webkit-filter: grayscale(1);
   filter: grayscale(1);
 }
+
+.modal--login {
+  display: block !important;
+
+  .modal-header {
+    h3 {
+      margin: 10px;
+    }
+  }
+}

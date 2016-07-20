@@ -44,7 +44,6 @@ angular.module(
 
               if (currentUser && currentUser.isSignedIn()) {
                 var id_token = currentUser.getAuthResponse().id_token;
-                AuthService.setToken(id_token);
                 return AuthService.setProfile(currentUser.getBasicProfile());
               } else {
                 return $q.reject('User is not authenticated');
@@ -142,5 +141,34 @@ angular.module(
   .config(function(ChartJsProvider) {
     ChartJsProvider.setOptions('Line', {
       defaultFontFamily: '"Fira Sans", sans-serif'
+    });
+  })
+  .config(function($httpProvider) {
+    $httpProvider.interceptors.push(function($q, LoginService, GapiService) {
+      return {
+        'request': function(config) {
+          var id_token, gapi = GapiService.get();
+
+          if (gapi && gapi.auth2) {
+            var currentUser = gapi.auth2.getAuthInstance().currentUser.get();
+
+            if (currentUser && currentUser.isSignedIn()) {
+              id_token = currentUser.getAuthResponse().id_token;
+            }
+          }
+
+          config.headers['X-Auth-Token'] = id_token;
+
+          return config;
+        },
+        'responseError': function(errorResponse) {
+          switch (errorResponse.status) {
+            case 403:
+              LoginService.showForm();
+              break;
+          }
+          return $q.reject(errorResponse);
+        }
+      };
     });
   });

@@ -4,7 +4,7 @@ angular.module('spender')
     bindings: {
       profile: '='
     },
-    controller: function(GapiService, ChartService, IncomeService, ExpenseService, PaymentMethodService,
+    controller: function(GapiService, ChartService, IncomeService, ExpenseService, PaymentMethodService, LoginService,
                          $state, $scope) {
       var ctrl = this;
 
@@ -59,5 +59,9 @@ angular.module('spender')
           buildChart();
         }
       );
+
+      ctrl.isLoginFormVisible = function() {
+        return LoginService.isFormVisible();
+      }
     }
   });

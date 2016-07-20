@@ -23,7 +23,6 @@ function DataService(Restangular, entityPluralKey) {
           return that.afterLoad(entity);
         });
 
-        that.recordListChange();
         return _entities;
       });
     }

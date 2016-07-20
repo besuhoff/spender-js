@@ -1,7 +1,7 @@
 angular.module('spender')
   .component('signin', {
     templateUrl: 'js/app/spender/signin/signin.html',
-    controller: function($window, AuthService, $scope, GapiService, $element) {
+    controller: function($window, AuthService, $scope, GapiService, LoginService, $element) {
       var ctrl = this;
 
       GapiService.load().then(function(gapi) {
@@ -9,9 +9,9 @@ angular.module('spender')
           function(googleUser) {
             // Useful data for your client-side scripts:
             var profile = googleUser.getBasicProfile();
-            var id_token = googleUser.getAuthResponse().id_token;
-            AuthService.setToken(id_token);
             AuthService.setProfile(profile);
+
+            LoginService.hideForm();
 
             $scope.$apply();
           },

@@ -1,5 +1,5 @@
 angular.module('spender')
-  .service('AuthService', function(Restangular, $http, CacheService, UserService) {
+  .service('AuthService', function(CacheService, UserService) {
     var _profile;
 
     this.getProfile = function() {
@@ -13,9 +13,5 @@ angular.module('spender')
         _profile = profile;
         return profile;
       });
-    };
-
-    this.setToken = function(token) {
-      $http.defaults.headers.common['X-Auth-Token'] = token;
     };
   });

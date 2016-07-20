@@ -40,12 +40,7 @@ angular.module('spender')
 
     that.initPaymentMethodDependencies = function() {
       $rootScope.$watch(
-        function() { return IncomeService.getListChangedAt(); },
-        function() { that.refreshPaymentMethods(); }
-      );
-
-      $rootScope.$watch(
-        function() { return ExpenseService.getListChangedAt(); },
+        function() { return +IncomeService.getListChangedAt() + ' ' + ExpenseService.getListChangedAt(); },
         function() { that.refreshPaymentMethods(); }
       );
     };
@@ -76,6 +71,17 @@ angular.module('spender')
 
         _incomes.forEach(function(income) {
           that.prepareIncome(income);
+        });
+
+        [
+          IncomeCategoryService,
+          IncomeService,
+          CategoryService,
+          ExpenseService,
+          PaymentMethodService,
+          CurrencyService
+        ].forEach(function(service) {
+          service.recordListChange();
         });
 
         that.initPaymentMethodDependencies();
