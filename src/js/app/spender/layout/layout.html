@@ -27,10 +27,10 @@
 <div class="container navbar-padded">
   <div class="media header">
     <div class="media-left">
-      <div class="media-object user-avatar" ng-style="{ 'background-image': 'url(' + $ctrl.profile.getImageUrl() + ')' }"></div>
+      <div class="media-object user-avatar" ng-style="{ 'background-image': 'url(' + $ctrl.getProfile().getImageUrl() + ')' }"></div>
     </div>
     <div class="media-body">
-      <h4 class="media-heading">Хэй, {{$ctrl.profile.getGivenName()}}!</h4>
+      <h4 class="media-heading">Хэй, {{$ctrl.getProfile().getGivenName()}}!</h4>
       <a ng-click="$ctrl.signOut();" href=""><i class="fa fa-sign-out fa-lg"></i> Выйти</a>
     </div>
   </div>

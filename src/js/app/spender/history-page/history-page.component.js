@@ -1,7 +1,7 @@
 angular.module('spender')
   .component('historyPage', {
     templateUrl: 'js/app/spender/history-page/history-page.html',
-    controller: function(ExpenseService, IncomeService, $q, $state, moment, $filter) {
+    controller: function(ExpenseService, IncomeService, $q, $state, $scope, $filter, moment) {
       var ctrl = this,
         history = [];
 
@@ -32,49 +32,88 @@ angular.module('spender')
         }
       };
 
-      history = history.concat(IncomeService.getAll()
-        .filter(function(item) { return !item._isRemoved; })
-        .map(function(income) {
-          income = angular.copy(income);
-          income.entityType = 'income';
-          income.category = income.incomeCategory;
+      function initHistory() {
+        history = [];
 
-          income.createdAtFormatted = moment(income.createdAt).format('DD/MM/YYYY HH:mm');
-          income.createdAtFormattedCompact = moment(income.createdAt).format('DD/MM HH:mm');
+        history = history.concat(IncomeService.getAll()
+          .filter(function(item) { return !item._isRemoved; })
+          .map(function(income) {
+            income = angular.copy(income);
+            income.entityType = 'income';
+            income.category = income.incomeCategory;
 
-          if (income.sourceExpense) {
-            income._isNextRecordBound = true;
-            income.category = { name: 'Перевод' };
-            income.comment = $filter('currency')(income.sourceExpense.amount, income.sourceExpense.paymentMethod.currency.symbol, 2) + ' со счета ' + income.sourceExpense.paymentMethod.name;
+            income.createdAtFormatted = moment(income.createdAt).format('DD/MM/YYYY HH:mm');
+            income.createdAtFormattedCompact = moment(income.createdAt).format('DD/MM HH:mm');
+
+            if (income.sourceExpense) {
+              income._isNextRecordBound = true;
+              income.category = { name: 'Перевод' };
+              income.comment = $filter('currency')(income.sourceExpense.amount, income.sourceExpense.paymentMethod.currency.symbol, 2) + ' со счета ' + income.sourceExpense.paymentMethod.name;
+            }
+
+            return income;
+          }));
+
+        history = history.concat(ExpenseService.getAll()
+          .filter(function(item) { return !item._isRemoved; })
+          .map(function(expense) {
+            expense = angular.copy(expense);
+            expense.entityType = 'expense';
+            expense.createdAtFormatted = moment(expense.createdAt).format('DD/MM/YYYY HH:mm');
+            expense.createdAtFormattedCompact = moment(expense.createdAt).format('DD/MM HH:mm');
+            expense.amount *= -1;
+
+            if (expense.targetIncome) {
+              expense._isPrevRecordBound = true;
+              expense.category = { name: 'Перевод' };
+              expense.comment = $filter('currency')(expense.targetIncome.amount, expense.targetIncome.paymentMethod.currency.symbol, 2) + ' на счет ' + expense.targetIncome.paymentMethod.name;
+            }
+
+            return expense;
+          }));
+
+        ctrl.history = history.sort(function(a, b) {
+          return a.createdAt < b.createdAt ? 1 :
+            a.createdAt > b.createdAt ? -1 :
+              (b.sourceExpense && b.sourceExpense.id === a.id) ? 1 :
+                (a.sourceExpense && a.sourceExpense.id === b.id) ? -1 :
+                  0;
+        });
+      }
+
+      initHistory();
+
+      $scope.$watch(
+        function() {
+          return PaymentMethodService.getListChangedAt();
+        },
+        function(newDate, oldDate) {
+          if (newDate !== oldDate) {
+            initHistory();
           }
+        }
+      );
 
-          return income;
-        }));
-
-      history = history.concat(ExpenseService.getAll()
-        .filter(function(item) { return !item._isRemoved; })
-        .map(function(expense) {
-          expense = angular.copy(expense);
-          expense.entityType = 'expense';
-          expense.createdAtFormatted = moment(expense.createdAt).format('DD/MM/YYYY HH:mm');
-          expense.createdAtFormattedCompact = moment(expense.createdAt).format('DD/MM HH:mm');
-          expense.amount *= -1;
-
-          if (expense.targetIncome) {
-            expense._isPrevRecordBound = true;
-            expense.category = { name: 'Перевод' };
-            expense.comment = $filter('currency')(expense.targetIncome.amount, expense.targetIncome.paymentMethod.currency.symbol, 2) + ' на счет ' + expense.targetIncome.paymentMethod.name;
+      $scope.$watch(
+        function() {
+          return IncomeService.getListChangedAt();
+        },
+        function(newDate, oldDate) {
+          if (newDate !== oldDate) {
+            initHistory();
           }
+        }
+      );
 
-          return expense;
-        }));
-
-      ctrl.history = history.sort(function(a, b) {
-        return a.createdAt < b.createdAt ? 1 :
-          a.createdAt > b.createdAt ? -1 :
-            (b.sourceExpense && b.sourceExpense.id === a.id) ? 1 :
-              (a.sourceExpense && a.sourceExpense.id === b.id) ? -1 :
-                0;
-      });
+      $scope.$watch(
+        function() {
+          return ExpenseService.getListChangedAt();
+        },
+        function(newDate, oldDate) {
+          if (newDate !== oldDate) {
+            initHistory();
+          }
+        }
+      );
     }
   });

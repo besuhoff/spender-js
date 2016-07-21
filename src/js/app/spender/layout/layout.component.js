@@ -1,10 +1,7 @@
 angular.module('spender')
   .component('layout', {
     templateUrl: 'js/app/spender/layout/layout.html',
-    bindings: {
-      profile: '='
-    },
-    controller: function(GapiService, ChartService, IncomeService, ExpenseService, PaymentMethodService, LoginService,
+    controller: function(GapiService, ChartService, IncomeService, ExpenseService, PaymentMethodService, LoginService, AuthService,
                          $state, $scope) {
       var ctrl = this;
 
@@ -17,6 +14,10 @@ angular.module('spender')
           ctrl.balanceChart = ChartService.buildBalanceChart(ctrl.expenses, ctrl.incomes, ctrl.paymentMethods);
         }
       }
+
+      ctrl.getProfile = function() {
+        return AuthService.getProfile();
+      };
 
       ctrl.signOut = function() {
         GapiService.load().then(function(gapi) {
@@ -34,9 +35,13 @@ angular.module('spender')
         function() {
           return PaymentMethodService.getListChangedAt();
         },
-        function() {
-          ctrl.paymentMethods = PaymentMethodService.getAll().filter(function(item) { return !item._isRemoved; });
-          buildChart();
+        function(newDate, oldDate) {
+          if (newDate !== oldDate) {
+            ctrl.paymentMethods = PaymentMethodService.getAll().filter(function (item) {
+              return !item._isRemoved;
+            });
+            buildChart();
+          }
         }
       );
 
@@ -44,9 +49,13 @@ angular.module('spender')
         function() {
           return IncomeService.getListChangedAt();
         },
-        function() {
-          ctrl.incomes = IncomeService.getAll().filter(function(item) { return !item._isRemoved; });
-          buildChart();
+        function(newDate, oldDate) {
+          if (newDate !== oldDate) {
+            ctrl.incomes = IncomeService.getAll().filter(function (item) {
+              return !item._isRemoved;
+            });
+            buildChart();
+          }
         }
       );
 
@@ -54,9 +63,13 @@ angular.module('spender')
         function() {
           return ExpenseService.getListChangedAt();
         },
-        function() {
-          ctrl.expenses = ExpenseService.getAll().filter(function(item) { return !item._isRemoved; });
-          buildChart();
+        function(newDate, oldDate) {
+          if (newDate !== oldDate) {
+            ctrl.expenses = ExpenseService.getAll().filter(function(item) {
+              return !item._isRemoved;
+            });
+            buildChart();
+          }
         }
       );
 

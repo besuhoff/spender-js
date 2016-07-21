@@ -2,7 +2,7 @@ function DataService(Restangular, entityPluralKey) {
   var _entities = [],
     that = this,
     _entitiesPromise = false,
-    _listChangedAt = new Date();
+    _listChangedAt;
 
   this.afterLoad = function(entity) {
     return entity;

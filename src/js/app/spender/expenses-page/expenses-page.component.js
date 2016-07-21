@@ -4,7 +4,7 @@ angular.module('spender')
       expense: '=?'
     },
     templateUrl: 'js/app/spender/expenses-page/expenses-page.html',
-    controller: function($state, moment, ExpenseService, ChartService, CategoryService, PaymentMethodService) {
+    controller: function($state, moment, ExpenseService, ChartService, CategoryService, PaymentMethodService, $scope) {
       var ctrl = this;
 
       function initExpense() {
@@ -22,10 +22,19 @@ angular.module('spender')
       if (!ctrl.expense) {
         initExpense();
       } else {
-        ctrl.expense.paymentMethod = PaymentMethodService.getOne(ctrl.expense.paymentMethodId);
-        ctrl.expense.category = CategoryService.getOne(ctrl.expense.categoryId);
         ctrl.editMode = true;
       }
+
+      $scope.$watch(
+        function() {
+          return ExpenseService.getListChangedAt();
+        },
+        function(newDate, oldDate) {
+          if (newDate !== oldDate) {
+            initExpenses();
+          }
+        }
+      );
 
       ctrl.paymentMethods = PaymentMethodService.getAll().filter(function(item) { return !item._isRemoved; });
       ctrl.categories = CategoryService.getAll().filter(function(item) { return !item._isRemoved; });

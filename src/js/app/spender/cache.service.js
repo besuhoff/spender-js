@@ -29,19 +29,39 @@ angular.module('spender')
       paymentMethod.currency = CurrencyService.getOne(+paymentMethod.currencyId);
     };
 
+    that.prepareEverything = function() {
+      _paymentMethods.forEach(function(paymentMethod) {
+        that.preparePaymentMethod(paymentMethod);
+      });
+
+      _expenses.forEach(function(expense) {
+        that.prepareExpense(expense);
+      });
+
+      _incomes.forEach(function(income) {
+        that.prepareIncome(income);
+      });
+    };
+
     that.refreshPaymentMethods = function() {
       return PaymentMethodService.loadAll(true).then(function(paymentMethods) {
         _paymentMethods = paymentMethods;
-        _paymentMethods.forEach(function(paymentMethod) {
-          that.preparePaymentMethod(paymentMethod);
-        });
+
+        that.prepareEverything();
+
+        return _paymentMethods
       });
     };
 
     that.initPaymentMethodDependencies = function() {
       $rootScope.$watch(
-        function() { return +IncomeService.getListChangedAt() + ' ' + ExpenseService.getListChangedAt(); },
-        function() { that.refreshPaymentMethods(); }
+        function() { return IncomeService.getListChangedAt(); },
+        function(newDate, oldDate) { if (newDate !== oldDate) { console.log(newDate, oldDate); that.refreshPaymentMethods(); } }
+      );
+
+      $rootScope.$watch(
+        function() { return ExpenseService.getListChangedAt(); },
+        function(newDate, oldDate) { if (newDate !== oldDate) { console.log(newDate, oldDate); that.refreshPaymentMethods(); } }
       );
     };
 
@@ -51,27 +71,17 @@ angular.module('spender')
         categories: CategoryService.loadAll(reload),
         expenses: ExpenseService.loadAll(reload),
         incomes: IncomeService.loadAll(reload),
-        paymentMethods: PaymentMethodService.loadAll(reload),
-        currencies: CurrencyService.loadAll(reload)
+        currencies: CurrencyService.loadAll(reload),
+        paymentMethods: PaymentMethodService.loadAll(reload)
       }).then(function(results) {
         _incomeCategories = results.incomeCategories;
         _categories = results.categories;
         _expenses = results.expenses;
         _incomes = results.incomes;
-        _paymentMethods = results.paymentMethods;
         _currencies = results.currencies;
+        _paymentMethods = results.paymentMethods;
 
-        _paymentMethods.forEach(function(paymentMethod) {
-          that.preparePaymentMethod(paymentMethod);
-        });
-
-        _expenses.forEach(function(expense) {
-          that.prepareExpense(expense);
-        });
-
-        _incomes.forEach(function(income) {
-          that.prepareIncome(income);
-        });
+        that.prepareEverything();
 
         [
           IncomeCategoryService,
@@ -85,7 +95,7 @@ angular.module('spender')
         });
 
         that.initPaymentMethodDependencies();
-      })
+      });
     }
 
 

@@ -28,15 +28,23 @@ angular.module(
     $stateProvider
       .state('login', {
         url: '/login',
-        template: '<login-page></login-page>'
+        template: '<login-page></login-page>',
+        resolve: {
+          profile: function(AuthService, GapiService, $state, $q) {
+            return GapiService.load().then(function(gapi) {
+              var currentUser = gapi.auth2.getAuthInstance().currentUser.get();
+
+              if (currentUser && currentUser.isSignedIn()) {
+                $state.go('home');
+              }
+            });
+          }
+        }
       })
       .state('home', {
         url: '',
         redirectTo: 'expenses',
-        template: '<layout profile="profile"></layout>',
-        controller: function($scope, profile) {
-          $scope.profile = profile;
-        },
+        template: '<layout></layout>',
         resolve: {
           profile: function(AuthService, GapiService, $state, $q) {
             return GapiService.load().then(function(gapi) {

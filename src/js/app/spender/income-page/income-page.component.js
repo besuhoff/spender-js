@@ -4,7 +4,7 @@ angular.module('spender')
       income: '=?'
     },
     templateUrl: 'js/app/spender/income-page/income-page.html',
-    controller: function($state, moment, IncomeService, ChartService, IncomeCategoryService, PaymentMethodService) {
+    controller: function($state, moment, IncomeService, ChartService, IncomeCategoryService, PaymentMethodService, $scope) {
       var ctrl = this;
 
       ctrl.editMode = false;
@@ -24,10 +24,20 @@ angular.module('spender')
       if (!ctrl.income) {
         initIncome();
       } else {
-        ctrl.income.paymentMethod = PaymentMethodService.getOne(ctrl.income.paymentMethodId);
-        ctrl.income.incomeCategory = IncomeCategoryService.getOne(ctrl.income.incomeCategoryId);
         ctrl.editMode = true;
       }
+
+      $scope.$watch(
+        function() {
+          return IncomeService.getListChangedAt();
+        },
+        function(newDate, oldDate) {
+          if (newDate !== oldDate) {
+            initIncomes();
+          }
+        }
+      );
+
 
       ctrl.paymentMethods = PaymentMethodService.getAll().filter(function(item) { return !item._isRemoved; });
       ctrl.categories = IncomeCategoryService.getAll().filter(function(item) { return !item._isRemoved; });
