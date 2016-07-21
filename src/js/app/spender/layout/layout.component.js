@@ -35,13 +35,11 @@ angular.module('spender')
         function() {
           return PaymentMethodService.getListChangedAt();
         },
-        function(newDate, oldDate) {
-          if (newDate !== oldDate) {
-            ctrl.paymentMethods = PaymentMethodService.getAll().filter(function (item) {
-              return !item._isRemoved;
-            });
-            buildChart();
-          }
+        function() {
+          ctrl.paymentMethods = PaymentMethodService.getAll().filter(function(item) {
+            return !item._isRemoved;
+          });
+          buildChart();
         }
       );
 
@@ -49,13 +47,11 @@ angular.module('spender')
         function() {
           return IncomeService.getListChangedAt();
         },
-        function(newDate, oldDate) {
-          if (newDate !== oldDate) {
-            ctrl.incomes = IncomeService.getAll().filter(function (item) {
-              return !item._isRemoved;
-            });
-            buildChart();
-          }
+        function() {
+          ctrl.incomes = IncomeService.getAll().filter(function(item) {
+            return !item._isRemoved;
+          });
+          buildChart();
         }
       );
 
@@ -63,18 +59,16 @@ angular.module('spender')
         function() {
           return ExpenseService.getListChangedAt();
         },
-        function(newDate, oldDate) {
-          if (newDate !== oldDate) {
-            ctrl.expenses = ExpenseService.getAll().filter(function(item) {
-              return !item._isRemoved;
-            });
-            buildChart();
-          }
+        function() {
+          ctrl.expenses = ExpenseService.getAll().filter(function(item) {
+            return !item._isRemoved;
+          });
+          buildChart();
         }
       );
 
       ctrl.isLoginFormVisible = function() {
         return LoginService.isFormVisible();
-      }
+      };
     }
   });
