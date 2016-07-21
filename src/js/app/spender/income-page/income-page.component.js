@@ -58,5 +58,32 @@ angular.module('spender')
       ctrl.hasChart = function() {
         return ctrl.incomesChart && Object.keys(ctrl.incomesChart).length > 0;
       };
+
+      ctrl.getRequirements = function() {
+        var requirements = [],
+          validatedObject = ctrl.income;
+
+        if (!validatedObject.amount) {
+          requirements.push('сумму');
+        }
+        if (!validatedObject.incomeCategory) {
+          requirements.push('категорию');
+        }
+        if (!validatedObject.paymentMethod) {
+          requirements.push('счёт');
+        }
+
+        if (!requirements.length) {
+          return false;
+        }
+
+        var last = requirements.pop();
+
+        return requirements.join(', ') + (requirements.length ? ' и ' : '') + last;
+      };
+
+      ctrl.canSave = function() {
+        return !ctrl.getRequirements();
+      }
     }
   });

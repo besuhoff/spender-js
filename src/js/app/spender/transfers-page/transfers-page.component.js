@@ -65,6 +65,40 @@ angular.module('spender')
 
           });
         }
+      };
+
+      ctrl.getRequirements = function() {
+        var requirements = [];
+
+        if (!ctrl.expense.paymentMethod) {
+          requirements.push('счёт');
+        }
+        if (!ctrl.income.paymentMethod) {
+          requirements.push('целевой счёт');
+        }
+
+        if (!ctrl.expense.amount) {
+          requirements.push('сумму');
+        }
+
+        if (ctrl.expense.paymentMethod && ctrl.income.paymentMethod &&
+          ctrl.expense.paymentMethod.currency.id !== ctrl.income.paymentMethod.currency.id &&
+          (!ctrl.sourceIncomeCurrencyRate || !ctrl.targetIncomeCurrencyRate)) {
+
+          requirements.push('курс обмена');
+        }
+
+        if (!requirements.length) {
+          return false;
+        }
+
+        var last = requirements.pop();
+
+        return requirements.join(', ') + (requirements.length ? ' и ' : '') + last;
+      };
+
+      ctrl.canSave = function() {
+        return !ctrl.getRequirements();
       }
     }
   });

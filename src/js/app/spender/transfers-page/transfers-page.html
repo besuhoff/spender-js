@@ -35,15 +35,10 @@
     <div class="button-hint button-hint--lg">
       <div class="button-hint__inner">
         <button class="btn-primary btn btn-inline"
-                ng-disabled="$ctrl.getTargetAmount() === undefined"
+                ng-disabled="!$ctrl.canSave()"
                 ng-click="$ctrl.save()">Записать транзакцию</button>
-        <div class="button-hint__text" ng-show="$ctrl.getTargetAmount() === undefined">
-          Укажите
-          <span ng-show="!$ctrl.expense.paymentMethod">платежное средство</span><!--
-          --><span ng-show="!$ctrl.income.paymentMethod && !$ctrl.expense.paymentMethod"> и </span><!--
-          --><span ng-show="!$ctrl.income.paymentMethod">целевой счёт</span><!--
-          --><span ng-show="(!$ctrl.expense.paymentMethod || !$ctrl.income.paymentMethod) && ($ctrl.expense.paymentMethod.currency.id !== $ctrl.income.paymentMethod.currency.id && (!$ctrl.sourceIncomeCurrencyRate || !$ctrl.targetIncomeCurrencyRate))">, а также </span><!--
-          --><span ng-show="$ctrl.expense.paymentMethod.currency.id !== $ctrl.income.paymentMethod.currency.id && (!$ctrl.sourceIncome.currencyRate || !$ctrl.targetIncome.currencyRate)">курс обмена</span>
+        <div class="button-hint__text" ng-show="!$ctrl.canSave()">
+          Укажите {{$ctrl.getRequirements()}}
         </div>
       </div>
     </div>

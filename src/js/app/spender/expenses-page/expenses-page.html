@@ -5,13 +5,11 @@
     <select class="form-control"
             ng-model="$ctrl.expense.paymentMethod"
             ng-options="paymentMethod as paymentMethod.name for paymentMethod in $ctrl.paymentMethods">
-      <option value="">- платёжным средством -</option>
     </select>
     <span class="text-nowrap">
       на <select class="form-control"
                  ng-model="$ctrl.expense.category"
                  ng-options="category as category.name for category in $ctrl.categories">
-        <option value="">- категорию -</option>
       </select>
     </span>
   </div>
@@ -22,13 +20,10 @@
     <div class="button-hint button-hint--lg">
       <div class="button-hint__inner">
         <button class="btn-primary btn btn-inline"
-                ng-disabled="!$ctrl.expense.paymentMethod || !$ctrl.expense.category"
+                ng-disabled="!$ctrl.canSave()"
                 ng-click="$ctrl.save()">Записать транзакцию</button>
-        <div class="button-hint__text" ng-show="!$ctrl.expense.paymentMethod || !$ctrl.expense.category">
-          Укажите
-          <span ng-show="!$ctrl.expense.paymentMethod">платёжное средство</span>
-          <span ng-show="!$ctrl.expense.paymentMethod && !$ctrl.expense.category">и</span>
-          <span ng-show="!$ctrl.expense.category">категорию</span>
+        <div class="button-hint__text" ng-show="!$ctrl.canSave()">
+          Укажите {{$ctrl.getRequirements() }}
         </div>
       </div>
     </div>
