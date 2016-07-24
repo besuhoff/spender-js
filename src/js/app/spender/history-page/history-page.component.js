@@ -1,7 +1,7 @@
 angular.module('spender')
   .component('historyPage', {
     templateUrl: 'js/app/spender/history-page/history-page.html',
-    controller: function(ExpenseService, IncomeService, $q, $state, $scope, $filter, moment) {
+    controller: function(ExpenseService, IncomeService, PaymentMethodService, $q, $state, $scope, $filter, moment) {
       var ctrl = this,
         history = [];
 
