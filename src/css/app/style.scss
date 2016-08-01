@@ -1,5 +1,5 @@
 body {
-  font-family: 'Fira Sans', sans-serif;
+  font-family: 'Fira Sans', arial, sans-serif;
   min-width: 320px;
 }
 
@@ -116,7 +116,7 @@ body {
     &.td-number {
       text-align: right;
       padding-left: 20px;
-      font-family: 'Fira Mono', monospace;
+      font-family: 'Fira Mono', arial, monospace;
     }
   }
 }
