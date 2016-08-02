@@ -1,48 +1,51 @@
-<h5 ng-if="!$ctrl.history.length">Вы не записали ни одной транзакции. Запишите <a ui-sref="income">доход</a>, <a ui-sref="expenses">трату</a> или <a ui-sref="transfers">перевод</a> чтобы увидеть историю платежей.</h5>
+<h5 ng-if="!$ctrl.history.length">
+  Вы не записали ни одной транзакции. Запишите <a ui-sref="income">доход</a>, <a ui-sref="expenses">трату</a>
+  или <a ui-sref="transfers">перевод</a>, чтобы увидеть историю платежей.
+</h5>
 
-<div ng-if="$ctrl.history.length">
-  <table class="history">
-    <thead>
-      <tr>
-        <th>Дата</th>
-        <th>Сумма</th>
-        <th class="hidden-xs hidden-sm">Категория (комментарий)</th>
-        <th>Счёт</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr class="history__row"
-          ng-class="{ highlighted: record._isNextRecordBound || record._isPrevRecordBound }"
-          ng-repeat-start="record in $ctrl.history track by $index">
-        <td class="history__date">
-          <span ng-if="!record._isPrevRecordBound">{{record.createdAtFormattedCompact}}</span>
-        </td>
-        <td class="history__amount" ng-class="{ 'history__amount--expense': record.amount < 0 }">
-          {{ record.amount < 0 ? -record.amount : record.amount | currency:record.paymentMethod.currency.symbol:2 }}
-        </td>
-        <td class="history__category hidden-xs hidden-sm">
-          {{record.category.name}} <span class="comment" ng-show="record.comment">({{record.comment}})</span>
-        </td>
-        <td class="history__payment-method">
-          {{record.paymentMethod.name}}
-        </td>
-        <td class="history__actions hidden-xs hidden-sm" rowspan="{{ record._isNextRecordBound ? 2: 1 }}" ng-if="!record._isPrevRecordBound">
-          <a class="btn btn-xs btn-link fa fa-pencil" ng-href="{{ $ctrl.getEditLink(record) }}"></a><span class="btn btn-xs btn-link fa fa-close" ng-click="$ctrl.removeTransaction(record)"></span>
-        </td>
-        <td class="history__actions hidden-md hidden-lg" rowspan="{{ record._isNextRecordBound ? 4: 2 }}" ng-if="!record._isPrevRecordBound">
-          <a class="btn btn-xs btn-link fa fa-pencil" ng-href="{{ $ctrl.getEditLink(record) }}"></a><span class="btn btn-xs btn-link fa fa-close" ng-click="$ctrl.removeTransaction(record)"></span>
-          <div class="hr"></div>
-        </td>
-      </tr>
+<div ng-if="$ctrl.history.length" class="text-center">
+  <div class="history text-left">
+    <div class="history__header history__row">
+      <div class="history__header-col history__date">Дата</div>
+      <div class="history__header-col history__amounts">Сумма</div>
+      <div class="history__header-col history__category">Категория (комментарий)</div>
+      <div class="history__header-col history__payment-methods">Счёт</div>
+    </div>
 
-      <tr class="history__row hidden-md hidden-lg"
-          ng-class="{ highlighted: record._isNextRecordBound || record._isPrevRecordBound }"
-          ng-repeat-end>
-        <td colspan="3" class="history__category">
-          {{record.category.name}} <span class="comment" ng-show="record.comment">({{record.comment}})</span>
-          <div class="hr"></div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+    <div class="history__row history__row-date" ng-if="$ctrl.history[$index-1].createdAtDate !== record.createdAtDate"
+         ng-repeat-start="record in $ctrl.history track by $index">
+      <div class="history__col history__date">
+        <span>{{record.createdAtDate}}</span>
+      </div>
+    </div>
+
+    <div class="history__row"
+         ng-repeat-end
+         ui-sref="{{ record.type }}-edit({ id: record.id })"
+         ng-class="{ 'highlighted': record.type === 'transfer'}">
+      <div class="history__col history__actions">
+        <span class="fa fa-close fa-lg"
+              ng-class="{ active: record.isMarkedForRemoval }"
+              ng-click="$ctrl.removeTransaction(record); $event.stopPropagation();"></span>
+      </div>
+      <div class="history__col history__date">
+        <span>{{record.createdAtFormattedCompact}}</span>
+      </div>
+      <div class="history__col history__amounts">
+        <span class="history__amount"
+              ng-repeat="amount in record.amounts track by $index"
+              ng-class="{ 'history__amount--expense': amount.value < 0 }">
+          {{ amount.value < 0 ? -amount.value : amount.value | currency:amount.paymentMethod.currency.symbol:2 }}
+        </span>
+      </div>
+      <div class="history__col history__payment-methods">
+        <span class="history__payment-method" ng-repeat="amount in record.amounts track by $index">
+          {{amount.paymentMethod.name}}
+        </span>
+      </div>
+      <div class="history__col history__category">
+        {{record.category.name}} <span class="comment" ng-show="record.comment">({{record.comment}})</span>
+      </div>
+    </div>
+  </div>
 </div>

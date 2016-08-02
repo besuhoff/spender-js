@@ -1,34 +1,35 @@
 angular.module('spender')
   .component('historyPage', {
     templateUrl: 'js/app/spender/history-page/history-page.html',
-    controller: function(ExpenseService, IncomeService, PaymentMethodService, $q, $state, $scope, $filter, moment) {
+    controller: function(ExpenseService, IncomeService, PaymentMethodService, $q, $state, $scope, $filter, $timeout, moment) {
       var ctrl = this,
         history = [];
 
-      ctrl.getEditLink = function(transaction) {
-        var type = transaction._isNextRecordBound ? 'transfer' : transaction.entityType;
-        return $state.href(type + '-edit', { id: transaction.id });
-      };
-
       ctrl.removeTransaction = function(transaction) {
-        var loaded = $q.when({});
+        if (!transaction.isMarkedForRemoval) {
+          transaction.isMarkedForRemoval = true;
 
-        if (transaction.entityType === 'income') {
-          if (transaction.sourceExpense) {
-            history.splice(history.indexOf(transaction.sourceExpense), 1);
-            loaded = loaded.then(function() { return ExpenseService.delete(transaction.sourceExpense); });
-          }
-          history.splice(history.indexOf(transaction), 1);
-          loaded = loaded.then(function() { return IncomeService.delete(transaction); });
-        }
+          $timeout(function() {
+            transaction.isMarkedForRemoval = false;
+          }, 5000);
+        } else {
+          var loaded = $q.when({});
 
-        if (transaction.entityType === 'expense') {
-          history.splice(history.indexOf(transaction), 1);
-          loaded = loaded.then(function() { return ExpenseService.delete(transaction); });
-          if (transaction.targetIncome) {
-            history.splice(history.indexOf(transaction.targetIncome), 1);
-            loaded = loaded.then(function() { return IncomeService.delete(transaction.targetIncome); });
+          if (transaction.type === 'transfer') {
+            loaded
+              .then(function() { return ExpenseService.delete(transaction.expense); })
+              .then(function() { return IncomeService.delete(transaction.income); });
           }
+
+          if (transaction.type === 'expense') {
+            loaded.then(function() { return ExpenseService.delete(transaction.expense); });
+          }
+
+          if (transaction.type === 'income') {
+            loaded.then(function() { return IncomeService.delete(transaction.income); });
+          }
+
+          history.splice(history.indexOf(transaction), 1);
         }
       };
 
@@ -38,46 +39,67 @@ angular.module('spender')
         history = history.concat(IncomeService.getAll()
           .filter(function(item) { return !item._isRemoved; })
           .map(function(income) {
-            income = angular.copy(income);
-            income.entityType = 'income';
-            income.category = income.incomeCategory;
+            var createdAt = moment(income.createdAt);
 
-            income.createdAtFormatted = moment(income.createdAt).format('DD/MM/YYYY HH:mm');
-            income.createdAtFormattedCompact = moment(income.createdAt).format('DD/MM HH:mm');
+            var entity = {
+              id: income.id,
+              createdAt: income.createdAt,
+              income: income,
+              type: 'income',
+              category: income.incomeCategory,
+              createdAtDate: createdAt.format('DD/MM'),
+              createdAtFormattedCompact: createdAt.format('HH:mm'),
+              comment: income.comment,
+              amounts: [{
+                paymentMethod: income.paymentMethod,
+                value: income.amount
+              }]
+            };
 
             if (income.sourceExpense) {
-              income._isNextRecordBound = true;
-              income.category = { name: 'Перевод' };
-              income.comment = $filter('currency')(income.sourceExpense.amount, income.sourceExpense.paymentMethod.currency.symbol, 2) + ' со счета ' + income.sourceExpense.paymentMethod.name;
+              entity.type = 'transfer';
+              entity.expense = income.sourceExpense;
+
+              entity.category = {
+                name: 'Перевод денег'
+              };
+
+              entity.comment = '';
+
+              entity.amounts.push({
+                paymentMethod: entity.expense.paymentMethod,
+                  value: entity.expense.amount * -1
+                });
             }
 
-            return income;
+            return entity;
           }));
 
         history = history.concat(ExpenseService.getAll()
-          .filter(function(item) { return !item._isRemoved; })
+          .filter(function(item) { return !item._isRemoved && !item.targetIncome; })
           .map(function(expense) {
-            expense = angular.copy(expense);
-            expense.entityType = 'expense';
-            expense.createdAtFormatted = moment(expense.createdAt).format('DD/MM/YYYY HH:mm');
-            expense.createdAtFormattedCompact = moment(expense.createdAt).format('DD/MM HH:mm');
-            expense.amount *= -1;
+            var createdAt = moment(expense.createdAt);
 
-            if (expense.targetIncome) {
-              expense._isPrevRecordBound = true;
-              expense.category = { name: 'Перевод' };
-              expense.comment = $filter('currency')(expense.targetIncome.amount, expense.targetIncome.paymentMethod.currency.symbol, 2) + ' на счет ' + expense.targetIncome.paymentMethod.name;
-            }
-
-            return expense;
+            return {
+              id: expense.id,
+              createdAt: expense.createdAt,
+              expense: expense,
+              type: 'expense',
+              category: expense.category,
+              createdAtDate: createdAt.format('DD/MM'),
+              createdAtFormattedCompact: createdAt.format('HH:mm'),
+              comment: expense.comment,
+              amounts: [{
+                paymentMethod: expense.paymentMethod,
+                value: expense.amount * -1
+              }]
+            };
           }));
 
         ctrl.history = history.sort(function(a, b) {
           return a.createdAt < b.createdAt ? 1 :
             a.createdAt > b.createdAt ? -1 :
-              (b.sourceExpense && b.sourceExpense.id === a.id) ? 1 :
-                (a.sourceExpense && a.sourceExpense.id === b.id) ? -1 :
-                  0;
+              0;
         });
       }
 
