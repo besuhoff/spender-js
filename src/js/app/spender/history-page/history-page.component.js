@@ -64,8 +64,6 @@ angular.module('spender')
                 name: 'Перевод денег'
               };
 
-              entity.comment = '';
-
               entity.amounts.push({
                 paymentMethod: entity.expense.paymentMethod,
                   value: entity.expense.amount * -1
