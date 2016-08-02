@@ -322,6 +322,10 @@ spinner {
   &__row {
     border: 1px solid transparent;
 
+    &[ui-sref] {
+      cursor: pointer;
+    }
+
     &:after {
       display: block;
       content: '';

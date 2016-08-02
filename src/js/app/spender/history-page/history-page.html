@@ -12,7 +12,8 @@
       <div class="history__header-col history__payment-methods">Счёт</div>
     </div>
 
-    <div class="history__row history__row-date" ng-if="$ctrl.history[$index-1].createdAtDate !== record.createdAtDate"
+    <div class="history__row history__row-date"
+         ng-if="$ctrl.history[$index-1].createdAtDate !== record.createdAtDate"
          ng-repeat-start="record in $ctrl.history track by $index">
       <div class="history__col history__date">
         <span>{{record.createdAtDate}}</span>
