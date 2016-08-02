@@ -30,6 +30,6 @@ angular.module('spender')
         delete entity.targetIncome.sourceExpense;
       }
 
-      return superDelete(entity);
+      return superDelete.apply(this, arguments);
     }
   });
