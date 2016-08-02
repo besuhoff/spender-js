@@ -95,8 +95,9 @@ angular.module('spender')
           }));
 
         ctrl.history = history.sort(function(a, b) {
-          return a.createdAt < b.createdAt ? 1 :
-            a.createdAt > b.createdAt ? -1 :
+          var diff = moment(a.createdAt).diff(b.createdAt);
+          return  diff < 0 ? 1 :
+            diff > 0 ? -1 :
               0;
         });
       }
