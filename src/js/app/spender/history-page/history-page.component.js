@@ -17,7 +17,7 @@ angular.module('spender')
 
           if (transaction.type === 'transfer') {
             loaded
-              .then(function() { return ExpenseService.delete(transaction.expense); })
+              .then(function() { return ExpenseService.delete(transaction.expense, true); })
               .then(function() { return IncomeService.delete(transaction.income); });
           }
 

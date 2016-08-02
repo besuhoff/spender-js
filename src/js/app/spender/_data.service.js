@@ -51,27 +51,33 @@ function DataService(Restangular, entityPluralKey) {
     _entitiesPromise = false;
   };
 
-  this.add = function (data) {
+  this.add = function (data, suppressListChange) {
     return Restangular.all(entityPluralKey).post(data).then(function(entity) {
       _entities.push(entity);
-      that.recordListChange();
+      if (!suppressListChange) {
+        that.recordListChange();
+      }
 
       return that.afterAdd(that.afterLoad(entity));
     });
   };
 
-  this.update = function (entity) {
+  this.update = function (entity, suppressListChange) {
     return Restangular.one(entityPluralKey, entity.id).patch(this.getUpdateData(entity)).then(function() {
-      that.recordListChange();
+      if (!suppressListChange) {
+        that.recordListChange();
+      }
 
       return entity;
     });
   };
 
-  this.delete = function (entity) {
+  this.delete = function (entity, suppressListChange) {
     return Restangular.one(entityPluralKey, entity.id).remove().then(function() {
       _entities.splice(_entities.indexOf(entity), 1);
-      that.recordListChange();
+      if (!suppressListChange) {
+        that.recordListChange();
+      }
 
       return entity;
     });
