@@ -1,3 +1,24 @@
+<div class="panel panel-default" ng-if="$ctrl.isHintVisible()">
+  <div class="panel-heading">
+    <h3>Переводы</h3>
+  </div>
+  <div class="panel-body">
+    <div class="m-b-md">
+      <p>Этот раздел в&nbsp;целом похож на&nbsp;предыдущие два, но&nbsp;есть несколько тонкостей.</p>
+      <p>Здесь вы&nbsp;переводите деньги с&nbsp;одного счёта на&nbsp;другой. Например, если вы&nbsp;обналичиваете в&nbsp;банкомате, это будет перевод со&nbsp;счёта &laquo;карта сбербанка&raquo; на&nbsp;счёт &laquo;наличные&raquo;.</p>
+      <p>Если вы&nbsp;при переводе конвертируете валюту, нужно дополнительно указать курс. Обычно в&nbsp;таких случаях речь идёт о&nbsp;покупке или продаже иностранной валюты. Например, если курс доллара к&nbsp;евро составляет 1.15, а&nbsp;вы&nbsp;покупаете евро за&nbsp;доллары, то&nbsp;курс нужно указать как &laquo;1.15&nbsp;к 1&raquo; (иначе говоря, вы&nbsp;покупаете 100 евро за&nbsp;115&nbsp;долларов). Если&nbsp;же на&nbsp;доллары вы&nbsp;купили рубли, то&nbsp;курс будет, например, 1&nbsp;к 64.</p>
+      <p>Курс нужно вводить, когда валюта целевого счёта отличается от&nbsp;валюты платёжного средства.</p>
+      <p>Тут&nbsp;же переводите деньги на&nbsp;счета других пользователей Транжиры. Например, если вы&nbsp;дали супругу или супруге 500&nbsp;долларов, это можно оформить как перевод с&nbsp;вашего долларового счёта на&nbsp;его (её)&nbsp;счёт. Для этого ей&nbsp;нужно расшарить свой долларовый счёт вам в&nbsp;настройках счёта.</p>
+      <p>Поэкспериментируйте с&nbsp;переводами, после чего перейдём к&nbsp;последнему разделу&nbsp;&mdash; истории платежей.</p>
+    </div>
+
+    <div class="button-holder m-b-n-sm">
+      <span><button class="btn m-b-sm btn-primary" ng-click="$ctrl.nextStep()" ng-disabled="$ctrl.loading">Перейти к истории</button></span>
+      <span class="m-l-xs"><button class="btn m-b-sm btn-default " ng-click="$ctrl.close()" ng-disabled="$ctrl.loading">Мне больше не нужны подсказки</button></span>
+    </div>
+  </div>
+</div>
+
 <div class="form">
   <a class="back-link" ng-show="$ctrl.editMode" ui-sref="history">&larr; Назад к истории</a>
 
@@ -5,13 +26,13 @@
     Перевёл <input autofocus class="form-control form-control--sm" type="number" ng-model="$ctrl.expense.amount" step="0.01">
     {{$ctrl.expense.paymentMethod.currency.symbol}}
 
-    <select class="form-control"
+    <select class="form-control form-control--lg"
             ng-model="$ctrl.expense.paymentMethod"
             ng-options="paymentMethod as paymentMethod.name for paymentMethod in $ctrl.paymentMethods">
       <option value="">- платёжным средством -</option>
     </select>
     <span class="text-nowrap">
-      на <select class="form-control"
+      на <select class="form-control form-control--lg"
                ng-model="$ctrl.income.paymentMethod"
                ng-options="paymentMethod as paymentMethod.name
                            disable when paymentMethod.id === $ctrl.expense.paymentMethod.id

@@ -1,6 +1,24 @@
+<div class="panel panel-default" ng-if="$ctrl.isHintVisible()">
+  <div class="panel-heading">
+    <h3>Категории трат</h3>
+  </div>
+  <div class="panel-body">
+    <div class="m-b-md">
+      <p>Задайте категории своих трат. Для примера я&nbsp;выбрала пятнадцать популярных. Удалите&nbsp;те, которые не&nbsp;подходят вам, и&nbsp;добавьте&nbsp;те, которые я&nbsp;упустила.</p>
+      <p>Обратите внимание, что каждой категории можно назначить цвет. Он&nbsp;будет использован при выводе графика трат категории. Если не&nbsp;указать цвет, её&nbsp;сектор будет выведен серым.</p>
+      <p>Когда закончите с&nbsp;категориями, я&nbsp;провожу вас по&nbsp;настройкам счетов.</p>
+    </div>
+
+    <div class="button-holder m-b-n-sm">
+      <span><button class="btn m-b-sm btn-primary" ng-click="$ctrl.nextStep()" ng-disabled="$ctrl.loading">Перейти к настройкам счетов</button></span>
+      <span class="m-l-xs"><button class="btn m-b-sm btn-default " ng-click="$ctrl.close()" ng-disabled="$ctrl.loading">Мне больше не нужны подсказки</button></span>
+    </div>
+  </div>
+</div>
+
 <div class="form">
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-sm-6">
       <ul class="list-unstyled list-form">
         <li ng-repeat="category in $ctrl.categories">
           <input class="form-control"
@@ -32,7 +50,7 @@
         </li>
       </ul>
     </div>
-    <div class="col-md-6">
+    <div class="col-sm-6">
       <div class="charts" ng-if="$ctrl.hasChart()">
         <h3>Распределение в последний месяц</h3>
         <div class="row">

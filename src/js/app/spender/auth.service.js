@@ -14,4 +14,8 @@ angular.module('spender')
         return profile;
       });
     };
+
+    this.reset = function() {
+      _profile = undefined;
+    }
   });

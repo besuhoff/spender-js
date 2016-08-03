@@ -5,7 +5,8 @@ angular.module('spender')
       income: '=?'
     },
     templateUrl: 'js/app/spender/transfers-page/transfers-page.html',
-    controller: function(IncomeService, ExpenseService, CategoryService, PaymentMethodService, $state, moment) {
+    controller: function(IncomeService, ExpenseService, CategoryService, PaymentMethodService, WizardService,
+                         $state, moment) {
       var ctrl = this;
 
       function initTransfer() {
@@ -99,6 +100,26 @@ angular.module('spender')
 
       ctrl.canSave = function() {
         return !ctrl.getRequirements();
-      }
+      };
+
+      ctrl.isHintVisible = function() {
+        return WizardService.isTransferHintVisible();
+      };
+
+      ctrl.nextStep = function() {
+        ctrl.loading = true;
+
+        return WizardService.nextStep().finally(function() {
+          ctrl.loading = false;
+        })
+      };
+
+      ctrl.close = function() {
+        ctrl.loading = true;
+
+        return WizardService.close().finally(function() {
+          ctrl.loading = false;
+        })
+      };
     }
   });

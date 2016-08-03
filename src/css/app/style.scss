@@ -70,7 +70,7 @@ body {
   }
 
   .form-control {
-    width: 220px;
+    width: 150px;
     display: inline-block;
     margin: 0 3px;
     border-width: 0 0 1px;
@@ -80,6 +80,10 @@ body {
     color: inherit;
     line-height: 23px !important;
     height: 24px;
+
+    &--lg {
+      width: 220px;
+    }
 
     &--sm {
       width: 100px;
@@ -528,6 +532,10 @@ spinner {
   filter: grayscale(1);
 }
 
+.modal--wizard {
+  display: block !important;
+}
+
 .modal--login {
   display: block !important;
 
@@ -536,4 +544,32 @@ spinner {
       margin: 10px;
     }
   }
+}
+
+$sizes: xs sm md lg xl xxl;
+$directions: l r t b;
+$directions-full: left right top bottom;
+
+@for $i from 1 through length($sizes) {
+  @each $direction in zip($directions, $directions-full) {
+    .m-#{nth($direction, 1)}-#{nth($sizes, $i)} {
+      margin-#{nth($direction, 2)}: 6px * $i;
+    }
+
+    .m-#{nth($direction, 1)}-n-#{nth($sizes, $i)} {
+      margin-#{nth($direction, 2)}: -6px * $i;
+    }
+  }
+}
+
+.panel-heading {
+  padding-top: 14px;
+
+  h1, h2, h3, h4, h5 {
+    margin: 0;
+  }
+}
+
+.panel-body .button-holder {
+  text-align: center;
 }

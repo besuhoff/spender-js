@@ -4,7 +4,8 @@ angular.module('spender')
       expense: '=?'
     },
     templateUrl: 'js/app/spender/expenses-page/expenses-page.html',
-    controller: function($state, moment, ExpenseService, ChartService, CategoryService, PaymentMethodService, $scope) {
+    controller: function(ExpenseService, ChartService, CategoryService, PaymentMethodService, WizardService,
+                         $state, moment, $scope) {
       var ctrl = this;
 
       function initExpense() {
@@ -81,6 +82,26 @@ angular.module('spender')
 
       ctrl.canSave = function() {
         return !ctrl.getRequirements();
-      }
+      };
+
+      ctrl.isHintVisible = function() {
+        return WizardService.isExpenseHintVisible();
+      };
+
+      ctrl.nextStep = function() {
+        ctrl.loading = true;
+
+        return WizardService.nextStep().finally(function() {
+          ctrl.loading = false;
+        })
+      };
+
+      ctrl.close = function() {
+        ctrl.loading = true;
+
+        return WizardService.close().finally(function() {
+          ctrl.loading = false;
+        })
+      };
     }
   });

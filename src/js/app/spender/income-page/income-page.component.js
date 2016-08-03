@@ -4,7 +4,8 @@ angular.module('spender')
       income: '=?'
     },
     templateUrl: 'js/app/spender/income-page/income-page.html',
-    controller: function($state, moment, IncomeService, ChartService, IncomeCategoryService, PaymentMethodService, $scope) {
+    controller: function(IncomeService, ChartService, IncomeCategoryService, PaymentMethodService, WizardService,
+                         $state, moment, $scope) {
       var ctrl = this;
 
       ctrl.editMode = false;
@@ -84,6 +85,26 @@ angular.module('spender')
 
       ctrl.canSave = function() {
         return !ctrl.getRequirements();
-      }
+      };
+
+      ctrl.isHintVisible = function() {
+        return WizardService.isIncomeHintVisible();
+      };
+
+      ctrl.nextStep = function() {
+        ctrl.loading = true;
+
+        return WizardService.nextStep().finally(function() {
+          ctrl.loading = false;
+        })
+      };
+
+      ctrl.close = function() {
+        ctrl.loading = true;
+
+        return WizardService.close().finally(function() {
+          ctrl.loading = false;
+        })
+      };
     }
   });

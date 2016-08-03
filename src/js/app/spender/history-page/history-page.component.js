@@ -1,7 +1,8 @@
 angular.module('spender')
   .component('historyPage', {
     templateUrl: 'js/app/spender/history-page/history-page.html',
-    controller: function(ExpenseService, IncomeService, PaymentMethodService, $q, $state, $scope, $filter, $timeout, moment) {
+    controller: function(ExpenseService, IncomeService, PaymentMethodService, WizardService,
+                         $q, $state, $scope, $filter, $timeout, moment) {
       var ctrl = this,
         history = [];
 
@@ -136,5 +137,17 @@ angular.module('spender')
           }
         }
       );
+
+      ctrl.isHintVisible = function() {
+        return WizardService.isHistoryHintVisible();
+      };
+
+      ctrl.close = function() {
+        ctrl.loading = true;
+
+        return WizardService.close().finally(function() {
+          ctrl.loading = false;
+        })
+      };
     }
   });

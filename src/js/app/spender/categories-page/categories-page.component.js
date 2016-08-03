@@ -1,7 +1,7 @@
 angular.module('spender')
   .component('categoriesPage', {
     templateUrl: 'js/app/spender/categories-page/categories-page.html',
-    controller: function($scope, CategoryService, ChartService, ExpenseService) {
+    controller: function($scope, CategoryService, ChartService, ExpenseService, WizardService) {
       var ctrl = this;
 
       function initCategories() {
@@ -67,5 +67,25 @@ angular.module('spender')
 
       ctrl.isLoaded = {};
       ctrl.updateSelectedColors();
+
+      ctrl.isHintVisible = function() {
+        return WizardService.isCategoryHintVisible();
+      };
+
+      ctrl.nextStep = function() {
+        ctrl.loading = true;
+
+        return WizardService.nextStep().finally(function() {
+          ctrl.loading = false;
+        })
+      };
+
+      ctrl.close = function() {
+        ctrl.loading = true;
+
+        return WizardService.close().finally(function() {
+          ctrl.loading = false;
+        })
+      };
     }
   });

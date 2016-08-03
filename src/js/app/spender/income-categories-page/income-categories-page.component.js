@@ -1,7 +1,7 @@
 angular.module('spender')
   .component('incomeCategoriesPage', {
     templateUrl: 'js/app/spender/income-categories-page/income-categories-page.html',
-    controller: function($scope, IncomeService, ChartService, IncomeCategoryService) {
+    controller: function($scope, IncomeService, ChartService, IncomeCategoryService, WizardService) {
       var ctrl = this;
 
       function initCategories() {
@@ -67,5 +67,25 @@ angular.module('spender')
 
       ctrl.isLoaded = {};
       ctrl.updateSelectedColors();
+
+      ctrl.isHintVisible = function() {
+        return WizardService.isIncomeCategoryHintVisible();
+      };
+
+      ctrl.nextStep = function() {
+        ctrl.loading = true;
+
+        return WizardService.nextStep().finally(function() {
+          ctrl.loading = false;
+        })
+      };
+
+      ctrl.close = function() {
+        ctrl.loading = true;
+
+        return WizardService.close().finally(function() {
+          ctrl.loading = false;
+        })
+      };
     }
   });

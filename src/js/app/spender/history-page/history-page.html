@@ -1,3 +1,22 @@
+<div class="panel panel-default" ng-if="$ctrl.isHintVisible()">
+  <div class="panel-heading">
+    <h3>История</h3>
+  </div>
+  <div class="panel-body">
+    <div class="m-b-md">
+      <p>Здесь выводится история всех денежных операций по&nbsp;месяцам, начиная с&nbsp;самой поздней.</p>
+      <p>Доходы отмечены зелёным цветом, расходы&nbsp;&mdash; красным. Денежные переводы выделены светло-серым. На&nbsp;верхней строке&nbsp;&mdash; приход на&nbsp;целевой счёт, на&nbsp;нижней&nbsp;&mdash; списание с&nbsp;исходного счёта.</p>
+      <p>Отредактируйте запись, нажав на&nbsp;иконку <i class="fa fa-pencil"></i>. После сохранения вы&nbsp;вернётесь к&nbsp;обновлённой истории.</p>
+      <p>Чтобы удалить запись, дважды кликните по&nbsp;иконке <i class="fa fa-lg fa-close"></i>.</p>
+      <p>На&nbsp;этой странице заканчивается наша экскурсия по&nbsp;системе. Вы&nbsp;всегда сможете повторить&nbsp;её, нажав на&nbsp;иконку с&nbsp;вопросительным знаком в&nbsp;главном меню справа.</p>
+    </div>
+
+    <div class="button-holder m-b-n-sm">
+      <span class="m-l-xs"><button class="btn m-b-sm btn-primary" ng-click="$ctrl.close()" ng-disabled="$ctrl.loading">Я освоился, спасибо!</button></span>
+    </div>
+  </div>
+</div>
+
 <h5 ng-if="!$ctrl.history.length">
   Вы не записали ни одной транзакции. Запишите <a ui-sref="income">доход</a>, <a ui-sref="expenses">трату</a>
   или <a ui-sref="transfers">перевод</a>, чтобы увидеть историю платежей.

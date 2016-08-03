@@ -1,15 +1,35 @@
+<div class="panel panel-default" ng-if="$ctrl.isHintVisible()">
+  <div class="panel-heading">
+    <h3>Траты</h3>
+  </div>
+  <div class="panel-body">
+    <div class="m-b-md">
+      <p>Этим разделом вы&nbsp;будете пользоваться каждый день.</p>
+      <p>Записывайте расходы в&nbsp;формате &laquo;Потратил 100$ наличными на&nbsp;Транспорт 2016-08-06 10:25, комментарий: такси в&nbsp;аэропорт&raquo;. Валюту указывать не&nbsp;нужно, она подтянется сама из&nbsp;счёта, который вы&nbsp;укажете.</p>
+      <p>Воспользуйтесь ссылкой &laquo;сброс&raquo; в&nbsp;поле ввода даты и&nbsp;времени, чтобы сброить значения к&nbsp;текущему времени.</p>
+      <p>Созданные записи выводятся на&nbsp;странице истории (о&nbsp;ней чуть позже).</p>
+      <p>Поэкспериментируйте с&nbsp;тратами, после чего перейдём к&nbsp;доходам.</p>
+    </div>
+
+    <div class="button-holder m-b-n-sm">
+      <span><button class="btn m-b-sm btn-primary" ng-click="$ctrl.nextStep()" ng-disabled="$ctrl.loading">Перейти к доходам</button></span>
+      <span class="m-l-xs"><button class="btn m-b-sm btn-default " ng-click="$ctrl.close()" ng-disabled="$ctrl.loading">Мне больше не нужны подсказки</button></span>
+    </div>
+  </div>
+</div>
+
 <div class="form">
   <a class="back-link" ng-show="$ctrl.editMode" ui-sref="history">&larr; Назад к истории</a>
 
   <div>
     Потратил <input autofocus class="form-control form-control--sm" type="number" ng-model="$ctrl.expense.amount" step="0.01">
     {{$ctrl.expense.paymentMethod.currency.symbol}}
-    <select class="form-control"
+    <select class="form-control form-control--lg"
             ng-model="$ctrl.expense.paymentMethod"
             ng-options="paymentMethod as paymentMethod.name for paymentMethod in $ctrl.paymentMethods">
     </select>
     <span class="text-nowrap">
-      на <select class="form-control"
+      на <select class="form-control form-control--lg"
                  ng-model="$ctrl.expense.category"
                  ng-options="category as category.name for category in $ctrl.categories">
       </select>

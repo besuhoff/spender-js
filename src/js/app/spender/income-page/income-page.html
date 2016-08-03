@@ -1,16 +1,35 @@
+<div class="panel panel-default" ng-if="$ctrl.isHintVisible()">
+  <div class="panel-heading">
+    <h3>Доходы</h3>
+  </div>
+  <div class="panel-body">
+    <div class="m-b-md">
+      <p>Этот раздел очень похож на&nbsp;предыдущий.</p>
+      <p>Записывайте доходы в&nbsp;формате &laquo;Получил 2000 гривен на&nbsp;карту сбербанка за&nbsp;продажи 2016-08-06 17:25, комментарий: автокресло&raquo;.</p>
+      <p>Доходы тоже выводятся на&nbsp;странице истории.</p>
+      <p>Поэкспериментируйте с&nbsp;доходами, после чего рассмотрим переводы между счетами.</p>
+    </div>
+
+    <div class="button-holder m-b-n-sm">
+      <span><button class="btn m-b-sm btn-primary" ng-click="$ctrl.nextStep()" ng-disabled="$ctrl.loading">Перейти к переводам</button></span>
+      <span class="m-l-xs"><button class="btn m-b-sm btn-default " ng-click="$ctrl.close()" ng-disabled="$ctrl.loading">Мне больше не нужны подсказки</button></span>
+    </div>
+  </div>
+</div>
+
 <div class="form">
   <a class="back-link" ng-show="$ctrl.editMode" ui-sref="history">&larr; Назад к истории</a>
 
   <div>
     Получил <input autofocus class="form-control form-control--sm" type="number" ng-model="$ctrl.income.amount" step="0.01">
     {{$ctrl.income.paymentMethod.currency.symbol}}
-    <select class="form-control"
+    <select class="form-control form-control--lg"
             ng-model="$ctrl.income.paymentMethod"
             ng-options="paymentMethod as paymentMethod.name for paymentMethod in $ctrl.paymentMethods">
       <option value="">- на платёжное средство -</option>
     </select>
     <span class="text-nowrap">
-      от <select class="form-control"
+      от <select class="form-control form-control--lg"
                  ng-model="$ctrl.income.incomeCategory"
                  ng-options="category as category.name for category in $ctrl.categories">
         <option value="">- источника дохода -</option>

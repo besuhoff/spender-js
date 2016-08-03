@@ -1,3 +1,23 @@
+<div class="panel panel-default" ng-if="$ctrl.isHintVisible()">
+  <div class="panel-heading">
+    <h3>Счета</h3>
+  </div>
+  <div class="panel-body">
+    <div class="m-b-md">
+      <p>Задайте счета или другие платёжные средства. Например: &laquo;наличные&raquo;, &laquo;карта сбербанка&raquo;, &laquo;отложено&raquo;, &laquo;абонемент в&nbsp;клуб&raquo;, &laquo;доллары&raquo;.</p>
+      <p>На&nbsp;странице истории полностью помещаются только короткие названия, лучше всего из&nbsp;одного слова.</p>
+      <p>В&nbsp;поле &laquo;вход&raquo; введите сумму на&nbsp;этом счету на&nbsp;сегодняшний день, например, &laquo;наличные долл.&raquo; и&nbsp;&laquo;500&raquo;, если у&nbsp;вас 500 долларов наличными.</p>
+      <p>Для счетов тоже можно назначать цвет. Он&nbsp;будет использован при выводе графика остатков.</p>
+      <p>Когда закончите со&nbsp;счетами, я&nbsp;провожу вас по&nbsp;настройкам источников доходов.</p>
+    </div>
+
+    <div class="button-holder m-b-n-sm">
+      <span><button class="btn m-b-sm btn-primary" ng-click="$ctrl.nextStep()" ng-disabled="$ctrl.loading">Перейти к настройкам доходов</button></span>
+      <span class="m-l-xs"><button class="btn m-b-sm btn-default " ng-click="$ctrl.close()" ng-disabled="$ctrl.loading">Мне больше не нужны подсказки</button></span>
+    </div>
+  </div>
+</div>
+
 <div class="form">
   <ul class="list-unstyled list-form">
     <li ng-repeat="paymentMethod in $ctrl.paymentMethods">
@@ -45,7 +65,7 @@
                         ng-options="currency as currency.code for currency in $ctrl.currencies">
         </select>
 
-      </span>
+      </span>,
       <span class="text-nowrap">
         вход:
         <input class="form-control form-control--sm"

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default navbar-fixed-top">
+<nav class="navbar navbar-default navbar-fixed-top" id="navbar_fixed">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-navbar" aria-expanded="false">
@@ -19,6 +19,21 @@
         <li ui-sref-active="active" class="main-menu__tab main-menu__tab--income-categories"><a ui-sref="income-categories">Источники</a></li>
         <li ui-sref-active="active" class="main-menu__tab main-menu__tab--payment-methods"><a ui-sref="payment-methods">Счета</a></li>
         <li ui-sref-active="active" class="main-menu__tab main-menu__tab--history"><a ui-sref="history">История</a></li>
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a ng-click="$ctrl.resetWizard()"
+             tabindex="-1"
+             role="button"
+             id="main_menu_help"
+             data-trigger="manual"
+             data-container="#navbar_fixed"
+             data-placement="left"
+             data-content="Хорошо, о смельчак. Я в любой момент готова прийти на помощь вновь."
+             href=""><span>?</span></a>
+        </li>
+        </li>
       </ul>
     </div>
   </div>
@@ -86,3 +101,5 @@
     </div>
   </div>
 </div>
+
+<wizard ng-if="$ctrl.isWizardModalVisible()"></wizard>

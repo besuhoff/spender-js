@@ -12,6 +12,12 @@ angular.module(
   .constant('BACKEND_URL', 'https://spender-api.pereborstudio.com/')
   .constant('GAPI_CLIENT_ID', '843225840486-ilkj47kggue9tvh6ajfvvog45mertgfg.apps.googleusercontent.com')
 
+  .controller('AppController', function($rootScope) {
+    this.hasModal = function() {
+      return $rootScope.hasModal;
+    }
+  })
+
   .config(function($locationProvider, $urlRouterProvider, $transitionsProvider, $urlMatcherFactoryProvider, $stateProvider) {
     $locationProvider.html5Mode(true);
     $urlMatcherFactoryProvider.strictMode(false);

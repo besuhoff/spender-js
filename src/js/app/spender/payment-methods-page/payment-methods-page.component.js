@@ -1,7 +1,7 @@
 angular.module('spender')
   .component('paymentMethodsPage', {
     templateUrl: 'js/app/spender/payment-methods-page/payment-methods-page.html',
-    controller: function(PaymentMethodService, CurrencyService) {
+    controller: function(PaymentMethodService, CurrencyService, WizardService) {
       var ctrl = this;
 
       function initMethods() {
@@ -58,5 +58,25 @@ angular.module('spender')
       ctrl.updateSelectedColors();
 
       ctrl.currencies = CurrencyService.getAll();
+
+      ctrl.isHintVisible = function() {
+        return WizardService.isPaymentMethodHintVisible();
+      };
+
+      ctrl.nextStep = function() {
+        ctrl.loading = true;
+
+        return WizardService.nextStep().finally(function() {
+          ctrl.loading = false;
+        })
+      };
+
+      ctrl.close = function() {
+        ctrl.loading = true;
+
+        return WizardService.close().finally(function() {
+          ctrl.loading = false;
+        })
+      };
     }
   });
