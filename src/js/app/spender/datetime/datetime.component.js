@@ -10,6 +10,11 @@ angular.module('spender')
 
         $attrs.$observe('disabled', function(isDisabled) { ctrl.disabled = isDisabled; });
 
+        ctrl.setNow = function() {
+          ctrl.ngModelController.$setViewValue(moment().format());
+          ctrl.ngModelController.$render();
+        };
+
         ctrl.setValue = function() {
           // If date is correct, let's set value
           if (ctrl.date) {

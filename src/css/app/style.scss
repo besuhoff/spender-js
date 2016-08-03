@@ -136,6 +136,19 @@ body {
 
 .date-group {
   display: inline-block;
+  position: relative;
+
+  .date-setnow {
+    cursor: pointer;
+    color: #158cba;
+    bottom: 0;
+    position: absolute;
+    right: 0;
+    font-size: 11px;
+    width: 44px;
+    text-align: center;
+    text-decoration: underline;
+  }
 
   .dropdown-menu {
     .btn-default {
