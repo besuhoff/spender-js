@@ -1,4 +1,6 @@
 <div class="form">
+  <a class="back-link" ng-show="$ctrl.editMode" ui-sref="history">&larr; Назад к истории</a>
+
   <div>
     Перевёл <input autofocus class="form-control form-control--sm" type="number" ng-model="$ctrl.expense.amount" step="0.01">
     {{$ctrl.expense.paymentMethod.currency.symbol}}

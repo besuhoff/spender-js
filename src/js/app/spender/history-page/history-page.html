@@ -22,10 +22,15 @@
 
     <div class="history__row"
          ng-repeat-end
-         ui-sref="{{ record.type }}-edit({ id: record.id })"
          ng-class="{ 'highlighted': record.type === 'transfer'}">
+
+      <div class="history__col history__action-confirm" ng-show="record.isMarkedForRemoval">
+        кликните снова
+      </div>
+
       <div class="history__col history__actions">
-        <span class="fa fa-close fa-lg"
+        <span class="fa fa-pencil fa-lg" ui-sref="{{ record.type }}-edit({ id: record.id })"></span><!--
+        --><span class="fa fa-close fa-lg"
               ng-class="{ active: record.isMarkedForRemoval }"
               ng-click="$ctrl.removeTransaction(record); $event.stopPropagation();"></span>
       </div>

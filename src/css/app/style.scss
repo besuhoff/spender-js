@@ -38,6 +38,12 @@ body {
 .form {
   line-height: 42px;
 
+  .back-link {
+    display: block;
+    line-height: normal;
+    padding-bottom: 10px;
+  }
+
   .button-hint {
     vertical-align: top;
     margin-top: 5px;
@@ -284,7 +290,7 @@ spinner {
   $category-width: 250px;
   $amount-width: 100px;
   $date-width: 46px;
-  $actions-width: 23px;
+  $actions-width: 56px;
   $payment-methods-width: 140px;
 
   display: inline-block;
@@ -363,11 +369,17 @@ spinner {
       text-align: right;
       float: right;
 
+      .fa {
+        opacity: 0.5;
+      }
+
       .fa-close {
         padding: 2px 0 0;
         border: 0;
         text-decoration: none !important;
-        opacity: 0.3;
+        margin-left: 10px;
+        font-size: 19px;
+        line-height: 20px;
 
         &.active {
           color: #f00;
@@ -407,17 +419,24 @@ spinner {
         }
       }
     }
+
+    .history__action-confirm {
+      float: none;
+      color: #f00;
+      text-align: right;
+      font-size: 10px;
+    }
   }
 
   @media(max-width: 766px) {
     .history__category {
-      margin-right: 0;
       left: 0;
       width: auto;
       float: none;
       clear: left;
       font-size: 11px;
       color: #808080;
+      margin-right: 23px;
     }
 
     .history__payment-methods {
@@ -432,6 +451,18 @@ spinner {
 
     .history__row.highlighted {
       box-shadow: none;
+
+      .history__actions {
+        .fa-pencil {
+          margin-top: 25px;
+          margin-bottom: -25px;
+        }
+
+        .fa-close {
+          margin-left: 0;
+          margin-top: -15px;
+        }
+      }
     }
 
     .history__row.highlighted + .history__row.highlighted {
@@ -445,6 +476,20 @@ spinner {
 
     .history__payment-methods {
       margin-left: 0;
+    }
+
+    .history__actions {
+      width: 23px;
+
+      .fa-pencil {
+        margin-top: 22px;
+        margin-bottom: -22px;
+      }
+
+      .fa-close {
+        margin-left: 0;
+        margin-top: -18px;
+      }
     }
   }
 }
