@@ -341,10 +341,6 @@ spinner {
   &__row {
     border: 1px solid transparent;
 
-    &[ui-sref] {
-      cursor: pointer;
-    }
-
     &:after {
       display: block;
       content: '';
@@ -384,6 +380,7 @@ spinner {
 
       .fa {
         opacity: 0.5;
+        cursor: pointer;
       }
 
       .fa-close {
