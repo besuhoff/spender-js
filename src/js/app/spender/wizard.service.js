@@ -48,37 +48,41 @@ angular.module('spender')
       return this.step() === 8;
     };
 
+    this.goToCurrentHint = function() {
+      if (this.isCategoryHintVisible()) {
+        $state.go('categories');
+      }
+
+      if (this.isPaymentMethodHintVisible()) {
+        $state.go('payment-methods');
+      }
+
+      if (this.isIncomeCategoryHintVisible()) {
+        $state.go('income-categories');
+      }
+
+      if (this.isExpenseHintVisible()) {
+        $state.go('expenses');
+      }
+
+      if (this.isIncomeHintVisible()) {
+        $state.go('income');
+      }
+
+      if (this.isTransferHintVisible()) {
+        $state.go('transfers');
+      }
+
+      if (this.isHistoryHintVisible()) {
+        $state.go('history');
+      }
+    };
+
     this.nextStep = function() {
       var service = this;
 
       return UserService.update({ wizardStep: this.step() + 1 }).then(function() {
-        if (service.isCategoryHintVisible()) {
-          $state.go('categories');
-        }
-
-        if (service.isPaymentMethodHintVisible()) {
-          $state.go('payment-methods');
-        }
-
-        if (service.isIncomeCategoryHintVisible()) {
-          $state.go('income-categories');
-        }
-
-        if (service.isExpenseHintVisible()) {
-          $state.go('expenses');
-        }
-
-        if (service.isIncomeHintVisible()) {
-          $state.go('income');
-        }
-
-        if (service.isTransferHintVisible()) {
-          $state.go('transfers');
-        }
-
-        if (service.isHistoryHintVisible()) {
-          $state.go('history');
-        }
+        service.goToCurrentHint();
       });
     };
 

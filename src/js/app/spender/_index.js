@@ -24,12 +24,13 @@ angular.module(
     $urlRouterProvider.otherwise('/');
 
     // BEGIN ABSTRACT REDIRECT
-    $transitionsProvider.onStart({ to: function(state) { return !!state.redirectTo; } }, /* @ngInject */function($transition$, $state) {
-      var val = $transition$.to().redirectTo;
-      return $state.go(val, $transition$.params());
-    });
-    // END ABSTRACT REDIRECT
+    $transitionsProvider.onStart({ to: true }, /* @ngInject */resolveSetTargetState);
+    function resolveSetTargetState($transition$, $state) {
+      $state.toState = $transition$.to();
 
+      return $state;
+    }
+    // END ABSTRACT REDIRECT
 
     $stateProvider
       .state('login', {
@@ -49,7 +50,6 @@ angular.module(
       })
       .state('home', {
         url: '',
-        redirectTo: 'expenses',
         template: '<layout></layout>',
         resolve: {
           profile: function(AuthService, GapiService, $state, $q) {
@@ -66,6 +66,15 @@ angular.module(
             .catch(function() {
               $state.go('login');
             });
+          },
+          redirect: function(WizardService, $state, $stateParams, profile) {
+            if ($state.toState.name === 'home') {
+              if (WizardService.isActive()) {
+                WizardService.goToCurrentHint();
+              } else {
+                $state.go('expenses', $stateParams);
+              }
+            }
           }
         }
       })
