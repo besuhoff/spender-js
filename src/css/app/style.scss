@@ -308,6 +308,7 @@ spinner {
   $amount-width: 100px;
   $date-width: 46px;
   $actions-width: 56px;
+  $actions-width-compact: 23px;
   $payment-methods-width: 140px;
 
   display: inline-block;
@@ -443,6 +444,7 @@ spinner {
   }
 
   @media(max-width: 766px) {
+
     .history__category {
       left: 0;
       width: auto;
@@ -450,11 +452,11 @@ spinner {
       clear: left;
       font-size: 11px;
       color: #808080;
-      margin-right: 23px;
+      margin-right: $actions-width-compact;
     }
 
     .history__payment-methods {
-      width: calc(100% - #{$amount-width} - #{$date-width} - #{$actions-width});
+      width: calc(100% - #{$amount-width} - #{$date-width} - #{$actions-width-compact});
     }
 
     .history__row {
@@ -493,7 +495,7 @@ spinner {
     }
 
     .history__actions {
-      width: 23px;
+      width: $actions-width-compact;
 
       .fa-pencil {
         margin-top: 22px;
