@@ -48,7 +48,7 @@ angular.module('spender')
               income: income,
               type: 'income',
               category: income.incomeCategory,
-              createdAtDate: createdAt.format('DD/MM'),
+              createdAtDate: createdAt.format('DD/MM, dddd'),
               createdAtFormattedCompact: createdAt.format('HH:mm'),
               comment: income.comment,
               amounts: [{
@@ -85,7 +85,7 @@ angular.module('spender')
               expense: expense,
               type: 'expense',
               category: expense.category,
-              createdAtDate: createdAt.format('DD/MM'),
+              createdAtDate: createdAt.format('DD/MM, dddd'),
               createdAtFormattedCompact: createdAt.format('HH:mm'),
               comment: expense.comment,
               amounts: [{
