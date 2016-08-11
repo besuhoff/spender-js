@@ -386,12 +386,13 @@ spinner {
       .fa {
         opacity: 0.5;
         cursor: pointer;
+        text-decoration: none !important;
+        color: inherit;
       }
 
       .fa-close {
         padding: 2px 0 0;
         border: 0;
-        text-decoration: none !important;
         margin-left: 10px;
         font-size: 19px;
         line-height: 20px;
