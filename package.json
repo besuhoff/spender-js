@@ -76,7 +76,7 @@
         "to": "/index.html"
       },
       {
-        "from": "/history",
+        "from": "/history*",
         "to": "/index.html"
       },
       {

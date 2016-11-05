@@ -138,8 +138,11 @@ angular.module(
       })
       .state('history', {
         parent: 'home',
-        url: '/history',
-        template: '<history-page></history-page>'
+        url: '/history?month',
+        controller: function($stateParams, $scope) {
+          $scope.currentMonth = $stateParams.month;
+        },
+        template: '<history-page current-month="currentMonth"></history-page>'
       })
       .state('categories', {
         parent: 'home',

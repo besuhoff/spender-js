@@ -1,10 +1,16 @@
 angular.module('spender')
   .component('historyPage', {
+    bindings: {
+      currentMonth: '<?'
+    },
     templateUrl: 'js/app/spender/history-page/history-page.html',
     controller: function(ExpenseService, IncomeService, PaymentMethodService, WizardService,
                          $q, $state, $scope, $filter, $timeout, moment) {
       var ctrl = this,
-        history = [];
+        history = [],
+        monthsMap = {};
+
+      ctrl.months = [];
 
       ctrl.removeTransaction = function(transaction) {
         if (!transaction.isMarkedForRemoval) {
@@ -44,11 +50,12 @@ angular.module('spender')
 
             var entity = {
               id: income.id,
-              createdAt: income.createdAt,
+              createdAt: createdAt,
               income: income,
               type: 'income',
               category: income.incomeCategory,
               createdAtDate: createdAt.format('DD/MM, dddd'),
+              createdAtMonthId: createdAt.format('YYYY-MM'),
               createdAtFormattedCompact: createdAt.format('HH:mm'),
               comment: income.comment,
               amounts: [{
@@ -81,11 +88,12 @@ angular.module('spender')
 
             return {
               id: expense.id,
-              createdAt: expense.createdAt,
+              createdAt: createdAt,
               expense: expense,
               type: 'expense',
               category: expense.category,
               createdAtDate: createdAt.format('DD/MM, dddd'),
+              createdAtMonthId: createdAt.format('YYYY-MM'),
               createdAtFormattedCompact: createdAt.format('HH:mm'),
               comment: expense.comment,
               amounts: [{
@@ -95,12 +103,30 @@ angular.module('spender')
             };
           }));
 
-        ctrl.history = history.sort(function(a, b) {
-          var diff = moment(a.createdAt).diff(b.createdAt);
-          return  diff < 0 ? 1 :
-            diff > 0 ? -1 :
-              0;
+        history.forEach(function(item) {
+          if (!monthsMap[item.createdAtMonthId]) {
+            monthsMap[item.createdAtMonthId] = item.createdAt.format('MMM');
+          }
         });
+
+        Object.keys(monthsMap).sort().reverse().forEach(function(monthId) {
+          ctrl.months.push({ id: monthId, name: monthsMap[monthId] });
+        });
+
+        ctrl.currentMonth = ctrl.currentMonth || ctrl.months[0].id;
+
+        console.log('Current month', ctrl.currentMonth);
+
+        ctrl.history = history
+          .filter(function(item) {
+            return item.createdAtMonthId === ctrl.currentMonth
+          })
+          .sort(function(a, b) {
+            var diff = a.createdAt.diff(b.createdAt);
+            return  diff < 0 ? 1 :
+              diff > 0 ? -1 :
+                0;
+          });
       }
 
       initHistory();
@@ -148,6 +174,32 @@ angular.module('spender')
         return WizardService.close().finally(function() {
           ctrl.loading = false;
         })
+      };
+
+      ctrl.gotoMonth = function(month) {
+        if (month.id !== ctrl.currentMonth) {
+          $state.go('history', { month: month.id });
+        }
+      };
+
+      ctrl.isFirstMonth = function() {
+        return ctrl.months[0].id === ctrl.currentMonth;
+      };
+
+      ctrl.isLastMonth = function() {
+        return ctrl.months[ctrl.months.length - 1].id === ctrl.currentMonth;
+      };
+
+      ctrl.gotoPrevMonth = function() {
+        if (!ctrl.isFirstMonth()) {
+          ctrl.gotoMonth(ctrl.months[ctrl.months.map(function(month) { return month.id }).indexOf(ctrl.currentMonth) - 1]);
+        }
+      };
+
+      ctrl.gotoNextMonth = function() {
+        if (!ctrl.isLastMonth()) {
+          ctrl.gotoMonth(ctrl.months[ctrl.months.map(function(month) { return month.id }).indexOf(ctrl.currentMonth) + 1]);
+        }
       };
     }
   });

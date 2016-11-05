@@ -23,6 +23,19 @@
 </h5>
 
 <div ng-if="$ctrl.history.length" class="text-center">
+  <div class="history-navigation" ng-if="$ctrl.months.length > 1">
+    <button class="btn btn-default"
+            ng-click="$ctrl.gotoPrevMonth()"
+            ng-disabled="$ctrl.isFirstMonth()">&leftarrow;</button><!--
+    --><button class="btn btn-default"
+            ng-class="{ active: month.id === $ctrl.currentMonth }"
+            ng-click="$ctrl.gotoMonth(month)"
+            ng-repeat="month in $ctrl.months">{{ month.name }}</button><!--
+    --><button class="btn btn-default"
+            ng-click="$ctrl.gotoNextMonth()"
+            ng-disabled="$ctrl.isLastMonth()">&rightarrow;</button>
+  </div>
+
   <div class="history text-left">
     <div class="history__header history__row">
       <div class="history__header-col history__date">Дата</div>
