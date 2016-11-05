@@ -154,6 +154,11 @@ angular.module(
         url: '/income-categories',
         template: '<income-categories-page></income-categories-page>'
       })
+      .state('charts', {
+        parent: 'home',
+        url: '/charts',
+        template: '<charts-page></charts-page>'
+      })
       .state('payment-methods', {
         parent: 'home',
         url: '/payment-methods',

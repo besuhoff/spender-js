@@ -84,6 +84,10 @@
         "to": "/index.html"
       },
       {
+        "from": "/charts",
+        "to": "/index.html"
+      },
+      {
         "from": "/income-categories",
         "to": "/index.html"
       },
