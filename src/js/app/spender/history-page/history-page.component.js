@@ -115,8 +115,6 @@ angular.module('spender')
 
         ctrl.currentMonth = ctrl.currentMonth || ctrl.months[0].id;
 
-        console.log('Current month', ctrl.currentMonth);
-
         ctrl.history = history
           .filter(function(item) {
             return item.createdAtMonthId === ctrl.currentMonth

@@ -12,7 +12,25 @@
   <title>Транжира</title>
 </head>
 <body ng-controller="AppController as $ctrl" ng-class="{ 'modal-open': $ctrl.hasModal() }">
-  <div ui-view></div>
+  <div ui-view>
+    <div class="loader container" ng-if="!isDataLoaded">
+      <h2 class="text-center">Загружаем данные</h2>
+      <div class="col-md-4 col-md-offset-4">
+        <div class="loader__items">
+          <div class="loader__item" ng-class="{ 'loader__item--active': itemsLoaded[item] }" ng-repeat="item in itemsToLoad">
+            <span ng-switch="item">
+              <span ng-switch-when="expenses">Траты</span>
+              <span ng-switch-when="categories">Категории трат</span>
+              <span ng-switch-when="incomes">Доходы</span>
+              <span ng-switch-when="incomeCategories">Категории доходов</span>
+              <span ng-switch-when="paymentMethods">Платежные средства</span>
+              <span ng-switch-when="currencies">Валюты</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <script src="js/vendor.min.js"></script>
   <script src="js/app/app.min.js"></script>
   <script src="js/app/templates.js"></script>

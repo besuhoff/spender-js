@@ -18,19 +18,10 @@ angular.module(
     }
   })
 
-  .config(function($locationProvider, $urlRouterProvider, $transitionsProvider, $urlMatcherFactoryProvider, $stateProvider) {
+  .config(function($locationProvider, $urlRouterProvider, $urlMatcherFactoryProvider, $stateProvider) {
     $locationProvider.html5Mode(true);
     $urlMatcherFactoryProvider.strictMode(false);
     $urlRouterProvider.otherwise('/');
-
-    // BEGIN ABSTRACT REDIRECT
-    $transitionsProvider.onStart({ to: true }, /* @ngInject */resolveSetTargetState);
-    function resolveSetTargetState($transition$, $state) {
-      $state.toState = $transition$.to();
-
-      return $state;
-    }
-    // END ABSTRACT REDIRECT
 
     $stateProvider
       .state('login', {
@@ -202,4 +193,17 @@ angular.module(
         }
       };
     });
+  })
+
+  .run(function($transitions, $state, $rootScope, CacheService) {
+    $transitions.onStart({ to: true }, /* @ngInject */resolveSetTargetState);
+
+    function resolveSetTargetState($transition$) {
+      $state.toState = $transition$.$to();
+
+      return true;
+    }
+
+    $rootScope.itemsLoaded = CacheService.loaded;
+    $rootScope.itemsToLoad = Object.keys(CacheService.loaded);
   });

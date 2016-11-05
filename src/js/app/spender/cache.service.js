@@ -11,6 +11,15 @@ angular.module('spender')
       _paymentMethods = [],
       _currencies = [];
 
+    that.loaded = {
+      incomeCategories: false,
+      categories: false,
+      expenses: false,
+      incomes: false,
+      currencies: false,
+      paymentMethods: false
+    };
+
     that.prepareExpense = function(expense) {
       expense.category = CategoryService.getOne(+expense.categoryId);
       expense.paymentMethod = PaymentMethodService.getOne(+expense.paymentMethodId);
@@ -67,13 +76,15 @@ angular.module('spender')
 
     that.loadAll = function(reload) {
       return $q.all({
-        incomeCategories: IncomeCategoryService.loadAll(reload),
-        categories: CategoryService.loadAll(reload),
-        expenses: ExpenseService.loadAll(reload),
-        incomes: IncomeService.loadAll(reload),
-        currencies: CurrencyService.loadAll(reload),
-        paymentMethods: PaymentMethodService.loadAll(reload)
+        incomeCategories: IncomeCategoryService.loadAll(reload).then(function(data) { that.loaded.incomeCategories = true; return data; }),
+        categories: CategoryService.loadAll(reload).then(function(data) { that.loaded.categories = true; return data; }),
+        expenses: ExpenseService.loadAll(reload).then(function(data) { that.loaded.expenses = true; return data; }),
+        incomes: IncomeService.loadAll(reload).then(function(data) { that.loaded.incomes = true; return data; }),
+        currencies: CurrencyService.loadAll(reload).then(function(data) { that.loaded.currencies = true; return data; }),
+        paymentMethods: PaymentMethodService.loadAll(reload).then(function(data) { that.loaded.paymentMethods = true; return data; })
       }).then(function(results) {
+        $rootScope.isDataLoaded = true;
+
         _incomeCategories = results.incomeCategories;
         _categories = results.categories;
         _expenses = results.expenses;
