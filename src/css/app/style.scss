@@ -420,6 +420,17 @@ spinner {
         overflow: hidden;
         text-overflow: ellipsis;
       }
+
+      &--transfer {
+        &:after {
+          margin-top: -10px;
+          top: 50%;
+          left: -10px;
+          position: absolute;
+          content: '\021E3';
+          font-size: 20px;
+        }
+      }
     }
 
     .history__amounts {

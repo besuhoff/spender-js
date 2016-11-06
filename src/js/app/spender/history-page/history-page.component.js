@@ -72,7 +72,7 @@ angular.module('spender')
                 name: 'Перевод денег'
               };
 
-              entity.amounts.push({
+              entity.amounts.unshift({
                 paymentMethod: entity.expense.paymentMethod,
                   value: entity.expense.amount * -1
                 });
