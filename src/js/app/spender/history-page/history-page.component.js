@@ -42,6 +42,8 @@ angular.module('spender')
 
       function initHistory() {
         history = [];
+        monthsMap = {};
+        ctrl.months = [];
 
         history = history.concat(IncomeService.getAll()
           .filter(function(item) { return !item._isRemoved; })
